@@ -1,115 +1,161 @@
 # ReportaCampus
 
-Prototipo web para reportar incidencias del campus (daños, fallas, problemas de aseo o de seguridad) y consultar en qué estado está cada una.
-
-**Versión:** 0.1, primera entrega. Es un prototipo de interfaz: no tiene backend ni base de datos todavía y trabaja con datos de prueba.
+ReportaCampus es una aplicación web para reportar las incidencias del campus (daños, fallas, problemas de aseo o de seguridad) y consultar en qué estado se encuentra cada una. Esta versión es el **prototipo web inicial (v0.1)**: una interfaz funcional construida con HTML5, CSS3 y JavaScript que trabaja con datos simulados.
 
 ![Panel de incidencias](docs/evidencias/01-escritorio-panel.png)
 
-## Objetivo
+## Equipo
 
-Que la comunidad del campus pueda informar lo que está dañado o mal y ver cómo avanza su atención, para:
+- Juan Diego Fajardo Suárez
+- Juan Camilo Céspedes
+- Sebastián Pérez
 
-- reducir el tiempo de respuesta,
-- evitar reportes perdidos o repetidos,
-- dejar trazabilidad de cada caso.
+## Objetivo general
 
-## Qué incluye esta entrega
+Desarrollar una aplicación web que permita a la comunidad universitaria reportar incidencias del campus y consultar su estado, mientras los responsables las gestionan desde un panel, con el fin de reducir el tiempo de respuesta, evitar reportes perdidos o repetidos y dar trazabilidad a cada caso.
 
-- **Panel de incidencias** con cuatro indicadores: reportes recibidos, reportes sin resolver, tiempo promedio de solución y porcentaje resuelto en menos de 48 horas.
-- **Gráfica interactiva** (Chart.js) de reportes recibidos y resueltos, con selector de periodo *Semana / Mes / Semestre*, detalle al pasar el cursor y opción de verla como tabla.
-- **Gráfica por categoría**: al hacer clic en una barra se filtra la lista de reportes.
-- **Metas de atención del semestre** con su avance.
-- **Lista de reportes** con búsqueda y filtros por estado, categoría y zona. Cada reporte abre su detalle con el historial de estados.
-- **Zonas del campus**: reportes abiertos por espacio (bloques, biblioteca, laboratorios, etc.).
-- **Formulario de nuevo reporte** con validación de campos obligatorios.
-- **Recomendaciones** para reportar mejor y cuidar los espacios.
-- **Diseño adaptable** a computador, tableta y celular (menú lateral desplegable y tabla en filas apiladas).
+## Alcance inicial
 
-## Qué queda para las siguientes entregas
+Esta primera entrega cubre la interfaz de la página principal con datos simulados.
 
-- Backend en Python con Flask y API para incidencias y usuarios.
-- Base de datos en SQL Server.
-- Inicio de sesión con roles (estudiante, responsable, administrador).
-- Asignación de responsables y cambio de estado desde un panel administrativo.
-- Carga real de fotos.
+| Módulo | Qué hace |
+|---|---|
+| Panel de incidencias | Muestra cuatro indicadores: reportes recibidos, reportes sin resolver, tiempo promedio de solución y porcentaje resuelto en menos de 48 horas. |
+| Selector de periodo | Botones *Semana / Mes / Semestre* que recalculan los indicadores y las gráficas. |
+| Gráfica de reportes | Barras de reportes recibidos y línea de resueltos (Chart.js), con detalle al pasar el cursor y opción *Ver como tabla*. |
+| Gráfica por categoría | Al hacer clic en una barra se filtra la lista de reportes por esa categoría. |
+| Metas de atención | Avance del semestre frente a tres metas, con barra de progreso. |
+| Lista de reportes | Búsqueda por texto y filtros por estado, categoría y zona. Cada fila abre el detalle del reporte con su historial de estados. |
+| Zonas del campus | Tarjetas por espacio (bloques, biblioteca, laboratorios, etc.) con el número de reportes abiertos; al elegir una se filtra la lista. |
+| Nuevo reporte | Formulario con categoría, zona, título, descripción, prioridad y foto opcional. Valida los campos obligatorios y agrega el reporte a la lista. |
+| Recomendaciones | Buenas prácticas para reportar y para cuidar los espacios. |
+| Navegación | Menú lateral con enlaces a cada sección; en celular se abre con el botón de menú. |
 
-Fuera del alcance del proyecto: app móvil nativa, notificaciones por correo/SMS/WhatsApp, integración con otros sistemas, mapas o GPS y clasificación automática con IA.
+La interfaz se adapta a computador, tableta y celular.
 
-## Datos de prueba
+**Elementos interactivos de esta entrega:** selector de periodo, gráficas con detalle y filtro por clic, búsqueda y filtros de la lista, detalle de reportes, tarjetas de zonas, formulario con validación y menú de navegación.
 
-`js/data.js` genera un año de incidencias simuladas con un generador pseudoaleatorio con semilla, así que los datos son los mismos en cada carga. Los reportes nuevos se guardan solo en memoria y se pierden al recargar la página.
+**Siguientes entregas:** backend en Python con Flask, base de datos en SQL Server, inicio de sesión con roles (estudiante, responsable y administrador), asignación de responsables, cambio de estado desde el panel administrativo y carga real de fotos.
 
-## Tecnologías
+**Fuera del alcance del proyecto:** aplicación móvil nativa, notificaciones por correo, SMS o WhatsApp, integración con otros sistemas, mapas o GPS y clasificación automática con inteligencia artificial.
 
-- HTML5
-- CSS3 (Grid, Flexbox y media queries)
-- JavaScript sin frameworks
-- [Chart.js 4.6](https://www.chartjs.org/), incluido en `js/vendor/`
-- Tipografía Lato (licencia OFL), incluida en `assets/fonts/`
-- Git y GitHub
-- Visual Studio Code
+### Datos simulados
 
-## Estructura
+El archivo `js/data.js` genera un año de incidencias de prueba con un generador pseudoaleatorio con semilla, por lo que los datos son los mismos en cada carga. Los reportes creados desde el formulario se guardan solo en memoria y se pierden al recargar la página.
 
-```
-ReportaCampus/
-├── index.html            Página principal
-├── css/
-│   └── styles.css        Estilos y diseño adaptable
-├── js/
-│   ├── data.js           Datos de prueba
-│   ├── charts.js         Gráficas
-│   ├── app.js            Lógica de la interfaz
-│   └── vendor/           Chart.js
-├── assets/
-│   └── fonts/            Tipografía
-└── docs/
-    └── evidencias/       Capturas del prototipo
-```
+## Tecnologías utilizadas
 
-## Cómo ejecutarlo
+| Tecnología | Uso en el proyecto |
+|---|---|
+| HTML5 | Estructura semántica de la página (`header`, `nav`, `main`, `section`, `dialog`) y formulario. |
+| CSS3 | Estilos con variables de color, Grid, Flexbox y *media queries* para el diseño adaptable. |
+| JavaScript | Lógica de la interfaz sin frameworks: indicadores, filtros, formulario, detalle y navegación. |
+| [Chart.js 4.6](https://www.chartjs.org/) | Biblioteca para las gráficas interactivas. Se eligió porque es liviana, no necesita compilación y trae tooltips y adaptación de tamaño. Está incluida en `js/vendor/` para que el prototipo funcione sin internet. |
+| Lato | Tipografía de la interfaz (licencia OFL), incluida en `assets/fonts/`. |
+| Visual Studio Code | Editor de código. |
+| Git y GitHub | Control de versiones y publicación del repositorio. |
 
-No requiere instalar nada ni conexión a internet.
+## Colorimetría
+
+La paleta combina un rojo como color principal de la marca con un gris pizarra para textos y navegación, sobre fondos neutros. Los colores están definidos como variables al inicio de `css/styles.css`.
+
+### Colores principales
+
+| Muestra | Nombre | Hex | Uso |
+|---|---|---|---|
+| ![Rojo oscuro](docs/colores/rojo-oscuro.svg) | Rojo oscuro | `#A60311` | Barra superior, enlace activo del menú, mensajes de error. |
+| ![Rojo](docs/colores/rojo.svg) | Rojo | `#C1272D` | Botón principal, barras de reportes recibidos en la gráfica, borde del enlace activo. |
+| ![Gris pizarra](docs/colores/pizarra.svg) | Gris pizarra | `#333C4E` | Títulos, menú lateral, periodo seleccionado, barras de la gráfica por categoría. |
+| ![Azul](docs/colores/azul.svg) | Azul | `#3B64A0` | Línea de reportes resueltos, enlaces y foco del teclado. |
+
+### Neutros
+
+| Muestra | Nombre | Hex | Uso |
+|---|---|---|---|
+| ![Tinta](docs/colores/tinta.svg) | Tinta | `#2B2B2B` | Texto principal y cifras de los indicadores. |
+| ![Gris](docs/colores/gris.svg) | Gris | `#6F777F` | Textos secundarios, etiquetas y ejes de las gráficas. |
+| ![Línea](docs/colores/linea.svg) | Línea | `#E1DDD9` | Bordes de paneles, tablas y separadores. |
+| ![Fondo](docs/colores/fondo.svg) | Fondo | `#F2F1F0` | Fondo general de la página. |
+| ![Blanco](docs/colores/blanco.svg) | Blanco | `#FFFFFF` | Fondo de paneles, tablas y formulario. |
+
+### Estados de un reporte
+
+| Muestra | Estado | Hex | Uso |
+|---|---|---|---|
+| ![Nuevo](docs/colores/rojo.svg) | Nuevo | `#C1272D` | Reporte recibido que aún no tiene responsable. |
+| ![En proceso](docs/colores/proceso.svg) | En proceso | `#B0700F` | Reporte asignado y en atención; también metas aún no cumplidas. |
+| ![Resuelto](docs/colores/resuelto.svg) | Resuelto | `#2F7D4F` | Reporte cerrado; también metas cumplidas. |
+
+Los estados siempre se muestran con su nombre junto al color, para que no dependan solo de él. Los dos colores de la gráfica principal (rojo y azul) se verificaron para que se distingan también con daltonismo.
+
+## Instrucciones para ejecutar el prototipo
+
+No requiere instalar dependencias ni conexión a internet.
 
 1. Clona el repositorio:
    ```bash
    git clone https://github.com/ElOne1415/ReportaCampus.git
    ```
-2. Abre `index.html` en un navegador actualizado (Chrome, Edge, Firefox o Safari).
+2. Entra a la carpeta del proyecto:
+   ```bash
+   cd ReportaCampus
+   ```
+3. Abre el archivo `index.html` en un navegador actualizado (Chrome, Edge, Firefox o Safari).
 
-También se puede servir en local con la extensión **Live Server** de VS Code o con:
+También se puede servir en local:
 
-```bash
-python3 -m http.server 8000
+- Con la extensión **Live Server** de Visual Studio Code: clic derecho sobre `index.html` y *Open with Live Server*.
+- Desde la terminal, dentro de la carpeta del proyecto:
+  ```bash
+  python3 -m http.server 8000
+  ```
+  y abrir <http://localhost:8000> en el navegador.
+
+Para revisar la vista de celular o tableta, abre las herramientas de desarrollo del navegador (`F12` en Windows, `Cmd + Option + I` en Mac) y activa el modo de dispositivo.
+
+## Estructura del repositorio
+
+```
+ReportaCampus/
+├── index.html            Página principal
+├── css/
+│   └── styles.css        Estilos, paleta y diseño adaptable
+├── js/
+│   ├── data.js           Datos simulados
+│   ├── charts.js         Gráficas
+│   ├── app.js            Lógica de la interfaz
+│   └── vendor/           Chart.js
+├── assets/
+│   └── fonts/            Tipografía Lato
+└── docs/
+    ├── colores/          Muestras de la paleta
+    └── evidencias/       Capturas del prototipo
 ```
 
-y abrir <http://localhost:8000>.
+## Verificación del funcionamiento
 
-Para revisar la vista de celular: herramientas de desarrollo del navegador (`F12` o `Cmd + Option + I`) y modo dispositivo.
-
-## Pruebas realizadas
+Se probó en Google Chrome en tres tamaños de pantalla: 1366 px (computador), 820 px (tableta) y 390 px (celular).
 
 | Prueba | Resultado |
 |---|---|
 | La página carga sin errores en la consola | Correcto |
 | Cambiar el periodo actualiza indicadores y gráficas | Correcto |
 | Detalle al pasar el cursor y vista en tabla de la gráfica | Correcto |
-| Clic en una categoría filtra la lista | Correcto |
+| Clic en una categoría filtra la lista de reportes | Correcto |
 | Búsqueda y filtros de la lista | Correcto |
 | El formulario marca los campos obligatorios vacíos | Correcto |
 | Un reporte nuevo aparece primero en la lista y suma en los indicadores | Correcto |
-| Detalle con historial de estados | Correcto |
-| Menú lateral en escritorio y menú desplegable en celular | Correcto |
-| Sin desplazamiento horizontal a 390 px, 820 px y 1366 px | Correcto |
+| El detalle muestra el historial de estados | Correcto |
+| Menú lateral en computador y menú desplegable en celular | Correcto |
+| Sin desplazamiento horizontal en los tres tamaños | Correcto |
 
 ## Evidencias
 
-| Escritorio | Celular |
+| Computador | Celular |
 |---|---|
-| ![Panel en escritorio](docs/evidencias/01-escritorio-panel.png) | ![Panel en celular](docs/evidencias/09-movil-panel.png) |
+| ![Panel en computador](docs/evidencias/01-escritorio-panel.png) | ![Panel en celular](docs/evidencias/09-movil-panel.png) |
 
-Gráfica con periodo *Semestre* y detalle al pasar el cursor:
+Gráfica con el periodo *Semestre* y detalle al pasar el cursor:
 
 ![Gráfica interactiva](docs/evidencias/03-grafica-semestre.png)
 
@@ -117,7 +163,7 @@ Todas las capturas están en [`docs/evidencias/`](docs/evidencias/):
 
 | Archivo | Qué muestra |
 |---|---|
-| `01-escritorio-panel.png` | Panel en escritorio |
+| `01-escritorio-panel.png` | Panel en computador |
 | `02-escritorio-pagina-completa.png` | Página completa |
 | `03-grafica-semestre.png` | Gráfica por semestre con detalle |
 | `04-grafica-semana-tabla.png` | Gráfica por semana con vista en tabla |
