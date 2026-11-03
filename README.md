@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/img/logo.svg" alt="Logo de ReportaCampus" width="96"></p>
+
 # ReportaCampus
 
 ReportaCampus es una aplicación web para reportar las incidencias del campus (daños, fallas, problemas de aseo o de seguridad) y consultar en qué estado se encuentra cada una. Esta versión es el **prototipo web inicial (v0.1)**: una interfaz funcional construida con HTML5, CSS3 y JavaScript que trabaja con datos simulados.
@@ -58,6 +60,8 @@ El archivo `js/data.js` genera un año de incidencias de prueba con un generador
 ## Colorimetría
 
 La paleta combina un rojo como color principal de la marca con un gris pizarra para textos y navegación, sobre fondos neutros. Los colores están definidos como variables al inicio de `css/styles.css`.
+
+El logo (`assets/img/logo.svg`) es un marcador de ubicación con una marca de verificación: une la idea de reportar un lugar con la de un caso resuelto. Usa el rojo (mitad izquierda), el rojo oscuro (mitad derecha), el gris pizarra (marca de verificación) y el blanco. En la barra superior va sobre un recuadro blanco para que no se pierda contra el fondo rojo.
 
 ### Colores principales
 
@@ -126,6 +130,7 @@ ReportaCampus/
 │   ├── app.js            Lógica de la interfaz
 │   └── vendor/           Chart.js
 ├── assets/
+│   ├── img/              Logo
 │   └── fonts/            Tipografía Lato
 └── docs/
     ├── colores/          Muestras de la paleta

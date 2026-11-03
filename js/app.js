@@ -1,5 +1,5 @@
 /* ==========================================================
-   ReportaCampus · Lógica de la interfaz (prototipo v0.1)
+   ReportaCampus · Lógica de la interfaz
    ========================================================== */
 (function () {
   'use strict';

@@ -1,10 +1,9 @@
 /* ==========================================================
-   ReportaCampus · Datos simulados
+   ReportaCampus · Datos de incidencias
    ----------------------------------------------------------
-   En esta primera fase no hay backend ni base de datos.
-   Este archivo genera un conjunto de incidencias de prueba
-   con un generador pseudoaleatorio con semilla, para que los
-   datos sean siempre los mismos en cada carga de la página.
+   Genera las incidencias, categorías y zonas que usa la
+   interfaz. Usa un generador pseudoaleatorio con semilla para
+   que el contenido sea el mismo en cada carga de la página.
    ========================================================== */
 (function () {
   'use strict';

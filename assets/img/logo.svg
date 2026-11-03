@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" overflow="visible" role="img" aria-label="ReportaCampus">
+  <defs>
+    <clipPath id="rc-izq"><rect x="0" y="0" width="50" height="120"/></clipPath>
+    <clipPath id="rc-der"><rect x="50" y="0" width="50" height="120"/></clipPath>
+  </defs>
+  <path id="rc-pin" d="M50 116C45 108 10 84 10 48a40 40 0 0 1 80 0c0 36-35 60-40 68z" fill="#c1272d" clip-path="url(#rc-izq)"/>
+  <path d="M50 116C45 108 10 84 10 48a40 40 0 0 1 80 0c0 36-35 60-40 68z" fill="#a60311" clip-path="url(#rc-der)"/>
+  <circle cx="48" cy="50" r="24" fill="#ffffff"/>
+  <path d="M33 47l13 13 40-39" fill="none" stroke="#ffffff" stroke-width="19" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M33 47l13 13 40-39" fill="none" stroke="#333c4e" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
