@@ -2,6 +2,8 @@
 
 # ReportaCampus
 
+**EJECUCION:** https://elone1415.github.io/ReportaCampus/
+
 ReportaCampus es una aplicación web para reportar las incidencias del campus (daños, fallas, problemas de aseo o de seguridad) y consultar en qué estado se encuentra cada una. Esta versión es el **prototipo web inicial (v0.1)**: una interfaz funcional construida con HTML5, CSS3 y JavaScript que trabaja con datos simulados.
 
 ![Panel de incidencias](docs/evidencias/01-escritorio-panel.png)
