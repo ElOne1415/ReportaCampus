@@ -1,0 +1,15 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Dependencias y entornos (próximas fases)
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+.env
