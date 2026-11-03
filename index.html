@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ReportaCampus: prototipo para reportar y hacer seguimiento a las incidencias del campus.">
+  <title>ReportaCampus | Prototipo v0.1</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <!-- Barra superior -->
+  <header class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="sidebar">
+      <span class="menu-btn__bars" aria-hidden="true"></span>
+      <span class="sr-only">Menú</span>
+    </button>
+    <a class="wordmark" href="#panel">ReportaCampus</a>
+    <span class="version">Prototipo v0.1</span>
+    <span class="topbar__spacer"></span>
+    <span class="topbar__user">Vista de estudiante</span>
+  </header>
+
+  <div class="shell">
+    <!-- Navegación lateral -->
+    <nav class="sidebar" id="sidebar" aria-label="Navegación principal">
+      <ul>
+        <li><a href="#panel" class="nav-link is-active">Panel</a></li>
+        <li><a href="#reportes" class="nav-link">Reportes</a></li>
+        <li><a href="#zonas" class="nav-link">Zonas del campus</a></li>
+        <li><a href="#nuevo" class="nav-link">Nuevo reporte</a></li>
+        <li><a href="#recomendaciones" class="nav-link">Recomendaciones</a></li>
+      </ul>
+      <p class="sidebar__note">Primera entrega. Los datos son de prueba y se reinician al recargar la página.</p>
+    </nav>
+    <div class="scrim" id="scrim" hidden></div>
+
+    <main id="contenido" class="main">
+
+      <!-- PANEL -->
+      <section id="panel" class="block" aria-labelledby="t-panel">
+        <div class="page-head">
+          <div>
+            <h1 id="t-panel">Panel de incidencias</h1>
+            <p class="lead">Resumen de lo reportado en el campus y de cómo se está atendiendo.</p>
+          </div>
+          <div class="period">
+            <div class="tabs" role="tablist" aria-label="Periodo" id="periodTabs">
+              <button role="tab" aria-selected="false" data-period="semana">Semana</button>
+              <button role="tab" aria-selected="true" data-period="mes">Mes</button>
+              <button role="tab" aria-selected="false" data-period="semestre">Semestre</button>
+            </div>
+            <p class="period__range" id="periodRange"></p>
+          </div>
+        </div>
+
+        <div class="stats" aria-live="polite">
+          <div class="stat">
+            <p class="stat__label">Reportes recibidos</p>
+            <p class="stat__value" id="sTotal">–</p>
+            <p class="stat__note" id="sTotalNote"></p>
+          </div>
+          <div class="stat">
+            <p class="stat__label">Sin resolver</p>
+            <p class="stat__value" id="sAbiertos">–</p>
+            <p class="stat__note" id="sAbiertosNote"></p>
+          </div>
+          <div class="stat">
+            <p class="stat__label">Tiempo promedio de solución</p>
+            <p class="stat__value"><span id="sTiempo">–</span> <span class="unit">horas</span></p>
+            <p class="stat__note" id="sTiempoNote"></p>
+          </div>
+          <div class="stat">
+            <p class="stat__label">Resueltos en menos de 48 h</p>
+            <p class="stat__value"><span id="sMeta">–</span><span class="unit">%</span></p>
+            <div class="bar" aria-hidden="true"><span class="bar__fill" id="sMetaBar"></span><span class="bar__goal" style="left:85%"></span></div>
+            <p class="stat__note">La meta es 85 %</p>
+          </div>
+        </div>
+
+        <div class="charts">
+          <div class="panel">
+            <div class="panel__head">
+              <h2>Reportes recibidos y resueltos</h2>
+              <button type="button" class="link-btn" id="toggleTable" aria-pressed="false">Ver como tabla</button>
+            </div>
+            <p class="panel__sub" id="chartSub"></p>
+            <div class="legend" aria-hidden="true">
+              <span><i class="key key--bar"></i>Recibidos</span>
+              <span><i class="key key--line"></i>Resueltos</span>
+            </div>
+            <div class="chart"><canvas id="trendChart" role="img" aria-label="Reportes recibidos y resueltos en el periodo"></canvas></div>
+            <div id="trendTable" hidden></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel__head"><h2>Por categoría</h2></div>
+            <p class="panel__sub">Haz clic en una barra para ver esos reportes.</p>
+            <div class="chart chart--cat"><canvas id="catChart" role="img" aria-label="Reportes por categoría en el periodo"></canvas></div>
+          </div>
+        </div>
+
+        <div class="panel goals">
+          <div class="panel__head"><h2>Metas de atención del semestre</h2></div>
+          <ul class="goals__list" id="goals"></ul>
+        </div>
+      </section>
+
+      <!-- REPORTES -->
+      <section id="reportes" class="block" aria-labelledby="t-rep">
+        <h2 id="t-rep" class="block__title">Reportes</h2>
+        <div class="toolbar">
+          <input type="search" id="fTexto" placeholder="Buscar por código, título o lugar" aria-label="Buscar reportes">
+          <select id="fEstado" aria-label="Filtrar por estado">
+            <option value="">Todos los estados</option>
+            <option>Nuevo</option>
+            <option>En proceso</option>
+            <option>Resuelto</option>
+          </select>
+          <select id="fCategoria" aria-label="Filtrar por categoría">
+            <option value="">Todas las categorías</option>
+          </select>
+          <select id="fZona" aria-label="Filtrar por zona">
+            <option value="">Todas las zonas</option>
+          </select>
+          <button type="button" class="link-btn" id="fLimpiar">Quitar filtros</button>
+        </div>
+
+        <div class="panel panel--flush">
+          <table class="table" id="tabla">
+            <thead>
+              <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Incidencia</th>
+                <th scope="col">Categoría</th>
+                <th scope="col">Zona</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+          <div class="table__foot">
+            <span id="conteo"></span>
+            <button type="button" class="btn btn--secondary" id="verMas">Mostrar 10 más</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ZONAS -->
+      <section id="zonas" class="block" aria-labelledby="t-zonas">
+        <h2 id="t-zonas" class="block__title">Zonas del campus</h2>
+        <p class="block__sub">Reportes abiertos en cada espacio. Elige una zona para ver su lista.</p>
+        <div class="zones" id="zonas-lista"></div>
+      </section>
+
+      <!-- NUEVO REPORTE -->
+      <section id="nuevo" class="block" aria-labelledby="t-nuevo">
+        <h2 id="t-nuevo" class="block__title">Nuevo reporte</h2>
+        <p class="block__sub">Cuéntanos qué pasa y dónde. Al enviarlo recibes un código para consultar su estado.</p>
+
+        <form class="panel form" id="form" novalidate>
+          <div class="form__grid">
+            <label class="field">
+              <span>Categoría</span>
+              <select id="rCategoria" required><option value="">Elige una opción</option></select>
+              <small class="error" data-for="rCategoria">Elige una categoría.</small>
+            </label>
+            <label class="field">
+              <span>Zona</span>
+              <select id="rZona" required><option value="">Elige una opción</option></select>
+              <small class="error" data-for="rZona">Elige la zona.</small>
+            </label>
+            <label class="field field--wide">
+              <span>Título</span>
+              <input type="text" id="rTitulo" maxlength="80" placeholder="Ej. Lámpara dañada en el pasillo del tercer piso" required>
+              <small class="error" data-for="rTitulo">Escribe al menos 8 caracteres.</small>
+            </label>
+            <label class="field field--wide">
+              <span>Descripción</span>
+              <textarea id="rDesc" rows="4" maxlength="500" placeholder="Qué ocurre, desde cuándo y si representa algún riesgo" required></textarea>
+              <small class="error" data-for="rDesc">Escribe al menos 15 caracteres.</small>
+            </label>
+            <fieldset class="field">
+              <legend>Prioridad</legend>
+              <div class="radios">
+                <label><input type="radio" name="rPrioridad" value="Baja"> Baja</label>
+                <label><input type="radio" name="rPrioridad" value="Media" checked> Media</label>
+                <label><input type="radio" name="rPrioridad" value="Alta"> Alta</label>
+              </div>
+            </fieldset>
+            <label class="field">
+              <span>Foto <em>(opcional)</em></span>
+              <input type="file" id="rFoto" accept="image/*">
+            </label>
+          </div>
+          <div class="form__actions">
+            <button type="reset" class="btn btn--secondary">Borrar</button>
+            <button type="submit" class="btn btn--primary">Enviar reporte</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- RECOMENDACIONES -->
+      <section id="recomendaciones" class="block" aria-labelledby="t-reco">
+        <h2 id="t-reco" class="block__title">Recomendaciones</h2>
+        <p class="block__sub">Para que tu reporte se atienda más rápido y para cuidar los espacios.</p>
+        <dl class="tips" id="tips"></dl>
+      </section>
+
+      <footer class="footer">
+        <p>ReportaCampus, prototipo de la primera entrega. Todos los datos son de prueba.</p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Detalle -->
+  <dialog class="dialog" id="detalle" aria-labelledby="dTitulo">
+    <div class="dialog__head">
+      <div>
+        <p class="dialog__code" id="dCodigo"></p>
+        <h3 id="dTitulo"></h3>
+      </div>
+      <button type="button" class="close" id="dCerrar" aria-label="Cerrar">&times;</button>
+    </div>
+    <dl class="facts" id="dDatos"></dl>
+    <p class="dialog__desc" id="dDesc"></p>
+    <h4>Historial</h4>
+    <ol class="history" id="dHistorial"></ol>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/vendor/chart.umd.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
