@@ -135,6 +135,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
 .toolbar input { flex: 1 1 240px; }
 .toolbar select { flex: 0 1 190px; }
+.toolbar__export { margin-left: auto; }
 input[type="text"], input[type="search"], select, textarea {
   width: 100%; padding: 9px 10px; font-size: 15px;
   border: 1px solid #c9c4bf; border-radius: 3px; background: var(--blanco);

@@ -29,7 +29,7 @@ Esta primera entrega cubre la interfaz de la página principal con datos simulad
 | Gráfica de reportes | Barras de reportes recibidos y línea de resueltos (Chart.js), con detalle al pasar el cursor y opción *Ver como tabla*. |
 | Gráfica por categoría | Al hacer clic en una barra se filtra la lista de reportes por esa categoría. |
 | Metas de atención | Avance del semestre frente a tres metas, con barra de progreso. |
-| Lista de reportes | Búsqueda por texto y filtros por estado, categoría y zona. Cada fila abre el detalle del reporte con su historial de estados. |
+| Lista de reportes | Búsqueda por texto y filtros por estado, categoría y zona. Cada fila abre el detalle del reporte con su historial de estados. El botón *Exportar CSV* descarga los reportes filtrados para abrirlos en Excel. |
 | Zonas del campus | Tarjetas por espacio (bloques, biblioteca, laboratorios, etc.) con el número de reportes abiertos; al elegir una se filtra la lista. |
 | Nuevo reporte | Formulario con categoría, zona, título, descripción, prioridad y foto opcional con vista previa. Valida los campos obligatorios, agrega el reporte a la lista y lo guarda en el navegador. La foto se ve también en el detalle del reporte. |
 | Recomendaciones | Buenas prácticas para reportar y para cuidar los espacios. |

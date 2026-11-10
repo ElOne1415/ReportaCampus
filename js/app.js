@@ -177,6 +177,34 @@
     $('#verMas').hidden = vista.length >= lista.length;
   }
 
+  // ---------- Exportar a CSV ----------
+  // Descarga los reportes que coinciden con los filtros actuales.
+  // Usa punto y coma como separador y BOM para que Excel en español
+  // abra bien las columnas y las tildes.
+  function exportarCSV() {
+    const lista = filtrar();
+    if (!lista.length) { aviso('No hay reportes para exportar con estos filtros.'); return; }
+    const celda = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+    const dos = (n) => String(n).padStart(2, '0');
+    const iso = (f) => (f ? f.getFullYear() + '-' + dos(f.getMonth() + 1) + '-' + dos(f.getDate()) + ' ' + dos(f.getHours()) + ':' + dos(f.getMinutes()) : '');
+    const filas = [['Código', 'Incidencia', 'Categoría', 'Zona', 'Prioridad', 'Estado', 'Responsable', 'Creado', 'Resuelto', 'Horas de solución']]
+      .concat(lista.map((x) => [
+        x.id, x.titulo, categoria[x.categoria].nombre, zona[x.ubicacion].nombre, x.prioridad, x.estado,
+        x.responsable || 'Sin asignar', iso(x.creado), iso(x.resuelto),
+        x.resuelto ? fNum.format(horas(x.creado, x.resuelto)) : ''
+      ]));
+    const csv = '\uFEFF' + filas.map((f) => f.map(celda).join(';')).join('\r\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'reportes-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    aviso('Se exportaron ' + lista.length + (lista.length === 1 ? ' reporte.' : ' reportes.'));
+  }
+
   // ---------- Zonas ----------
   function pintarZonas() {
     $('#zonas-lista').innerHTML = D.ubicaciones.map((u) => {
@@ -396,6 +424,7 @@
       pintarTabla();
       pintarGraficas();
     });
+    $('#exportar').addEventListener('click', exportarCSV);
     $('#verMas').addEventListener('click', () => { estado.visibles += 10; pintarTabla(); });
 
     $('#tbody').addEventListener('click', (e) => { const f = e.target.closest('tr[data-id]'); if (f) abrir(f.dataset.id); });
