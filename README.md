@@ -4,7 +4,7 @@
 
 **EJECUCION:** https://elone1415.github.io/ReportaCampus/
 
-ReportaCampus es una aplicación web para reportar las incidencias del campus (daños, fallas, problemas de aseo o de seguridad) y consultar en qué estado se encuentra cada una. Esta versión es el **prototipo web inicial (v0.1)**: una interfaz funcional construida con HTML5, CSS3 y JavaScript que trabaja con datos simulados.
+ReportaCampus es una aplicación web para reportar las incidencias del campus (daños, fallas, problemas de aseo o de seguridad) y consultar en qué estado se encuentra cada una. Esta versión es el **prototipo web inicial (v0.2)**: una interfaz funcional construida con HTML5, CSS3 y JavaScript que trabaja con datos simulados.
 
 ![Panel de incidencias](docs/evidencias/01-escritorio-panel.png)
 
@@ -37,7 +37,7 @@ Esta primera entrega cubre la interfaz de la página principal con datos simulad
 
 La interfaz se adapta a computador, tableta y celular.
 
-**Elementos interactivos de esta entrega:** selector de periodo, gráficas con detalle y filtro por clic, búsqueda y filtros de la lista, detalle de reportes, tarjetas de zonas, formulario con validación y menú de navegación.
+**Elementos interactivos de esta entrega:** selector de periodo, gráficas con detalle y filtro por clic, búsqueda y filtros de la lista, exportación a CSV, detalle de reportes, tarjetas de zonas, formulario con validación y vista previa de foto, reportes guardados en el navegador y menú de navegación.
 
 **Siguientes entregas:** backend en Python con Flask, base de datos en SQL Server, inicio de sesión con roles (estudiante, responsable y administrador), asignación de responsables, cambio de estado desde el panel administrativo y carga real de fotos.
 
@@ -155,6 +155,11 @@ Se probó en Google Chrome en tres tamaños de pantalla: 1366 px (computador), 8
 | El detalle muestra el historial de estados | Correcto |
 | Menú lateral en computador y menú desplegable en celular | Correcto |
 | Sin desplazamiento horizontal en los tres tamaños | Correcto |
+| Un reporte nuevo sigue en la lista después de recargar la página | Correcto |
+| *Borrar mis reportes* quita los reportes guardados | Correcto |
+| Al elegir una foto aparece la vista previa y se puede quitar | Correcto |
+| El detalle de un reporte con foto la muestra | Correcto |
+| *Exportar CSV* descarga solo los reportes filtrados y abre bien en Excel | Correcto |
 
 ## Evidencias
 
@@ -165,6 +170,10 @@ Se probó en Google Chrome en tres tamaños de pantalla: 1366 px (computador), 8
 Gráfica con el periodo *Semestre* y detalle al pasar el cursor:
 
 ![Gráfica interactiva](docs/evidencias/03-grafica-semestre.png)
+
+Nuevo reporte con foto, guardado en el navegador:
+
+![Detalle con foto](docs/evidencias/15-detalle-foto.png)
 
 Todas las capturas están en [`docs/evidencias/`](docs/evidencias/):
 
@@ -182,3 +191,14 @@ Todas las capturas están en [`docs/evidencias/`](docs/evidencias/):
 | `10-movil-menu.png` | Menú en celular |
 | `11-movil-reportes.png` | Lista de reportes en celular |
 | `12-tableta-panel.png` | Panel en tableta |
+| `13-formulario-foto.png` | Formulario con vista previa de la foto |
+| `14-reporte-guardado.png` | Reporte nuevo que sigue en la lista después de recargar |
+| `15-detalle-foto.png` | Detalle de un reporte con su foto |
+| `16-exportar-csv.png` | Lista filtrada por categoría y exportada a CSV |
+
+## Historial de versiones
+
+| Versión | Fecha | Cambios |
+|---|---|---|
+| v0.1 | 3 de noviembre de 2026 | Estructura del repositorio, página principal, diseño adaptable, datos simulados, gráficas, filtros, formulario, detalle y navegación. |
+| v0.2 | 10 de noviembre de 2026 | Reportes nuevos guardados en el navegador, vista previa de la foto en el formulario y en el detalle, exportación a CSV y nuevas evidencias. |
