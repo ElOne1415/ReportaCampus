@@ -26,6 +26,52 @@
   const CLASE = { 'Nuevo': 'nuevo', 'En proceso': 'proceso', 'Resuelto': 'resuelto' };
   const estadoHTML = (e) => '<span class="state state--' + CLASE[e] + '">' + e + '</span>';
 
+  // ---------- Reportes guardados en el navegador ----------
+  // Los reportes creados desde el formulario se guardan en localStorage
+  // para que sigan en la lista al recargar la página.
+  const CLAVE = 'reportacampus.reportes';
+
+  function cargarGuardados() {
+    let guardados = [];
+    try { guardados = JSON.parse(localStorage.getItem(CLAVE)) || []; } catch (e) { guardados = []; }
+    const fecha = (v) => (v ? new Date(v) : null);
+    guardados.forEach((r) => {
+      r.creado = fecha(r.creado);
+      r.resuelto = fecha(r.resuelto);
+      r.historial.forEach((h) => { h.fecha = fecha(h.fecha); });
+      r.propio = true;
+      if (D.incidencias.some((x) => x.id === r.id)) r.id = D.siguienteId();
+      D.incidencias.unshift(r);
+    });
+    D.incidencias.sort((a, b) => b.creado - a.creado);
+    return guardados.length;
+  }
+
+  function guardar() {
+    const propios = D.incidencias.filter((x) => x.propio);
+    try {
+      localStorage.setItem(CLAVE, JSON.stringify(propios));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function borrarGuardados() {
+    try { localStorage.removeItem(CLAVE); } catch (e) { /* sin acceso al almacenamiento */ }
+    D.incidencias = D.incidencias.filter((x) => !x.propio);
+    estado.nuevoId = null;
+    actualizar();
+    pintarGuardados();
+    aviso('Se borraron tus reportes guardados.');
+  }
+
+  function pintarGuardados() {
+    const n = D.incidencias.filter((x) => x.propio).length;
+    $('#guardados').hidden = n === 0;
+    $('#guardadosTexto').textContent = n === 1 ? 'Tienes 1 reporte guardado en este navegador.' : 'Tienes ' + n + ' reportes guardados en este navegador.';
+  }
+
   function rango(periodo) {
     const b = C.intervalos(periodo, D.ahora);
     const desde = b[0].desde;
@@ -192,18 +238,20 @@
     const r = {
       id: D.siguienteId(), titulo, descripcion: desc, categoria: cat, ubicacion: zon,
       prioridad: $('input[name="rPrioridad"]:checked').value,
-      estado: 'Nuevo', creado: ahora, resuelto: null, responsable: null, autor: 'Estudiante',
+      estado: 'Nuevo', creado: ahora, resuelto: null, responsable: null, autor: 'Estudiante', propio: true,
       foto: $('#rFoto').files.length > 0,
       historial: [{ estado: 'Nuevo', fecha: ahora, nota: 'Reporte enviado desde la plataforma.', por: 'Estudiante' }]
     };
     D.incidencias.unshift(r);
+    const guardado = guardar();
     estado.nuevoId = r.id;
     estado.filtros = { texto: '', estado: '', categoria: '', zona: '' };
     ['#fTexto', '#fEstado', '#fCategoria', '#fZona'].forEach((s) => { $(s).value = ''; });
     estado.visibles = 10;
     e.target.reset();
     actualizar();
-    aviso('Reporte enviado. Tu código es ' + r.id + '.');
+    pintarGuardados();
+    aviso('Reporte enviado. Tu código es ' + r.id + '.' + (guardado ? '' : ' No se pudo guardar en este navegador.'));
     $('#reportes').scrollIntoView({ behavior: 'smooth' });
   }
 
@@ -323,7 +371,11 @@
       $('#' + id).addEventListener('input', () => { if ($('#' + id).classList.contains('invalid')) marcar(id, true); });
     });
 
+    $('#borrarGuardados').addEventListener('click', borrarGuardados);
+
+    cargarGuardados();
     pintarRecomendaciones();
     actualizar();
+    pintarGuardados();
   });
 })();

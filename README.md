@@ -45,7 +45,7 @@ La interfaz se adapta a computador, tableta y celular.
 
 ### Datos simulados
 
-El archivo `js/data.js` genera un año de incidencias de prueba con un generador pseudoaleatorio con semilla, por lo que los datos son los mismos en cada carga. Los reportes creados desde el formulario se guardan solo en memoria y se pierden al recargar la página.
+El archivo `js/data.js` genera un año de incidencias de prueba con un generador pseudoaleatorio con semilla, por lo que los datos son los mismos en cada carga. Los reportes creados desde el formulario se guardan en el navegador (`localStorage`), así que siguen en la lista al recargar la página. Se pueden borrar con el enlace *Borrar mis reportes* que aparece sobre el formulario.
 
 ## Tecnologías utilizadas
 

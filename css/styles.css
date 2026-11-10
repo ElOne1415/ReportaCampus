@@ -199,6 +199,8 @@ input[type="file"] { font-size: 14px; }
 .error { display: none; color: var(--rojo-oscuro); font-size: 13px; font-weight: 700; }
 .error.show { display: block; }
 .invalid { border-color: var(--rojo) !important; }
+.saved { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; max-width: 760px; margin-bottom: 12px; padding: 10px 14px; background: var(--blanco); border: 1px solid var(--linea); border-left: 4px solid var(--azul); border-radius: 3px; font-size: 14px; }
+.saved[hidden] { display: none; }
 .form__actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--linea); }
 
 /* ---------- Recomendaciones ---------- */
