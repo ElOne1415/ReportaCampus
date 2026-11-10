@@ -207,16 +207,68 @@
       ['Zona', zona[x.ubicacion].nombre + ', ' + zona[x.ubicacion].detalle.toLowerCase()],
       ['Prioridad', x.prioridad],
       ['Responsable', x.responsable || 'Sin asignar'],
+      ['Foto', x.fotoUrl ? 'Adjunta' : (x.foto ? 'Adjunta (dato simulado)' : 'Sin foto')],
       ['Reportado', fFechaHora.format(x.creado)],
       [x.resuelto ? 'Resuelto en' : 'Abierto hace', fNum.format(horas(x.creado, x.resuelto || new Date())) + ' horas']
     ];
     $('#dDatos').innerHTML = datos.map((d) => '<div><dt>' + d[0] + '</dt><dd>' + esc(d[1]) + '</dd></div>').join('');
     $('#dDesc').textContent = x.descripcion;
+    const foto = $('#dFoto');
+    foto.hidden = !x.fotoUrl;
+    if (x.fotoUrl) $('#dFotoImg').src = x.fotoUrl; else $('#dFotoImg').removeAttribute('src');
     $('#dHistorial').innerHTML = x.historial.map((h) =>
       '<li class="history--' + CLASE[h.estado] + '"><strong>' + h.estado + '</strong> <time>' + fFechaHora.format(h.fecha) + '</time><p>' + esc(h.nota) + '</p></li>'
     ).join('');
     const d = $('#detalle');
     if (d.showModal) d.showModal(); else d.setAttribute('open', '');
+  }
+
+  // ---------- Foto del reporte ----------
+  // La imagen se reduce a 640 px de lado mayor antes de guardarla,
+  // para que ocupe poco espacio en el navegador.
+  let fotoActual = null;
+
+  function reducirImagen(archivo, max) {
+    return new Promise((ok, falla) => {
+      const lector = new FileReader();
+      lector.onerror = falla;
+      lector.onload = () => {
+        const img = new Image();
+        img.onerror = falla;
+        img.onload = () => {
+          const k = Math.min(1, max / Math.max(img.width, img.height));
+          const lienzo = document.createElement('canvas');
+          lienzo.width = Math.round(img.width * k);
+          lienzo.height = Math.round(img.height * k);
+          lienzo.getContext('2d').drawImage(img, 0, 0, lienzo.width, lienzo.height);
+          ok(lienzo.toDataURL('image/jpeg', 0.8));
+        };
+        img.src = lector.result;
+      };
+      lector.readAsDataURL(archivo);
+    });
+  }
+
+  function quitarFoto() {
+    fotoActual = null;
+    $('#rFoto').value = '';
+    $('#fotoPrevia').hidden = true;
+    $('#fotoImg').removeAttribute('src');
+  }
+
+  async function elegirFoto(e) {
+    const archivo = e.target.files[0];
+    if (!archivo) { quitarFoto(); return; }
+    if (!archivo.type.startsWith('image/')) { quitarFoto(); aviso('El archivo debe ser una imagen.'); return; }
+    try {
+      fotoActual = await reducirImagen(archivo, 640);
+      $('#fotoImg').src = fotoActual;
+      $('#fotoNombre').textContent = archivo.name;
+      $('#fotoPrevia').hidden = false;
+    } catch (err) {
+      quitarFoto();
+      aviso('No se pudo leer la imagen.');
+    }
   }
 
   // ---------- Formulario ----------
@@ -239,7 +291,8 @@
       id: D.siguienteId(), titulo, descripcion: desc, categoria: cat, ubicacion: zon,
       prioridad: $('input[name="rPrioridad"]:checked').value,
       estado: 'Nuevo', creado: ahora, resuelto: null, responsable: null, autor: 'Estudiante', propio: true,
-      foto: $('#rFoto').files.length > 0,
+      foto: !!fotoActual,
+      fotoUrl: fotoActual,
       historial: [{ estado: 'Nuevo', fecha: ahora, nota: 'Reporte enviado desde la plataforma.', por: 'Estudiante' }]
     };
     D.incidencias.unshift(r);
@@ -249,6 +302,7 @@
     ['#fTexto', '#fEstado', '#fCategoria', '#fZona'].forEach((s) => { $(s).value = ''; });
     estado.visibles = 10;
     e.target.reset();
+    quitarFoto();
     actualizar();
     pintarGuardados();
     aviso('Reporte enviado. Tu código es ' + r.id + '.' + (guardado ? '' : ' No se pudo guardar en este navegador.'));
@@ -363,7 +417,10 @@
     });
 
     $('#form').addEventListener('submit', enviar);
+    $('#rFoto').addEventListener('change', elegirFoto);
+    $('#fotoQuitar').addEventListener('click', quitarFoto);
     $('#form').addEventListener('reset', () => {
+      quitarFoto();
       $$('.invalid').forEach((x) => x.classList.remove('invalid'));
       $$('.error').forEach((x) => x.classList.remove('show'));
     });

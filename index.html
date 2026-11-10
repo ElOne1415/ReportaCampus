@@ -199,6 +199,13 @@
               <span>Foto <em>(opcional)</em></span>
               <input type="file" id="rFoto" accept="image/*">
             </label>
+            <div class="photo field--wide" id="fotoPrevia" hidden>
+              <img id="fotoImg" alt="Vista previa de la foto adjunta">
+              <div>
+                <p class="photo__name" id="fotoNombre"></p>
+                <button type="button" class="link-btn" id="fotoQuitar">Quitar foto</button>
+              </div>
+            </div>
           </div>
           <div class="form__actions">
             <button type="reset" class="btn btn--secondary">Borrar</button>
@@ -231,6 +238,9 @@
     </div>
     <dl class="facts" id="dDatos"></dl>
     <p class="dialog__desc" id="dDesc"></p>
+    <figure class="dialog__photo" id="dFoto" hidden>
+      <img id="dFotoImg" alt="Foto adjunta al reporte">
+    </figure>
     <h4>Historial</h4>
     <ol class="history" id="dHistorial"></ol>
   </dialog>

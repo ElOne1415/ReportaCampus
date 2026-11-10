@@ -201,6 +201,10 @@ input[type="file"] { font-size: 14px; }
 .invalid { border-color: var(--rojo) !important; }
 .saved { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; max-width: 760px; margin-bottom: 12px; padding: 10px 14px; background: var(--blanco); border: 1px solid var(--linea); border-left: 4px solid var(--azul); border-radius: 3px; font-size: 14px; }
 .saved[hidden] { display: none; }
+.photo { display: flex; gap: 14px; align-items: center; padding: 10px; border: 1px dashed #c9c4bf; border-radius: 3px; }
+.photo[hidden] { display: none; }
+.photo img { width: 120px; height: 90px; object-fit: cover; border-radius: 3px; background: var(--fondo); }
+.photo__name { font-size: 14px; color: var(--gris); word-break: break-all; }
 .form__actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--linea); }
 
 /* ---------- Recomendaciones ---------- */
@@ -223,6 +227,9 @@ input[type="file"] { font-size: 14px; }
 .facts dt { font-size: 13px; color: var(--gris); }
 .facts dd { font-weight: 700; font-size: 15px; }
 .dialog__desc { margin-top: 12px; }
+.dialog__photo { margin: 12px 0 0; }
+.dialog__photo[hidden] { display: none; }
+.dialog__photo img { display: block; max-width: 100%; max-height: 280px; border-radius: 3px; border: 1px solid var(--linea); }
 .history { list-style: none; padding: 0 0 0 16px; border-left: 2px solid var(--linea); display: grid; gap: 12px; }
 .history li { position: relative; font-size: 14px; }
 .history li::before { content: ""; position: absolute; left: -22px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--gris); border: 2px solid var(--blanco); }

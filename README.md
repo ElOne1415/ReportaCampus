@@ -31,7 +31,7 @@ Esta primera entrega cubre la interfaz de la página principal con datos simulad
 | Metas de atención | Avance del semestre frente a tres metas, con barra de progreso. |
 | Lista de reportes | Búsqueda por texto y filtros por estado, categoría y zona. Cada fila abre el detalle del reporte con su historial de estados. |
 | Zonas del campus | Tarjetas por espacio (bloques, biblioteca, laboratorios, etc.) con el número de reportes abiertos; al elegir una se filtra la lista. |
-| Nuevo reporte | Formulario con categoría, zona, título, descripción, prioridad y foto opcional. Valida los campos obligatorios y agrega el reporte a la lista. |
+| Nuevo reporte | Formulario con categoría, zona, título, descripción, prioridad y foto opcional con vista previa. Valida los campos obligatorios, agrega el reporte a la lista y lo guarda en el navegador. La foto se ve también en el detalle del reporte. |
 | Recomendaciones | Buenas prácticas para reportar y para cuidar los espacios. |
 | Navegación | Menú lateral con enlaces a cada sección; en celular se abre con el botón de menú. |
 
