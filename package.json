@@ -1,12 +1,14 @@
 {
   "name": "reportacampus",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Aplicación web para reportar y hacer seguimiento a las incidencias del campus.",
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "npx --yes http-server . -p 8080 -c-1",
-    "test": "node --test"
+    "start": "node scripts/servidor-estatico.mjs 8080",
+    "test": "node --test",
+    "test:e2e": "playwright test",
+    "semilla": "node scripts/exportar-semilla.mjs"
   },
   "engines": {
     "node": ">=20"
@@ -15,5 +17,8 @@
     "type": "git",
     "url": "https://github.com/ElOne1415/ReportaCampus.git"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "1.65.1"
+  }
 }
