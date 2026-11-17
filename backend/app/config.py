@@ -35,6 +35,8 @@ class Config:
     CORS_ORIGENES = _lista('CORS_ORIGENES', 'http://localhost:8080,http://127.0.0.1:8080,https://elone1415.github.io')
     AUTO_SEMILLA = _bool('AUTO_SEMILLA', True)
     MOSTRAR_CUENTAS_DEMO = _bool('MOSTRAR_CUENTAS_DEMO', True)
+    # Contraseña con la que se crean las cuentas nuevas (el usuario la cambia en Mi cuenta)
+    CONTRASENA_INICIAL = os.environ.get('CONTRASENA_INICIAL', 'campus2026')
 
     # Fotos de los reportes
     CARPETA_FOTOS = Path(os.environ.get('CARPETA_FOTOS', INSTANCIA / 'fotos'))

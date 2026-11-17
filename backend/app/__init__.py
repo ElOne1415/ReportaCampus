@@ -31,8 +31,8 @@ def create_app(config=None):
     db.init_app(app)
     CORS(app, resources={r'/api/*': {'origins': app.config['CORS_ORIGENES']}}, allow_headers=['Content-Type', 'Authorization'])
 
-    from .rutas import auth, reportes, sistema
-    for modulo in (auth, reportes, sistema):
+    from .rutas import auth, reportes, usuarios, sistema
+    for modulo in (auth, reportes, usuarios, sistema):
         app.register_blueprint(modulo.bp)
 
     from .semilla import comando_semilla, cargar_si_vacia
