@@ -144,7 +144,7 @@ input[type="file"] { font-size: 14px; }
 .close { width: 34px; height: 34px; border: 1px solid var(--linea); background: var(--blanco); border-radius: 3px; font-size: 20px; line-height: 1; cursor: pointer; }
 .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 20px; padding: 12px 0; border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); }
 .facts dt { font-size: 13px; color: var(--gris); }
-.facts dd { font-weight: 700; font-size: 15px; }
+.facts dd { font-weight: 700; font-size: 15px; overflow-wrap: anywhere; }
 .dialog__desc { margin-top: 12px; }
 .dialog__photo { margin: 12px 0 0; }
 .dialog__photo[hidden] { display: none; }
