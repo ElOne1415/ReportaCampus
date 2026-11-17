@@ -304,6 +304,28 @@
         </div>
       </section>
 
+      <!-- ACTIVIDAD (administrador) -->
+      <section id="actividad" class="block page" data-pagina="actividad" hidden aria-labelledby="t-act">
+        <h1 id="t-act" class="block__title" tabindex="-1">Actividad</h1>
+        <p class="block__sub">Registro de las acciones que cambiaron reportes o cuentas: quién, qué y cuándo.</p>
+        <div class="toolbar">
+          <input type="search" id="aTexto" placeholder="Buscar por usuario, código o detalle" aria-label="Buscar en la actividad">
+          <select id="aAccion" aria-label="Filtrar por acción"><option value="">Todas las acciones</option></select>
+          <select id="aLimite" aria-label="Cantidad de registros">
+            <option value="50">Últimos 50</option>
+            <option value="100">Últimos 100</option>
+            <option value="200">Últimos 200</option>
+          </select>
+        </div>
+        <div class="panel panel--flush">
+          <table class="table table--actividad" aria-label="Actividad">
+            <thead><tr><th scope="col">Fecha</th><th scope="col">Usuario</th><th scope="col">Acción</th><th scope="col">Elemento</th><th scope="col">Detalle</th></tr></thead>
+            <tbody id="aTabla"></tbody>
+          </table>
+          <div class="table__foot"><span id="aConteo"></span></div>
+        </div>
+      </section>
+
       <!-- MI CUENTA (todos los roles) -->
       <section id="cuenta" class="block page" data-pagina="cuenta" hidden aria-labelledby="t-cuenta">
         <h1 id="t-cuenta" class="block__title" tabindex="-1">Mi cuenta</h1>

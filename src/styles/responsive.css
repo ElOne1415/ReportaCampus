@@ -62,6 +62,12 @@
 }
 
 @media (max-width: 760px) {
+  /* La tabla de actividad pasa a tarjetas */
+  .table--actividad thead { display: none; }
+  .table--actividad, .table--actividad tbody, .table--actividad tr, .table--actividad td { display: block; }
+  .table--actividad tr { padding: 10px 14px; border-bottom: 1px solid var(--linea); }
+  .table--actividad td { padding: 1px 0; border: 0; }
+  .table--actividad td[data-label="Fecha"] { font-size: 13px; color: var(--gris); }
   /* La tabla de usuarios pasa a tarjetas */
   .table--usuarios thead { display: none; }
   .table--usuarios, .table--usuarios tbody, .table--usuarios tr, .table--usuarios td { display: block; }

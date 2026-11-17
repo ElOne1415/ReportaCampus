@@ -20,6 +20,7 @@ import { crearPaginaZonas } from './pages/zonas.js';
 import { crearPaginaNuevo } from './pages/nuevo.js';
 import { crearPaginaUsuarios } from './pages/usuarios.js';
 import { crearPaginaCuenta } from './pages/cuenta.js';
+import { crearPaginaActividad } from './pages/actividad.js';
 import { crearPaginaRecomendaciones } from './pages/recomendaciones.js';
 
 // Si el servidor responde 401 (token vencido o cuenta desactivada) se vuelve al inicio de sesión
@@ -85,6 +86,7 @@ const paginas = Object.fromEntries([
   crearPaginaNuevo(app),
   crearPaginaUsuarios(app),
   crearPaginaCuenta(app),
+  crearPaginaActividad(app),
   crearPaginaRecomendaciones(app)
 ].map((p) => [p.id, p]));
 

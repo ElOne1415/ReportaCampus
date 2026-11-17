@@ -14,6 +14,7 @@ import { almacenPorDefecto, almacenNavegador, almacenMemoria } from './almacenam
 import { crearServicioUsuarios } from './usuarios.service.js';
 import { crearServicioReportes } from './reportes.service.js';
 import { crearServicioAuth } from './auth.service.js';
+import { crearServicioAuditoria, conAuditoria } from './auditoria.service.js';
 import { crearCliente } from './api/cliente.js';
 import { crearReportesApi } from './api/reportes.api.js';
 import { crearUsuariosApi } from './api/usuarios.api.js';
@@ -27,11 +28,15 @@ export function crearServicios({
   almacenSesion = sesionPorDefecto(),
   ahora = new Date()
 } = {}) {
-  const usuarios = crearServicioUsuarios({ almacen, ahora });
-  const reportes = crearServicioReportes({ almacen, usuarios, ahora });
+  const auditoria = crearServicioAuditoria({ almacen });
+  const usuarios = conAuditoria('usuarios', crearServicioUsuarios({ almacen, ahora }), auditoria);
+  const reportes = conAuditoria('reportes', crearServicioReportes({ almacen, usuarios, ahora }), auditoria);
   usuarios.conectarReportes((id) => reportes.tieneAbiertosSync(id));
   const auth = crearServicioAuth({ almacenSesion, usuarios });
-  return { usuarios, reportes, auth, fuente: { modo: 'local' } };
+  // Restablecer los datos también vacía el registro, como en el servidor
+  const restablecer = reportes.restablecer.bind(reportes);
+  reportes.restablecer = async (u) => { const r = await restablecer(u); if (r.ok) auditoria.vaciar(); return r; };
+  return { usuarios, reportes, auth, auditoria, fuente: { modo: 'local' } };
 }
 
 /** Servicios que usan la API del backend. */
@@ -41,6 +46,13 @@ export function crearServiciosApi({ base, almacenSesion = sesionPorDefecto(), al
     reportes: crearReportesApi({ cliente }),
     usuarios: crearUsuariosApi({ cliente }),
     auth: crearAuthApi({ cliente, almacenSesion }),
+    auditoria: {
+      async listar(limite = 50) {
+        const res = await cliente.get('/auditoria?limite=' + limite);
+        if (!res.ok) throw new Error(res.error);
+        return res.registros;
+      }
+    },
     fuente: { modo: 'api', base }
   };
 }

@@ -25,6 +25,7 @@ export const CONFIG = Object.freeze({
   CLAVES: Object.freeze({
     reportes: 'reportacampus.v3.reportes',
     usuarios: 'reportacampus.v3.usuarios',
+    auditoria: 'reportacampus.v3.auditoria',
     sesion: 'reportacampus.sesion',
     // Clave de la versión 0.2 (solo reportes propios); se migra al iniciar
     reportesV2: 'reportacampus.reportes'
