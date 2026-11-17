@@ -24,7 +24,7 @@ export function crearPaginaActividad(app) {
       '<td data-label="Usuario">' + esc(r.usuario) + '</td>' +
       '<td data-label="Acción"><strong>' + (ACCIONES[r.accion] || esc(r.accion)) + '</strong></td>' +
       '<td data-label="Elemento">' + (r.entidad === 'reporte' ? '<a href="#" data-reporte="' + esc(r.entidadId) + '">' + esc(r.entidadId) + '</a>' : 'Cuenta ' + esc(r.entidadId)) + '</td>' +
-      '<td data-label="Detalle">' + esc(r.detalle || '') + '</td></tr>'
+      '<td data-label="Detalle">' + esc(r.accion === 'calificar' && /^\d$/.test(r.detalle) ? r.detalle + ' de 5' : (r.detalle || '')) + '</td></tr>'
     ).join('') : '<tr class="empty"><td colspan="5">' + (registros.length ? 'Ningún registro coincide con la búsqueda.' : 'Todavía no hay actividad registrada. Aparecerá cuando alguien cree, atienda o modifique reportes o cuentas.') + '</td></tr>';
     $('#aConteo').textContent = plural(lista.length, 'registro', 'registros');
   }

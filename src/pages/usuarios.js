@@ -134,7 +134,8 @@ export function crearPaginaUsuarios(app) {
   }
 
   async function restablecer() {
-    const ok = await confirmar({ titulo: '¿Restablecer los datos de demostración?', mensaje: 'Se borran los reportes y usuarios creados o modificados en este navegador y se cargan los datos iniciales.', boton: 'Restablecer' });
+    const donde = app.fuente && app.fuente.modo === 'api' ? 'en el servidor' : 'en este navegador';
+    const ok = await confirmar({ titulo: '¿Restablecer los datos de demostración?', mensaje: 'Se borran los reportes, usuarios y actividad creados o modificados ' + donde + ' y se cargan los datos iniciales.', boton: 'Restablecer' });
     if (!ok) return;
     const r1 = await app.reportes.restablecer(app.usuario);
     const r2 = await app.usuarios.restablecer(app.usuario);
@@ -166,6 +167,10 @@ export function crearPaginaUsuarios(app) {
       $('#usuarioDialog').addEventListener('click', (e) => { if (e.target.id === 'usuarioDialog') $('#usuarioDialog').close(); });
       $('#restablecer').addEventListener('click', restablecer);
     },
-    async mostrar() { await pintar(); }
+    async mostrar() {
+      $('#restablecerTexto').textContent = 'Vuelve a los reportes y usuarios iniciales. Se borran los cambios ' +
+        (app.fuente && app.fuente.modo === 'api' ? 'guardados en el servidor, para todos los usuarios.' : 'hechos en este navegador.');
+      await pintar();
+    }
   };
 }
