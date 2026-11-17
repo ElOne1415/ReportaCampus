@@ -15,7 +15,7 @@ export function iniciarDetalle() {
 }
 
 /** Muestra el detalle de un reporte. */
-export function abrirDetalle(x) {
+export function abrirDetalle(x, app) {
   $('dCodigo').innerHTML = x.id + ' ' + estadoHTML(x.estado);
   $('dTitulo').textContent = x.titulo;
   const z = zonaPorId[x.ubicacion];
@@ -23,7 +23,8 @@ export function abrirDetalle(x) {
     ['Categoría', categoriaPorId[x.categoria].nombre],
     ['Zona', z.nombre + ', ' + z.detalle.toLowerCase()],
     ['Prioridad', x.prioridad],
-    ['Responsable', x.responsable || 'Sin asignar'],
+    ['Responsable', app.reportes.nombreResponsable(x)],
+    ['Reportado por', x.autor],
     ['Foto', x.fotoUrl ? 'Adjunta' : (x.foto ? 'Adjunta (dato simulado)' : 'Sin foto')],
     ['Reportado', fFechaHora.format(x.creado)],
     [x.resuelto ? 'Resuelto en' : 'Abierto hace', fNum.format(horasEntre(x.creado, x.resuelto || new Date())) + ' horas']

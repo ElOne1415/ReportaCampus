@@ -2,8 +2,7 @@
    ReportaCampus · Punto de entrada
    Crea los servicios, monta las páginas y conecta el router.
    ========================================================== */
-import { almacenPorDefecto } from './services/almacenamiento.js';
-import { crearServicioReportes } from './services/reportes.service.js';
+import { crearServicios } from './services/index.js';
 import { crearRouter } from './router.js';
 import { iniciarMenu, marcarActivo } from './components/navegacion.js';
 import { iniciarDetalle, abrirDetalle } from './components/detalle.js';
@@ -23,13 +22,17 @@ const RUTAS = {
   recomendaciones: { titulo: 'Recomendaciones' }
 };
 
+const servicios = crearServicios();
+
 const app = {
-  reportes: crearServicioReportes({ almacen: almacenPorDefecto() }),
+  ...servicios,
+  // Mientras no hay inicio de sesión se trabaja como la estudiante de demostración
+  usuario: servicios.usuarios.obtenerSync('u-007'),
   estado: { filtros: { ...FILTROS_VACIOS } },
   aviso,
   async abrirReporte(id) {
     const r = await app.reportes.obtener(id);
-    if (r) abrirDetalle(r);
+    if (r) abrirDetalle(r, app);
   },
   irA(ruta, params) { router.navegar(ruta, params); }
 };

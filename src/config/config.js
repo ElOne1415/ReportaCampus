@@ -16,8 +16,16 @@ export const CONFIG = Object.freeze({
 
   // Claves de almacenamiento en el navegador
   CLAVES: Object.freeze({
-    reportesPropios: 'reportacampus.reportes'
+    reportes: 'reportacampus.v3.reportes',
+    usuarios: 'reportacampus.v3.usuarios',
+    sesion: 'reportacampus.sesion',
+    // Clave de la versión 0.2 (solo reportes propios); se migra al iniciar
+    reportesV2: 'reportacampus.reportes'
   }),
+
+  // Inicio de sesión simulado: todas las cuentas de demostración usan
+  // esta contraseña. En la entrega final la valida el backend.
+  CONTRASENA_DEMO: 'campus2026',
 
   // Semilla de los datos simulados (mismos datos en cada carga)
   SEMILLA: 20262,

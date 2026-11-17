@@ -8,6 +8,7 @@
    ========================================================== */
 import { CATEGORIAS, ZONAS, ESTADOS } from '../models/catalogos.js';
 import { HORA, DIA } from '../utils/tiempo.js';
+import { USUARIOS_DEMO, RESPONSABLE_POR_CATEGORIA, AUTORES_DEMO } from './usuarios.js';
 
 /** Generador pseudoaleatorio determinista (mulberry32). */
 export function crearAleatorio(semilla) {
@@ -39,16 +40,8 @@ const DETALLES = [
   'Varias personas lo comentaron en el grupo del curso.'
 ];
 
-export const RESP_POR_CATEGORIA = Object.freeze({
-  infraestructura: 'Planta física – Diana Rojas',
-  aseo: 'Servicios generales – Ana Torres',
-  tecnologia: 'Soporte TI – Laura Gómez',
-  seguridad: 'Seguridad – Jorge Peña',
-  mobiliario: 'Mantenimiento – Carlos Ruiz',
-  servicios: 'Mantenimiento – Carlos Ruiz'
-});
-
-const AUTORES = ['Valentina M.', 'Santiago R.', 'Camila P.', 'Andrés L.', 'Mariana G.', 'Daniel C.', 'Sofía H.', 'Juan D.', 'Laura V.', 'Mateo S.'];
+const usuarioPorId = Object.fromEntries(USUARIOS_DEMO.map((u) => [u.id, u]));
+const conArea = (u) => u.area + ' – ' + u.nombre;
 
 /**
  * Genera los reportes simulados hasta la fecha `ahora`.
@@ -91,20 +84,20 @@ export function generarReportes(ahora, semilla, dias) {
 
       const asignado = new Date(creado.getTime() + horasAsignacion * HORA);
       const resueltoEn = new Date(creado.getTime() + horasSolucion * HORA);
-      const responsable = RESP_POR_CATEGORIA[cat.id];
-      const autor = elegir(AUTORES);
+      const responsable = usuarioPorId[RESPONSABLE_POR_CATEGORIA[cat.id]];
+      const autor = usuarioPorId[elegir(AUTORES_DEMO)];
 
-      const historial = [{ estado: ESTADOS.NUEVO, fecha: creado, nota: 'Reporte registrado por la comunidad.', por: autor }];
+      const historial = [{ estado: ESTADOS.NUEVO, fecha: creado, nota: 'Reporte registrado por la comunidad.', por: autor.nombre }];
       let estado = ESTADOS.NUEVO;
       let resuelto = null;
       if (asignado <= ahora && asignado < resueltoEn) {
         estado = ESTADOS.EN_PROCESO;
-        historial.push({ estado, fecha: asignado, nota: 'Asignado a ' + responsable + '.', por: 'Administrador' });
+        historial.push({ estado, fecha: asignado, nota: 'Asignado a ' + conArea(responsable) + '.', por: usuarioPorId['u-001'].nombre });
       }
       if (resueltoEn <= ahora) {
         estado = ESTADOS.RESUELTO;
         resuelto = resueltoEn;
-        historial.push({ estado, fecha: resueltoEn, nota: 'Se realizó la reparación y se verificó el espacio.', por: responsable });
+        historial.push({ estado, fecha: resueltoEn, nota: 'Se realizó la reparación y se verificó el espacio.', por: responsable.nombre });
       }
 
       lista.push({
@@ -117,8 +110,9 @@ export function generarReportes(ahora, semilla, dias) {
         estado,
         creado,
         resuelto,
-        responsable: estado === ESTADOS.NUEVO ? null : responsable,
-        autor,
+        responsableId: estado === ESTADOS.NUEVO ? null : responsable.id,
+        autorId: autor.id,
+        autor: autor.nombre,
         foto: rnd() < 0.45,
         historial
       });

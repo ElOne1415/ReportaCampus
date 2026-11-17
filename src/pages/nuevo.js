@@ -5,7 +5,6 @@
 import { CONFIG } from '../config/config.js';
 import { CATEGORIAS, ZONAS } from '../models/catalogos.js';
 import { $, $$, agregarOpciones } from '../utils/dom.js';
-import { plural } from '../utils/formato.js';
 import { reducirImagen } from '../utils/imagen.js';
 
 // Campo del modelo → id del control en el formulario
@@ -49,12 +48,6 @@ export function crearPaginaNuevo(app) {
     }
   }
 
-  async function pintarGuardados() {
-    const n = await app.reportes.contarPropios();
-    $('#guardados').hidden = n === 0;
-    $('#guardadosTexto').textContent = 'Tienes ' + plural(n, 'reporte guardado', 'reportes guardados') + ' en este navegador.';
-  }
-
   async function enviar(e) {
     e.preventDefault();
     const datos = {
@@ -65,8 +58,9 @@ export function crearPaginaNuevo(app) {
       prioridad: $('input[name="rPrioridad"]:checked').value,
       fotoUrl: fotoActual
     };
-    const res = await app.reportes.crear(datos, { nombre: 'Estudiante' });
+    const res = await app.reportes.crear(datos, app.usuario);
     limpiarErrores();
+    if (!res.ok && res.error) { app.aviso(res.error); return; }
     if (!res.ok) {
       Object.entries(res.errores).forEach(([c, m]) => { if (CONTROLES[c]) marcar(c, m); });
       const primero = $('.invalid');
@@ -91,12 +85,7 @@ export function crearPaginaNuevo(app) {
       Object.entries(CONTROLES).forEach(([c, id]) => {
         $('#' + id).addEventListener('input', () => { if ($('#' + id).classList.contains('invalid')) marcar(c, null); });
       });
-      $('#borrarGuardados').addEventListener('click', async () => {
-        await app.reportes.borrarPropios();
-        pintarGuardados();
-        app.aviso('Se borraron tus reportes guardados.');
-      });
     },
-    async mostrar() { await pintarGuardados(); }
+    async mostrar() {}
   };
 }

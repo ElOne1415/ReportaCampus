@@ -29,7 +29,7 @@ export function crearPaginaReportes(app) {
     const filas = [['Código', 'Incidencia', 'Categoría', 'Zona', 'Prioridad', 'Estado', 'Responsable', 'Creado', 'Resuelto', 'Horas de solución']]
       .concat(lista.map((x) => [
         x.id, x.titulo, categoriaPorId[x.categoria].nombre, zonaPorId[x.ubicacion].nombre, x.prioridad, x.estado,
-        x.responsable || 'Sin asignar', fechaISOlocal(x.creado), fechaISOlocal(x.resuelto),
+        app.reportes.nombreResponsable(x), fechaISOlocal(x.creado), fechaISOlocal(x.resuelto),
         x.resuelto ? fNum.format(horasEntre(x.creado, x.resuelto)) : ''
       ]));
     descargar('reportes-' + new Date().toISOString().slice(0, 10) + '.csv', aCSV(filas));

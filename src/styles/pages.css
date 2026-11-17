@@ -26,8 +26,6 @@
 /* ---------- Nuevo reporte ---------- */
 .form { max-width: 760px; }
 .form__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
-.saved { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; max-width: 760px; margin-bottom: 12px; padding: 10px 14px; background: var(--blanco); border: 1px solid var(--linea); border-left: 4px solid var(--azul); border-radius: 3px; font-size: 14px; }
-.saved[hidden] { display: none; }
 .photo { display: flex; gap: 14px; align-items: center; padding: 10px; border: 1px dashed #c9c4bf; border-radius: 3px; }
 .photo[hidden] { display: none; }
 .photo img { width: 120px; height: 90px; object-fit: cover; border-radius: 3px; background: var(--fondo); }
