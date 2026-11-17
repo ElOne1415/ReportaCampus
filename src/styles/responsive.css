@@ -35,17 +35,17 @@
   .toolbar select { flex: 1 1 45%; }
 
   /* La tabla pasa a filas apiladas */
-  #tabla thead { display: none; }
-  #tabla, #tabla tbody, #tabla tr, #tabla td { display: block; }
-  #tabla tr[data-id] { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; padding: 12px 14px; border-bottom: 1px solid var(--linea); }
-  #tabla td { padding: 0; border: 0; font-size: 14px; }
-  #tabla .t-code { grid-column: 1; }
-  #tabla td[data-label="Estado"] { grid-column: 2; grid-row: 1; }
-  #tabla .t-title { grid-column: 1 / -1; font-size: 15px; }
-  #tabla td[data-label="Categoría"], #tabla td[data-label="Zona"], #tabla td[data-label="Fecha"] { display: inline; color: var(--gris); }
-  #tabla td[data-label="Categoría"] { grid-column: 1 / -1; }
-  #tabla td[data-label="Zona"] { grid-column: 1; }
-  #tabla td[data-label="Fecha"] { grid-column: 2; text-align: right; }
+  .table--reportes thead { display: none; }
+  .table--reportes, .table--reportes tbody, .table--reportes tr, .table--reportes td { display: block; }
+  .table--reportes tr[data-id] { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; padding: 12px 14px; border-bottom: 1px solid var(--linea); }
+  .table--reportes td { padding: 0; border: 0; font-size: 14px; }
+  .table--reportes .t-code { grid-column: 1; }
+  .table--reportes td[data-label="Estado"] { grid-column: 2; grid-row: 1; }
+  .table--reportes .t-title { grid-column: 1 / -1; font-size: 15px; }
+  .table--reportes td[data-label="Categoría"], .table--reportes td[data-label="Zona"], .table--reportes td[data-label="Fecha"] { display: inline; color: var(--gris); }
+  .table--reportes td[data-label="Categoría"] { grid-column: 1 / -1; }
+  .table--reportes td[data-label="Zona"] { grid-column: 1; }
+  .table--reportes td[data-label="Fecha"] { grid-column: 2; text-align: right; }
 }
 
 @media (prefers-reduced-motion: reduce) {

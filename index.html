@@ -132,25 +132,7 @@
           <button type="button" class="btn btn--secondary toolbar__export" id="exportar">Exportar CSV</button>
         </div>
 
-        <div class="panel panel--flush">
-          <table class="table" id="tabla">
-            <thead>
-              <tr>
-                <th scope="col">Código</th>
-                <th scope="col">Incidencia</th>
-                <th scope="col">Categoría</th>
-                <th scope="col">Zona</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Estado</th>
-              </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-          </table>
-          <div class="table__foot">
-            <span id="conteo"></span>
-            <button type="button" class="btn btn--secondary" id="verMas">Mostrar 10 más</button>
-          </div>
-        </div>
+        <div id="tablaReportes"></div>
       </section>
 
       <!-- ZONAS -->
@@ -253,8 +235,6 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="public/vendor/chart.umd.min.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/charts.js"></script>
-  <script src="js/app.js"></script>
+  <script type="module" src="src/main.js"></script>
 </body>
 </html>
