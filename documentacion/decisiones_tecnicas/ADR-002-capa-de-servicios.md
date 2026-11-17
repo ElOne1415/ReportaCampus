@@ -20,3 +20,7 @@ Todavía no hay backend; llega en la entrega final. Pero la Fase II necesita cre
 - Los datos viven en el navegador de cada persona: dos personas no ven los cambios de la otra. Es una limitación conocida de esta fase.
 - `localStorage` tiene un límite de unos 5 MB. Por eso las fotos se reducen a 640 px antes de guardarlas; con cientos de fotos se puede llenar. Si `setItem` falla, el servicio responde `guardado: false` y la interfaz lo avisa.
 - Los servicios se prueban con un almacén en memoria con la misma interfaz.
+
+## Actualización (v1.0)
+
+La capa cumplió su objetivo: en la entrega final se agregaron los servicios de `src/services/api/` con la misma interfaz y las páginas no cambiaron. Los flujos de los tres roles dan el mismo resultado con el servidor y en el navegador, y las pruebas de extremo a extremo lo comprueban en los dos modos ([ADR-009](ADR-009-pruebas-en-dos-modos.md)).

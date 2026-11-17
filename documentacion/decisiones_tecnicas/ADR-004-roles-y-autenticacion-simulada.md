@@ -18,3 +18,7 @@ La Fase I anunció tres roles para las siguientes entregas: estudiante, responsa
 
 - Cualquiera puede ver la contraseña de demostración y cambiar sus datos desde las herramientas del navegador. Es aceptable porque los datos son de prueba y viven en su propio navegador. No se deben usar datos reales en esta versión.
 - En la entrega final la contraseña de cada usuario se guardará cifrada en la base de datos y la validará la API (ADR-005). La matriz de permisos se repetirá en el backend con los mismos nombres.
+
+## Actualización (v1.0)
+
+Con el servidor, la autenticación ya es real: contraseñas cifradas con PBKDF2, token JWT de 8 horas y permisos revisados en cada petición. La simulación queda solo para el modo navegador de GitHub Pages, donde ahora cada usuario también puede cambiar su contraseña (se guarda una huella SHA-256 en el navegador). Ver el [manual técnico](../manual_tecnico/manual-tecnico.md#8-seguridad).

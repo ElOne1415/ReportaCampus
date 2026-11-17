@@ -1,6 +1,6 @@
 # Casos de uso por rol
 
-Qué puede hacer cada rol en la versión 0.3.0. Los casos marcados con *(entrega final)* están previstos pero no implementados.
+Estado final (v1.0.0). Todos los casos están implementados con el servidor y en el modo navegador.
 
 ```mermaid
 flowchart LR
@@ -10,33 +10,34 @@ flowchart LR
 
     subgraph Comunes["Todos los roles"]
         CU1[Iniciar y cerrar sesión]
-        CU2[Ver panel de indicadores]
-        CU3[Buscar y filtrar reportes]
-        CU4[Ver detalle e historial]
-        CU5[Ver zonas del campus]
-        CU6[Crear reporte con foto]
+        CU2[Cambiar su contraseña]
+        CU3[Ver panel de indicadores]
+        CU4[Buscar y filtrar reportes]
+        CU5[Ver detalle e historial]
+        CU6[Ver zonas del campus]
+        CU7[Crear reporte con foto]
     end
 
     subgraph Est["Estudiante"]
-        CU7[Ver mis reportes por estado]
-        CU8[Editar mi reporte en estado Nuevo]
-        CU9[Eliminar mi reporte en estado Nuevo]
+        CU8[Ver mis reportes por estado]
+        CU9[Editar o eliminar mi reporte en Nuevo]
+        CU10[Calificar la solución de 1 a 5]
     end
 
     subgraph Resp["Responsable"]
-        CU10[Ver mis asignaciones por urgencia]
-        CU11[Agregar nota de avance]
-        CU12[Marcar como resuelto con nota]
-        CU13[Exportar CSV]
+        CU11[Ver mis asignaciones por urgencia]
+        CU12[Ver alertas de más de 48 horas]
+        CU13[Tomar reportes nuevos de mi categoría]
+        CU14[Agregar notas y resolver con nota]
+        CU15[Exportar CSV]
     end
 
     subgraph Adm["Administrador"]
-        CU14[Asignar o reasignar responsable]
-        CU15[Cambiar prioridad]
-        CU16[Reabrir reporte con nota]
-        CU17[Eliminar cualquier reporte]
-        CU18[Crear, editar, activar/desactivar y eliminar usuarios]
-        CU19[Restablecer datos de demostración]
+        CU16[Asignar o reasignar responsable]
+        CU17[Cambiar prioridad, reabrir y eliminar]
+        CU18[Gestionar usuarios]
+        CU19[Ver la actividad]
+        CU20[Restablecer datos de demostración]
     end
 
     E --- Comunes
@@ -45,19 +46,20 @@ flowchart LR
     E --- Est
     R --- Resp
     A --- Adm
-    A --- CU11
-    A --- CU12
-    A --- CU13
+    A --- CU14
+    A --- CU15
 ```
 
-## Casos previstos para la entrega final
-
-| Caso | Rol |
-|---|---|
-| Iniciar sesión con contraseña propia validada por el servidor | Todos |
-| Cambiar la contraseña | Todos |
-| Subir la foto al servidor en lugar de guardarla en el navegador | Todos |
-| Calificar la solución de un reporte resuelto | Estudiante |
-| Tomar un reporte nuevo de su categoría sin esperar asignación | Responsable |
-| Ver alertas de reportes que superan las 48 horas | Responsable y administrador |
-| Consultar el registro de auditoría | Administrador |
+| Caso | Rol | Endpoint del backend |
+|---|---|---|
+| Iniciar sesión | Todos | `POST /api/auth/login` |
+| Cambiar contraseña | Todos | `POST /api/auth/contrasena` |
+| Crear reporte con foto | Todos | `POST /api/reportes` |
+| Editar o eliminar reporte propio | Estudiante | `PUT` / `DELETE /api/reportes/{id}` |
+| Calificar la solución | Estudiante | `POST /api/reportes/{id}/calificacion` |
+| Tomar reporte | Responsable | `POST /api/reportes/{id}/tomar` |
+| Agregar nota / resolver / reabrir | Responsable asignado, administrador | `POST /api/reportes/{id}/notas`, `/estado` |
+| Asignar responsable | Administrador | `POST /api/reportes/{id}/asignacion` |
+| Cambiar prioridad | Administrador | `PATCH /api/reportes/{id}/prioridad` |
+| Gestionar usuarios | Administrador | `/api/usuarios` |
+| Ver actividad | Administrador | `GET /api/auditoria` |

@@ -1,6 +1,8 @@
 # ADR-005. Estrategia de backend: API REST en Flask con SQL Server
 
-**Estado:** propuesta · se implementa en la entrega final
+**Estado:** aceptada e implementada · entrega final (v1.0)
+
+> **Cómo quedó.** El backend está en `backend/` y sigue este plan. Cambios respecto a la propuesta: se usó SQLAlchemy en lugar de SQL escrito a mano, para que el mismo código funcione con SQLite (desarrollo y pruebas) y SQL Server; las fotos llegan como *data URL* dentro del reporte en lugar de un endpoint aparte ([ADR-008](ADR-008-fotos-en-el-servidor.md)); se agregaron los endpoints de tomar, calificar, auditoría, contraseña y datos de demostración. La referencia actualizada de la API está en el [manual técnico](../manual_tecnico/manual-tecnico.md#6-api-rest) y el esquema real en [`backend/sql/esquema-sqlserver.sql`](../../backend/sql/esquema-sqlserver.sql).
 
 ## Contexto
 
