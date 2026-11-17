@@ -2,25 +2,24 @@
 
 # ReportaCampus
 
-**EJECUCION:** https://elone1415.github.io/ReportaCampus/
+**Producto publicado:** https://elone1415.github.io/ReportaCampus/ · **Versión:** 1.0.0 (entrega final) · **Licencia:** MIT
 
-ReportaCampus es una aplicación web para reportar las incidencias del campus (daños, fallas, problemas de aseo o de seguridad) y hacer seguimiento a su atención. La comunidad reporta, los responsables de cada dependencia atienden lo que tienen asignado y el administrador reparte el trabajo y gestiona las cuentas.
+ReportaCampus es una aplicación web para reportar las incidencias del campus (daños, fallas, problemas de aseo o de seguridad) y hacer seguimiento a su atención hasta que se resuelven. La comunidad reporta y califica la solución; los responsables de cada dependencia toman y resuelven los reportes de su área; el administrador reparte el trabajo, gestiona las cuentas y revisa la actividad.
 
-Esta es la **versión 0.3 (Fase II)**: producto web con inicio de sesión, tres roles con permisos, gestión de reportes y de usuarios, arquitectura por capas y pruebas automáticas. Los datos se guardan en el navegador; el backend llega en la entrega final.
+Está formada por un **frontend** en HTML, CSS y JavaScript y un **backend** REST en Python con Flask, con base de datos **SQL Server** (o SQLite en desarrollo).
 
-![Panel del administrador](documentacion/pruebas/evidencias/fase-2/25-administrador-panel.png)
+![Panel del administrador](documentacion/pruebas/evidencias/final/43-administrador-panel-final.png)
 
-## Cuentas de demostración
+## Contenido
 
-Todas usan la contraseña **`campus2026`**. En la página de inicio de sesión hay un botón para entrar con cada una.
-
-| Rol | Nombre | Correo | Llega a |
-|---|---|---|---|
-| Estudiante | Valentina Martínez | `valentina.martinez@campus.edu.co` | Mis reportes |
-| Responsable | Diana Rojas (Planta física) | `diana.rojas@campus.edu.co` | Mis asignaciones |
-| Administrador | Paola Méndez | `admin@campus.edu.co` | Panel |
-
-Hay 16 cuentas en total (10 estudiantes, 5 responsables y 1 administrador); se ven en *Usuarios* con la cuenta de administrador. `mateo.sanchez@campus.edu.co` está desactivada a propósito para probar el rechazo del inicio de sesión.
+- [Información general](#información-general)
+- [Funcionalidades](#funcionalidades)
+- [Información técnica](#información-técnica)
+- [Pruebas](#pruebas)
+- [Despliegue](#despliegue)
+- [Equipo](#equipo)
+- [Estado final](#estado-final)
+- [Documentación](#documentación)
 
 ## Información general
 
@@ -28,216 +27,272 @@ Hay 16 cuentas en total (10 estudiantes, 5 responsables y 1 administrador); se v
 
 En el campus los daños y problemas se reportan de palabra, por correo o en grupos de chat. Los reportes se pierden o se repiten, nadie sabe quién los atiende y quien reporta no se entera de si se resolvió. Tampoco hay datos para saber cuánto tarda la atención ni qué zonas concentran más problemas.
 
-### Objetivo general
+### Justificación
 
-Desarrollar una aplicación web que permita a la comunidad universitaria reportar incidencias del campus y consultar su estado, mientras los responsables las gestionan desde un panel, con el fin de reducir el tiempo de respuesta, evitar reportes perdidos o repetidos y dar trazabilidad a cada caso.
+Un canal único con estados, responsables e historial hace que cada reporte tenga dueño y trazabilidad, evita reportes duplicados (cualquiera puede buscar si ya existe) y da a la administración indicadores para decidir: tiempos de atención, zonas y categorías con más problemas, reportes que pasan de 48 horas y satisfacción con las soluciones. Una aplicación web funciona en el computador y en el celular sin instalar nada.
+
+### Objetivos
+
+**General.** Desarrollar una aplicación web que permita a la comunidad universitaria reportar incidencias del campus y consultar su estado, mientras los responsables las gestionan, con el fin de reducir el tiempo de respuesta, evitar reportes perdidos o repetidos y dar trazabilidad a cada caso.
+
+**Específicos.**
+1. Permitir registrar reportes con categoría, zona, prioridad y foto, y consultar su estado e historial.
+2. Dar a cada rol (estudiante, responsable y administrador) solo las funciones que le corresponden, con autenticación y permisos revisados en el servidor.
+3. Ofrecer un panel con indicadores, gráficas y metas de atención para el seguimiento.
+4. Guardar la información en una base de datos a través de una API REST documentada.
+5. Funcionar en computadores, tabletas y celulares, y validar todo con pruebas automáticas.
 
 ### Alcance
 
-**Incluido en el proyecto:** registro y seguimiento de reportes con foto, roles de estudiante, responsable y administrador, asignación de responsables, cambios de estado con historial, panel de indicadores, gestión de usuarios, backend en Python con Flask y base de datos en SQL Server (entrega final).
+**Incluido:** registro y seguimiento de reportes con foto; roles de estudiante, responsable y administrador; asignación y toma de reportes; cambios de estado con historial; calificación de la solución; alertas de 48 horas; panel de indicadores; gestión de usuarios; registro de actividad; cambio de contraseña; API REST en Flask con base de datos SQL Server o SQLite.
 
-**Fuera del alcance:** aplicación móvil nativa, notificaciones por correo, SMS o WhatsApp, integración con otros sistemas, mapas o GPS y clasificación automática con inteligencia artificial.
+**Fuera del alcance:** aplicación móvil nativa, notificaciones por correo, SMS o WhatsApp, integración con otros sistemas de la universidad, mapas o GPS y clasificación automática con inteligencia artificial.
 
-## Estado del proyecto
+## Funcionalidades
 
-### Funcionalidades implementadas
+### Funcionalidades principales por rol
 
-| Módulo | Qué hace | Rol | Versión |
-|---|---|---|---|
-| Inicio de sesión | Validación de correo y contraseña, rechazo de cuentas desactivadas, cuentas de demostración, cierre de sesión. | Todos | v0.3 |
-| Menú y rutas por rol | Cada rol ve solo sus secciones; las rutas sin permiso redirigen al inicio del rol. | Todos | v0.3 |
-| Mis reportes | Resumen por estado que sirve de filtro y lista de los reportes propios. | Estudiante | v0.3 |
-| Editar y eliminar reporte propio | Disponible mientras el reporte está en estado Nuevo; eliminar pide confirmación. | Estudiante | v0.3 |
-| Mis asignaciones | Reportes a cargo del responsable, ordenados por prioridad y antigüedad. | Responsable | v0.3 |
-| Atención del reporte | Agregar notas y marcar como resuelto con nota obligatoria. | Responsable, administrador | v0.3 |
-| Gestión del reporte | Asignar o reasignar responsable (sugiere a quien atiende la categoría), cambiar prioridad, reabrir con nota y eliminar. | Administrador | v0.3 |
-| Usuarios | Crear, editar, activar, desactivar y eliminar cuentas con validación; búsqueda y filtros por rol y estado; restablecer datos de demostración. | Administrador | v0.3 |
-| Panel de incidencias | Indicadores, gráficas por semana, mes o semestre (Chart.js), metas de atención y enlace a los reportes sin asignar. | Todos | v0.1, v0.3 |
-| Lista de reportes | Búsqueda, filtros por estado, categoría, zona y responsable, paginación, detalle con historial. | Todos | v0.1, v0.3 |
-| Exportar CSV | Descarga los reportes filtrados para Excel. | Responsable, administrador | v0.2 |
-| Nuevo reporte | Formulario con validación y foto con vista previa. | Todos | v0.1, v0.2 |
-| Zonas del campus | Tarjetas con los reportes abiertos de cada espacio; abren la lista filtrada. | Todos | v0.1 |
-| Recomendaciones | Buenas prácticas para reportar. | Todos | v0.1 |
-
-### Avances de la Fase II
-
-- **Roles y permisos:** estudiante, responsable y administrador, con una matriz de permisos única (`src/models/roles.js`) que revisan tanto la interfaz como los servicios.
-- **Gestión de información (CRUD):** reportes (crear, consultar, editar, eliminar, asignar, cambiar estado y prioridad) y usuarios (crear, consultar, editar, activar o desactivar, eliminar).
-- **Arquitectura por capas:** el archivo único `js/app.js` de la Fase I se dividió en configuración, modelos, datos, servicios, componentes, páginas y utilidades con módulos ES.
-- **Navegación por rutas** entre páginas, con los botones Atrás y Adelante del navegador y enlaces a listas filtradas.
-- **Componentes reutilizables:** tabla de reportes, resumen por estado, detalle con acciones según el rol, ventana de confirmación, gráficas, aviso y menú.
-- **Persistencia completa en el navegador** de reportes y usuarios, con migración de los reportes creados en la v0.2.
-- **45 pruebas unitarias** (`npm test`) y 40 casos de prueba funcionales documentados con 20 capturas nuevas.
-- **Documentación técnica** en `documentacion/` y estrategia de backend definida (endpoints, tablas y autenticación).
-
-### Funcionalidades pendientes (entrega final)
-
-| Pendiente | Detalle |
+| Rol | Puede |
 |---|---|
-| Backend | API REST en Python con Flask, siguiendo el contrato de [ADR-005](documentacion/decisiones_tecnicas/ADR-005-estrategia-backend.md). |
-| Base de datos | SQL Server con las tablas usuarios, reportes, historial, categorías y zonas. |
-| Autenticación real | Contraseña propia de cada usuario cifrada en el servidor, token de sesión y cambio de contraseña. |
-| Fotos en el servidor | Subir la imagen a la API en lugar de guardarla en el navegador. |
-| Calificar la solución | El estudiante califica la atención cuando su reporte queda resuelto. |
-| Alertas de 48 horas | Aviso de reportes que superan la meta de atención. |
-| Responsable toma reportes | Tomar un reporte nuevo de su categoría sin esperar la asignación. |
-| Auditoría | Registro de las acciones del administrador. |
-| Pruebas de extremo a extremo | Automatizar en el navegador los casos funcionales con Playwright y probar la API con pytest. |
+| **Estudiante** | Crear reportes con foto; ver *Mis reportes* por estado; editar o eliminar sus reportes mientras están en Nuevo; calificar de 1 a 5 la solución. |
+| **Responsable** | Ver *Mis asignaciones* por urgencia, con alerta de los que pasan de 48 horas; tomar reportes nuevos de sus categorías; agregar notas y resolver con nota obligatoria; exportar a CSV. |
+| **Administrador** | Asignar y reasignar responsables; cambiar prioridad, reabrir y eliminar reportes; gestionar usuarios; ver la actividad; restablecer los datos de demostración. |
+| **Todos** | Panel, lista de reportes con búsqueda y filtros, zonas del campus, recomendaciones y *Mi cuenta* con cambio de contraseña. |
 
-### Próximos pasos
+### Módulos desarrollados
 
-1. Crear la carpeta `backend/` con Flask y conectar SQL Server.
-2. Implementar los endpoints de autenticación y reportes, y luego los de usuarios.
-3. Escribir los servicios del frontend que usan la API (`src/services/api/`) y cambiar `FUENTE_DATOS` a `'api'`.
-4. Cargar los datos iniciales con un script de semilla.
-5. Agregar las funcionalidades pendientes y automatizar las pruebas de extremo a extremo.
-6. Publicar el backend y configurar CORS para GitHub Pages.
+| Módulo | Frontend | Backend |
+|---|---|---|
+| Autenticación y sesión | `pages/login.js`, `pages/cuenta.js`, `services/auth.service.js`, `services/api/auth.api.js` | `rutas/auth.py`, `seguridad.py` |
+| Roles y permisos | `models/roles.js`, `config/rutas.js`, `router.js` | `permisos.py` |
+| Reportes | `pages/` mis-reportes, asignados, reportes, nuevo; `components/` tabla, detalle, acciones | `rutas/reportes.py`, `servicios/reportes.py`, `servicios/fotos.py` |
+| Usuarios | `pages/usuarios.js` | `rutas/usuarios.py`, `servicios/usuarios.py` |
+| Panel e indicadores | `pages/panel.js`, `components/graficas.js` | `/api/reportes` |
+| Actividad (auditoría) | `pages/actividad.js`, `services/auditoria.service.js` | `servicios/auditoria.py`, `/api/auditoria` |
+| Manejo de errores | `components/estado-carga.js`, `components/toast.js`, `services/api/cliente.js` | errores JSON en `app/__init__.py` |
+
+### Integraciones realizadas
+
+- **Frontend ↔ API REST:** los servicios de `src/services/api/` llaman a 27 endpoints con `fetch`, token JWT, tiempo máximo de espera y manejo de errores. Tienen la misma interfaz que los servicios locales, así que las páginas son las mismas en los dos modos.
+- **API ↔ base de datos:** SQLAlchemy con SQL Server (`mssql+pyodbc`) o SQLite; el esquema de SQL Server está en [`backend/sql/esquema-sqlserver.sql`](backend/sql/esquema-sqlserver.sql).
+- **Fotos:** se reducen en el navegador y se validan y guardan en el servidor.
+- **Chart.js:** gráficas interactivas del panel.
 
 ## Información técnica
 
 ### Tecnologías utilizadas
 
-| Tecnología | Uso en el proyecto |
+| Capa | Tecnología |
 |---|---|
-| HTML5 | Estructura semántica de las páginas (`header`, `nav`, `main`, `section`, `dialog`) y formularios. |
-| CSS3 | Variables de color, Grid, Flexbox y *media queries*, divididos en cinco hojas por responsabilidad. |
-| JavaScript (módulos ES) | Toda la lógica, sin frameworks ni compilación. Ver [ADR-001](documentacion/decisiones_tecnicas/ADR-001-javascript-sin-framework.md). |
-| [Chart.js 4.6](https://www.chartjs.org/) | Gráficas interactivas del panel. Incluida en `public/vendor/` para funcionar sin internet. |
-| Lato | Tipografía de la interfaz (licencia OFL), incluida en `public/fonts/`. |
-| localStorage y sessionStorage | Persistencia de datos y de la sesión en esta fase. |
-| Node.js (`node:test`) | Pruebas unitarias, sin dependencias externas. |
-| Visual Studio Code, Git y GitHub | Editor, control de versiones y publicación (GitHub Pages). |
-| Python con Flask y SQL Server | Backend y base de datos de la entrega final. |
+| Frontend | HTML5, CSS3 (variables, Grid, Flexbox, *media queries*), JavaScript con módulos ES, sin framework ni compilación. |
+| Gráficas | Chart.js 4.6 (incluida en `public/vendor/`). |
+| Backend | Python 3.11+, Flask 3.1, Flask-SQLAlchemy 3.1, SQLAlchemy 2.0, PyJWT 2.10, flask-cors 6, python-dotenv. |
+| Base de datos | SQL Server (producción, con pyodbc y ODBC Driver 18) y SQLite (desarrollo y pruebas). |
+| Seguridad | Contraseñas con PBKDF2-SHA256 (werkzeug) y tokens JWT. |
+| Pruebas | `node:test`, pytest 8 y Playwright 1.65. |
+| Herramientas | Visual Studio Code, Git, GitHub y GitHub Pages. |
 
 ### Arquitectura
 
-Aplicación de una sola página organizada en capas. Las páginas usan componentes y servicios; los servicios aplican los permisos y las reglas de los modelos y guardan los datos. Ninguna página lee el almacenamiento directamente, así que en la entrega final se cambia la fuente de datos por la API sin tocar la interfaz.
-
 ```mermaid
 flowchart LR
-    P["pages/"] --> C["components/"]
-    P --> S["services/"]
-    C --> S
-    S --> M["models/<br/>reglas y permisos"]
-    S --> D["data/<br/>datos simulados"]
-    S --> L[("localStorage")]
-    S -. "entrega final" .-> API["API Flask + SQL Server"]
+    subgraph Navegador
+        P["Páginas y componentes"] --> S["Servicios<br/>(misma interfaz)"]
+        S -->|modo navegador| L[("localStorage")]
+        S -->|modo servidor| C["Cliente HTTP"]
+    end
+    C -- "JSON + token JWT" --> R["API REST Flask<br/>rutas · permisos · servicios"]
+    R --> O["SQLAlchemy"] --> D[("SQL Server / SQLite")]
+    R --> F[("Fotos")]
 ```
 
-Detalle de cada capa, flujo de una acción y rutas: [documentacion/arquitectura/arquitectura.md](documentacion/arquitectura/arquitectura.md).
+Las páginas usan componentes y servicios. Los servicios tienen dos implementaciones con la misma interfaz: una guarda en el navegador y la otra llama a la API. Si la página la entrega el backend, se usa la API; en GitHub Pages, el navegador. El backend revisa la sesión y los permisos en cada petición con la misma matriz del frontend, aplica las reglas y guarda en la base de datos.
 
-### Estructura de carpetas
+Detalle de componentes, flujo de información, manejo de errores y despliegue: [documentacion/arquitectura](documentacion/arquitectura/arquitectura.md).
+
+### Estructura del proyecto
 
 ```
 ReportaCampus/
-├── index.html                Estructura de todas las páginas
-├── package.json              Scripts start y test
-├── public/                   Recursos estáticos: logo, tipografía y Chart.js
+├── index.html · package.json · playwright.config.js · LICENSE · .gitignore · .editorconfig
+├── public/                 Logo, tipografía y Chart.js
 ├── src/
-│   ├── main.js               Punto de entrada: servicios, sesión y router
-│   ├── router.js             Rutas por hash con control de permisos
-│   ├── config/               Configuración general y tabla de rutas por rol
-│   ├── models/               Catálogos, reporte, usuario, roles y permisos
-│   ├── data/                 Datos simulados y usuarios de demostración
-│   ├── services/             Almacenamiento y servicios de reportes, usuarios y autenticación
-│   ├── components/           Tabla, resumen, detalle, acciones, confirmación, gráficas, menú y aviso
-│   ├── pages/                Una por sección (login, mis-reportes, asignados, panel, reportes,
-│   │                         zonas, nuevo, usuarios, recomendaciones)
-│   ├── utils/                Formatos, fechas, periodos, CSV, imágenes y DOM
-│   └── styles/               base, layout, components, pages y responsive
-├── tests/                    Pruebas unitarias
-└── documentacion/
-    ├── arquitectura/
-    ├── diagramas/
-    ├── requerimientos/
-    ├── pruebas/              Plan, resultados y evidencias (fase-1, fase-2)
-    ├── decisiones_tecnicas/
-    └── diseno/colores/
+│   ├── main.js · router.js
+│   ├── config/             Configuración y rutas por rol
+│   ├── models/             Reglas, validaciones y permisos
+│   ├── data/               Datos de demostración
+│   ├── services/           Servicios locales · api/ (cliente y servicios sobre la API)
+│   ├── components/         Piezas reutilizables
+│   ├── pages/              Una por sección
+│   ├── utils/              Utilidades
+│   └── styles/             base · layout · components · pages · responsive
+├── backend/
+│   ├── run.py · requirements*.txt · .env.example · pytest.ini
+│   ├── app/                Flask: rutas/, servicios/, modelos, seguridad, permisos, validación
+│   ├── datos/              semilla.json (datos de demostración)
+│   ├── sql/                esquema-sqlserver.sql
+│   └── tests/              pytest
+├── scripts/                Servidor estático y exportación de la semilla
+├── tests/                  Unitarias (node:test) · e2e/ (Playwright)
+└── documentacion/          Manuales, arquitectura, diagramas, requerimientos, pruebas y decisiones
 ```
 
 ### Dependencias
 
-El proyecto **no tiene dependencias que instalar**: `package.json` no declara ninguna.
+| Dónde | Dependencias (versiones fijadas) |
+|---|---|
+| `backend/requirements.txt` | Flask 3.1.3, Flask-SQLAlchemy 3.1.1, SQLAlchemy 2.0.44, PyJWT 2.10.1, flask-cors 6.0.1, python-dotenv 1.2.1 |
+| `backend/requirements-sqlserver.txt` | pyodbc 5.3.0 |
+| `backend/requirements-dev.txt` | pytest 8.4.2 |
+| `package.json` (desarrollo) | @playwright/test 1.65.1 |
+| Incluidas en el repositorio | Chart.js 4.6 (MIT) y la tipografía Lato (OFL) |
 
-| Recurso | Versión | Dónde está | Licencia |
-|---|---|---|---|
-| Chart.js | 4.6 | `public/vendor/chart.umd.min.js` | MIT (`public/vendor/CHARTJS-LICENSE.md`) |
-| Lato | 400, 700, 900 | `public/fonts/` | OFL (`public/fonts/OFL-LICENSE.txt`) |
+El frontend no necesita instalar nada para funcionar.
 
-### Requisitos de ejecución
+### Requisitos
 
-- Un navegador actualizado (Chrome, Edge, Firefox o Safari).
-- Un servidor local, porque los navegadores no cargan módulos ES abiertos con doble clic (`file://`). Sirve cualquiera de estos: la extensión Live Server de Visual Studio Code, Python 3 o Node.js.
-- Node.js 20 o superior solo para correr las pruebas.
+- Navegador actualizado (Chrome, Edge, Firefox o Safari).
+- Para el backend: Python 3.11 o superior. Para SQL Server: el ODBC Driver 18.
+- Para las pruebas: Node.js 20 o superior.
 
-### Instalación y ejecución
-
-1. Clona el repositorio y entra a la carpeta:
-   ```bash
-   git clone https://github.com/ElOne1415/ReportaCampus.git
-   cd ReportaCampus
-   ```
-2. Inicia un servidor local con una de estas opciones:
-   - **Visual Studio Code:** clic derecho sobre `index.html` → *Open with Live Server*.
-   - **Python:**
-     ```bash
-     python3 -m http.server 8000
-     ```
-     y abre <http://localhost:8000>.
-   - **Node.js:**
-     ```bash
-     npm start
-     ```
-     y abre <http://localhost:8080>.
-3. Entra con una de las [cuentas de demostración](#cuentas-de-demostración).
-
-Para correr las pruebas:
+### Instalación
 
 ```bash
-npm test
+git clone https://github.com/ElOne1415/ReportaCampus.git
+cd ReportaCampus/backend
+python3 -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env             # Windows: copy .env.example .env
 ```
 
-Para revisar la vista de celular o tableta, abre las herramientas de desarrollo del navegador (`F12` en Windows, `Cmd + Option + I` en Mac) y activa el modo de dispositivo.
+Edita `.env` y cambia `SECRET_KEY` por una clave propia:
+
+```bash
+python -c "import secrets; print(secrets.token_hex(32))"
+```
 
 ### Configuración
 
-Los valores ajustables están en [`src/config/config.js`](src/config/config.js):
+| Archivo | Valores principales |
+|---|---|
+| `backend/.env` | `SECRET_KEY`, `DATABASE_URL` (SQLite por defecto o SQL Server), `JWT_HORAS`, `CORS_ORIGENES`, `MOSTRAR_CUENTAS_DEMO`, `CONTRASENA_INICIAL`. |
+| `src/config/config.js` | `FUENTE_DATOS` (`auto`, `api` o `local`), `API_URL`, metas de atención. |
+| `src/config/rutas.js` | Rutas, permisos y página de inicio de cada rol. |
 
-| Valor | Para qué | Valor actual |
+Para conectar **SQL Server**:
+
+```bash
+pip install -r requirements-sqlserver.txt
+# en .env:
+DATABASE_URL=mssql+pyodbc://USUARIO:CONTRASENA@SERVIDOR:1433/ReportaCampus?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes
+```
+
+Tabla completa de variables: [manual técnico](documentacion/manual_tecnico/manual-tecnico.md#4-configuración).
+
+### Ejecución
+
+| Modo | Comando | Dirección |
 |---|---|---|
-| `FUENTE_DATOS` | Origen de los datos: `'local'` (navegador) o `'api'` (entrega final). | `'local'` |
-| `API_URL` | Dirección de la API de Flask. | `http://localhost:5000/api` |
-| `CONTRASENA_DEMO` | Contraseña de las cuentas de demostración. | `campus2026` |
-| `CLAVES` | Nombres de las claves en localStorage y sessionStorage. | `reportacampus.v3.*` |
-| `META_HORAS`, `META_CUMPLIMIENTO` | Meta de atención del panel. | 48 horas, 85 % |
-| `TAMANO_PAGINA`, `FOTO_MAX_PX` | Filas por página y tamaño máximo de las fotos. | 10, 640 px |
+| **Completo** (frontend + API + base de datos) | `cd backend && python run.py` | <http://localhost:5000> |
+| Solo frontend (datos en el navegador) | `npm start` | <http://localhost:8080> |
+| Volver a los datos iniciales | `cd backend && flask --app run semilla` | — |
 
-Las rutas, su permiso y la página de inicio de cada rol están en [`src/config/rutas.js`](src/config/rutas.js).
+La primera vez, el backend crea la base de datos con los datos de demostración. El pie de página indica de dónde vienen los datos.
 
-Para volver a los datos iniciales: entra como administrador → *Usuarios* → *Restablecer datos*. También se puede borrar el almacenamiento del sitio desde las herramientas del navegador.
+#### Cuentas de demostración
+
+Todas usan la contraseña **`campus2026`**. La página de inicio de sesión tiene un botón para entrar con cada una.
+
+| Rol | Nombre | Correo |
+|---|---|---|
+| Estudiante | Valentina Martínez | `valentina.martinez@campus.edu.co` |
+| Responsable | Diana Rojas (Planta física) | `diana.rojas@campus.edu.co` |
+| Administrador | Paola Méndez | `admin@campus.edu.co` |
+
+Hay 16 cuentas en total. `mateo.sanchez@campus.edu.co` está desactivada a propósito.
 
 ## Pruebas
 
-- **Unitarias:** 45 pruebas de modelos, permisos y servicios, todas correctas ([resultado](documentacion/pruebas/resultados-pruebas-unitarias.txt)).
-- **Funcionales:** 40 casos probados en Chrome a 1366, 820, 390 y 360 px, sin errores en la consola ([plan y resultados](documentacion/pruebas/plan-de-pruebas.md)).
+### Estrategia
 
-| Estudiante | Responsable |
+Cuatro niveles: **unitarias** del frontend (modelos, permisos, servicios, cliente de la API), **backend** (cada endpoint con su base de datos de prueba), **de extremo a extremo** en Chrome (cada caso en modo navegador y con el backend, lo que prueba la integración frontend–API–base de datos) y revisión **manual** en distintos tamaños de pantalla.
+
+### Pruebas realizadas y resultados
+
+| Batería | Comando | Resultado |
+|---|---|---|
+| Unitarias del frontend | `npm test` | **57 de 57** |
+| Backend | `cd backend && pytest` | **33 de 33** |
+| De extremo a extremo | `npm run test:e2e` | **33 de 33** |
+
+Las pruebas cubren navegación, formularios, validaciones, funcionalidades de los tres roles, integración entre componentes, acceso a datos, tamaños de pantalla de 360 a 1366 px y manejo de errores (sin conexión, error 500, sesión vencida). Encontraron cinco problemas, ya corregidos; entre ellos, una ruta que exponía archivos del backend y un desbordamiento de *Mi cuenta* en celular.
+
+Plan, casos, resultados completos y evidencias: [documentacion/pruebas](documentacion/pruebas/plan-de-pruebas.md).
+
+| Estudiante: calificar | Responsable: alerta y disponibles |
 |---|---|
-| ![Mis reportes](documentacion/pruebas/evidencias/fase-2/19-estudiante-mis-reportes.png) | ![Mis asignaciones](documentacion/pruebas/evidencias/fase-2/22-responsable-asignaciones.png) |
+| ![Calificar](documentacion/pruebas/evidencias/final/39-estudiante-calificar.png) | ![Asignaciones](documentacion/pruebas/evidencias/final/41-responsable-alerta-y-disponibles.png) |
 
-| Administrador: asignar responsable | Administrador: usuarios |
+| Administrador: actividad | Error de conexión | Celular |
+|---|---|---|
+| ![Actividad](documentacion/pruebas/evidencias/final/44-administrador-actividad.png) | ![Error](documentacion/pruebas/evidencias/final/46-error-sin-conexion.png) | ![Celular](documentacion/pruebas/evidencias/final/47-movil-asignaciones-final.png) |
+
+## Despliegue
+
+| | |
 |---|---|
-| ![Asignar](documentacion/pruebas/evidencias/fase-2/27-administrador-asignar.png) | ![Usuarios](documentacion/pruebas/evidencias/fase-2/28-administrador-usuarios.png) |
+| **Dirección** | https://elone1415.github.io/ReportaCampus/ |
+| **Plataforma** | GitHub Pages, desde la rama `main` |
+| **Acceso** | Abre la dirección y entra con una de las [cuentas de demostración](#cuentas-de-demostración). |
 
-| Inicio de sesión en celular | Mis asignaciones en celular |
+En GitHub Pages no hay backend, así que la aplicación publicada funciona en **modo navegador**: tiene todas las funciones, pero los datos de demostración se guardan en el navegador de cada persona.
+
+La versión completa, con la API y la base de datos, se ejecuta en local con `python run.py` ([ejecución](#ejecución)). El backend está preparado para publicarse con `gunicorn` en un servicio como Render o Azure App Service; los pasos están en el [manual técnico](documentacion/manual_tecnico/manual-tecnico.md#10-despliegue).
+
+## Equipo
+
+| Integrante | Roles y responsabilidades |
 |---|---|
-| ![Inicio de sesión en celular](documentacion/pruebas/evidencias/fase-2/31-movil-inicio-sesion.png) | ![Asignaciones en celular](documentacion/pruebas/evidencias/fase-2/34-movil-asignaciones.png) |
+| Juan Diego Fajardo Suárez | *(por completar)* |
+| Juan Camilo Céspedes | *(por completar)* |
+| Sebastián Pérez | *(por completar)* |
 
-Todas las capturas: [Fase II](documentacion/pruebas/evidencias/fase-2/) · [Fase I](documentacion/pruebas/evidencias/fase-1/).
+## Estado final
+
+### Funcionalidades terminadas
+
+Todo el alcance definido está implementado y probado: los 26 requerimientos funcionales de [requerimientos](documentacion/requerimientos/requerimientos.md), los tres roles con sus permisos, la API REST con 27 endpoints, la base de datos, la autenticación con contraseñas cifradas y tokens, las fotos en el servidor, la calificación de soluciones, la toma de reportes, las alertas de 48 horas, el registro de actividad y el cambio de contraseña.
+
+### Limitaciones conocidas
+
+- El backend no está publicado en internet; la versión de GitHub Pages usa datos de demostración en el navegador.
+- La conexión con un SQL Server real no se probó dentro del proyecto: el código y las pruebas usan SQLite, y el esquema de SQL Server se genera y se valida desde los mismos modelos.
+- En modo navegador no hay seguridad real: los datos y la sesión se pueden modificar desde las herramientas del navegador. Es solo para la demostración.
+- Las cuentas de demostración comparten una contraseña pública (`campus2026`).
+- Sin migraciones de base de datos: un cambio en los modelos requiere volver a crear la base.
+- Las fotos se guardan en el disco del servidor; en servicios sin disco persistente se pierden al reiniciar.
+
+### Mejoras futuras
+
+- Publicar el backend con SQL Server o Azure SQL y almacenamiento de fotos en la nube.
+- Notificaciones por correo cuando cambia el estado de un reporte.
+- Migraciones de base de datos con Alembic.
+- Recuperación de contraseña por correo y límite de intentos de inicio de sesión.
+- Reportes en PDF y estadísticas por zona y por responsable.
+- Revisión de accesibilidad con herramientas automáticas y pruebas en más navegadores.
 
 ## Documentación
 
-La documentación técnica está en [`documentacion/`](documentacion/README.md): arquitectura, diagramas (casos de uso, estados, modelo de datos y navegación), requerimientos con la matriz de permisos, plan de pruebas y decisiones técnicas.
+| Documento | Contenido |
+|---|---|
+| [Manual de usuario](documentacion/manual_usuario/manual-usuario.md) | Cómo usar la aplicación según el rol. |
+| [Manual técnico](documentacion/manual_tecnico/manual-tecnico.md) | Instalación, configuración, API, base de datos, seguridad, pruebas, despliegue y mantenimiento. |
+| [Arquitectura](documentacion/arquitectura/arquitectura.md) | Componentes, flujo de información y despliegue. |
+| [Diagramas](documentacion/diagramas/) | Casos de uso, estados, modelo de datos y navegación. |
+| [Requerimientos](documentacion/requerimientos/requerimientos.md) | Funcionales, no funcionales, permisos e historias de usuario. |
+| [Pruebas](documentacion/pruebas/plan-de-pruebas.md) | Estrategia, resultados y evidencias. |
+| [Decisiones técnicas](documentacion/decisiones_tecnicas/README.md) | Nueve ADR. |
 
 ## Colorimetría
 
@@ -261,16 +316,15 @@ El logo (`public/img/logo.svg`) es un marcador de ubicación con una marca de ve
 
 Los estados siempre se muestran con su nombre junto al color, para que no dependan solo de él. Cada rol tiene además una etiqueta de color en la barra superior: azul para estudiante, ámbar para responsable y rojo para administrador.
 
-## Equipo
-
-- Juan Diego Fajardo Suárez
-- Juan Camilo Céspedes
-- Sebastián Pérez
-
 ## Historial de versiones
 
 | Versión | Fecha | Cambios |
 |---|---|---|
-| v0.1 | 3 de noviembre de 2026 | Estructura del repositorio, página principal, diseño adaptable, datos simulados, gráficas, filtros, formulario, detalle y navegación. |
-| v0.2 | 10 de noviembre de 2026 | Reportes nuevos guardados en el navegador, vista previa de la foto, exportación a CSV y nuevas evidencias. |
-| v0.3 | 17 de noviembre de 2026 | Fase II: inicio de sesión con roles, mis reportes, mis asignaciones, gestión de reportes y usuarios, arquitectura por capas con módulos ES, navegación por rutas, pruebas unitarias y documentación técnica. |
+| v0.1 | 3 de noviembre de 2026 | Fase I: estructura del repositorio, página principal, diseño adaptable, datos simulados, gráficas, filtros, formulario, detalle y navegación. |
+| v0.2 | 10 de noviembre de 2026 | Reportes guardados en el navegador, vista previa de la foto y exportación a CSV. |
+| v0.3 | 17 de noviembre de 2026 | Fase II: inicio de sesión con roles, mis reportes, mis asignaciones, gestión de reportes y usuarios, arquitectura por capas, rutas, pruebas unitarias y documentación técnica. |
+| v1.0 | 17 de noviembre de 2026 | Entrega final: backend Flask con API REST y base de datos SQL Server/SQLite, autenticación con contraseñas cifradas y JWT, fotos en el servidor, calificación de soluciones, tomar reportes, alertas de 48 horas, registro de actividad, Mi cuenta, manejo de errores, pruebas de backend y de extremo a extremo, manuales de usuario y técnico. |
+
+## Licencia
+
+[MIT](LICENSE) © 2026 Juan Diego Fajardo Suárez, Juan Camilo Céspedes y Sebastián Pérez.

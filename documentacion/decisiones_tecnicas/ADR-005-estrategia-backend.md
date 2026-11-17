@@ -119,7 +119,7 @@ Las páginas, componentes, modelos y estilos no cambian.
 
 ### 6. Datos iniciales
 
-Un script `backend/semilla.py` cargará las categorías, las zonas y los usuarios de demostración (los mismos de `src/data/usuarios.js`) para que el equipo y el profesor puedan probar cada rol.
+Un script `backend/app/semilla.py` cargará las categorías, las zonas y los usuarios de demostración (los mismos de `src/data/usuarios.js`) para que el equipo y el profesor puedan probar cada rol.
 
 ## Consecuencias
 
