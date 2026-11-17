@@ -1,0 +1,3 @@
+# Controlador para conectarse a SQL Server (requiere el ODBC Driver 18 de Microsoft)
+-r requirements.txt
+pyodbc==5.3.0
