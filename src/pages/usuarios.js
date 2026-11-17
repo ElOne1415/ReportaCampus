@@ -4,7 +4,7 @@
    ========================================================== */
 import { CATEGORIAS, categoriaPorId } from '../models/catalogos.js';
 import { INFO_ROLES, LISTA_ROLES, ROLES } from '../models/roles.js';
-import { $, $$, agregarOpciones } from '../utils/dom.js';
+import { $, $$, agregarOpciones, conBoton } from '../utils/dom.js';
 import { esc, plural } from '../utils/formato.js';
 import { confirmar } from '../components/confirmar.js';
 
@@ -91,9 +91,9 @@ export function crearPaginaUsuarios(app) {
       area: $('#uArea').value,
       categorias: $$('#uCategorias input:checked').map((c) => c.value)
     };
-    const res = editando
-      ? await app.usuarios.editar(editando.id, datos, app.usuario)
-      : await app.usuarios.crear(datos, app.usuario);
+    const res = await conBoton($('#uGuardar'), 'Guardando…', () => (editando
+      ? app.usuarios.editar(editando.id, datos, app.usuario)
+      : app.usuarios.crear(datos, app.usuario)));
     limpiar();
     if (!res.ok) {
       if (res.errores) {
@@ -109,7 +109,7 @@ export function crearPaginaUsuarios(app) {
     $('#usuarioDialog').close();
     app.aviso(editando ? 'Se guardaron los cambios de ' + res.usuario.nombre + '.' : 'Se creó la cuenta de ' + res.usuario.nombre + '.');
     // Si el administrador se editó a sí mismo, actualiza la barra superior
-    if (editando && editando.id === app.usuario.id) app.alCambiarSesion();
+    if (editando && editando.id === app.usuario.id) await app.alCambiarSesion();
     pintar();
   }
 
@@ -128,7 +128,7 @@ export function crearPaginaUsuarios(app) {
       res = await app.usuarios.eliminar(u.id, app.usuario);
       if (res.ok) app.aviso('Se eliminó la cuenta de ' + u.nombre + '.');
     }
-    if (!res.ok) { app.aviso(res.error); return; }
+    if (!res.ok) { app.avisoError(res.error); return; }
     pintar();
   }
 
@@ -137,7 +137,7 @@ export function crearPaginaUsuarios(app) {
     if (!ok) return;
     const r1 = await app.reportes.restablecer(app.usuario);
     const r2 = await app.usuarios.restablecer(app.usuario);
-    if (!r1.ok || !r2.ok) { app.aviso((r1.error || r2.error)); return; }
+    if (!r1.ok || !r2.ok) { app.avisoError(r1.error || r2.error); return; }
     app.aviso('Se restablecieron los datos de demostración.');
     app.alCambiarSesion();
     pintar();

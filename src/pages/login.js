@@ -3,7 +3,7 @@
    ========================================================== */
 import { CONFIG } from '../config/config.js';
 import { INFO_ROLES } from '../models/roles.js';
-import { $ } from '../utils/dom.js';
+import { $, conBoton } from '../utils/dom.js';
 import { esc } from '../utils/formato.js';
 
 export function crearPaginaLogin(app) {
@@ -24,7 +24,7 @@ export function crearPaginaLogin(app) {
     marcar('lCorreo', null);
     marcar('lContrasena', null);
     mostrarError(null);
-    const res = await app.auth.iniciarSesion(correo, contrasena);
+    const res = await conBoton($('#loginForm button[type="submit"]'), 'Entrando…', () => app.auth.iniciarSesion(correo, contrasena));
     if (!res.ok) {
       if (res.errores) {
         if (res.errores.correo) marcar('lCorreo', res.errores.correo);

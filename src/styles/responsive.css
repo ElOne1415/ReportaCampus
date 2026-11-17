@@ -75,6 +75,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .loading-bar { animation: none; background: var(--azul); }
   html { scroll-behavior: auto; }
   * { transition: none !important; }
 }

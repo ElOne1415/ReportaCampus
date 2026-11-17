@@ -6,7 +6,7 @@
    ========================================================== */
 import { CONFIG } from '../config/config.js';
 import { CATEGORIAS, ZONAS } from '../models/catalogos.js';
-import { $, $$, agregarOpciones } from '../utils/dom.js';
+import { $, $$, agregarOpciones, conBoton } from '../utils/dom.js';
 import { reducirImagen } from '../utils/imagen.js';
 import { puedeEditarReporte } from '../models/roles.js';
 
@@ -87,13 +87,14 @@ export function crearPaginaNuevo(app) {
       prioridad: $('input[name="rPrioridad"]:checked').value,
       fotoUrl: fotoActual
     };
-    const res = editando
-      ? await app.reportes.editar(editando.id, datos, app.usuario)
-      : await app.reportes.crear(datos, app.usuario);
+    const res = await conBoton($('#rEnviar'), editando ? 'Guardando…' : 'Enviando…', () => (editando
+      ? app.reportes.editar(editando.id, datos, app.usuario)
+      : app.reportes.crear(datos, app.usuario)));
     limpiarErrores();
-    if (!res.ok && res.error) { app.aviso(res.error); return; }
+    if (!res.ok && res.error) { app.avisoError(res.error); return; }
     if (!res.ok) {
       Object.entries(res.errores).forEach(([c, m]) => { if (CONTROLES[c]) marcar(c, m); });
+      if (res.errores.foto) app.avisoError(res.errores.foto);
       const primero = $('.invalid');
       if (primero) primero.focus();
       return;

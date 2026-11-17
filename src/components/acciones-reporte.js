@@ -8,6 +8,7 @@ import { puedeEditarReporte, puedeEliminarReporte, puedeCambiarEstado, puedeCome
 import { ESTADOS, PRIORIDADES, categoriaPorId } from '../models/catalogos.js';
 import { puede } from '../models/roles.js';
 import { esc } from '../utils/formato.js';
+import { conBoton } from '../utils/dom.js';
 import { NOTA_MIN } from '../models/reporte.js';
 import { confirmar } from './confirmar.js';
 
@@ -60,14 +61,14 @@ function bloqueAdministrador(x, app) {
           (r.categorias.includes(x.categoria) ? ' (atiende ' + categoriaPorId[x.categoria].nombre.toLowerCase() + ')' : '') + '</option>').join(''));
         c.querySelector('[data-accion="asignar"]').addEventListener('click', async () => {
           if (!sel.value) { fallo('Elige un responsable.'); sel.focus(); return; }
-          const res = await app.reportes.asignar(x.id, sel.value, u);
+          const res = await conBoton(c.querySelector('[data-accion="asignar"]'), 'Asignando…', () => app.reportes.asignar(x.id, sel.value, u));
           if (!res.ok) { fallo(res.error); return; }
           app.aviso(res.sinCambios ? 'El reporte ya tenía ese responsable.' : x.id + ' quedó a cargo de ' + app.reportes.nombreResponsable(res.reporte) + '.');
           app.alCambiarReporte(x.id);
         });
       }
       c.querySelector('[data-accion="prioridad"]').addEventListener('click', async () => {
-        const res = await app.reportes.cambiarPrioridad(x.id, c.querySelector('[data-campo="prioridad"]').value, u);
+        const res = await conBoton(c.querySelector('[data-accion="prioridad"]'), null, () => app.reportes.cambiarPrioridad(x.id, c.querySelector('[data-campo="prioridad"]').value, u));
         if (!res.ok) { fallo(res.error); return; }
         app.aviso(res.sinCambios ? 'La prioridad no cambió.' : 'Prioridad de ' + x.id + ': ' + res.reporte.prioridad + '.');
         app.alCambiarReporte(x.id);
@@ -102,8 +103,9 @@ function bloqueAtencion(x, app) {
       const error = c.querySelector('[data-error]');
       const ejecutar = async (accion) => {
         const texto = nota.value;
-        const res = accion === 'comentar' ? await app.reportes.comentar(x.id, texto, u)
-          : await app.reportes.cambiarEstado(x.id, accion === 'resolver' ? ESTADOS.RESUELTO : ESTADOS.EN_PROCESO, texto, u);
+        const boton = c.querySelector('[data-accion="' + accion + '"]');
+        const res = await conBoton(boton, 'Guardando…', () => (accion === 'comentar' ? app.reportes.comentar(x.id, texto, u)
+          : app.reportes.cambiarEstado(x.id, accion === 'resolver' ? ESTADOS.RESUELTO : ESTADOS.EN_PROCESO, texto, u)));
         if (!res.ok) { error.textContent = res.error; error.hidden = false; nota.focus(); return; }
         app.aviso(accion === 'comentar' ? 'Nota agregada a ' + x.id + '.' : (accion === 'resolver' ? x.id + ' quedó resuelto.' : x.id + ' se reabrió.'));
         app.alCambiarReporte(x.id);
@@ -119,7 +121,7 @@ export async function eliminarReporte(x, app) {
   const ok = await confirmar({ titulo: '¿Eliminar el reporte ' + x.id + '?', mensaje: '«' + x.titulo + '» se borrará de forma permanente.', boton: 'Eliminar' });
   if (!ok) return;
   const res = await app.reportes.eliminar(x.id, app.usuario);
-  if (!res.ok) { app.aviso(res.error); return; }
+  if (!res.ok) { app.avisoError(res.error); return; }
   app.cerrarDetalle();
   app.aviso('Se eliminó el reporte ' + x.id + '.');
   app.recargarPagina();

@@ -9,7 +9,8 @@ import { puede } from './models/roles.js';
 import { crearRouter } from './router.js';
 import { iniciarMenu, marcarActivo, pintarMenu, pintarUsuario } from './components/navegacion.js';
 import { iniciarDetalle, abrirDetalle, cerrarDetalle } from './components/detalle.js';
-import { aviso } from './components/toast.js';
+import { aviso, avisoError } from './components/toast.js';
+import { conCarga, mostrarErrorPagina, quitarErrorPagina } from './components/estado-carga.js';
 import { crearPaginaLogin } from './pages/login.js';
 import { crearPaginaMisReportes } from './pages/mis-reportes.js';
 import { crearPaginaAsignados } from './pages/asignados.js';
@@ -29,10 +30,12 @@ const app = {
   usuario: await servicios.auth.refrescar(),
   estado: { filtros: { ...FILTROS_VACIOS } },
   aviso,
+  avisoError,
   puede: (permiso) => puede(app.usuario, permiso),
   async abrirReporte(id) {
-    const r = await app.reportes.obtener(id);
+    const r = await conCarga(app.reportes.obtener(id));
     if (r) abrirDetalle(r, app);
+    else avisoError('No se pudo abrir el reporte ' + id + '. Puede que lo hayan eliminado o que no haya conexión.');
   },
   cerrarDetalle,
   irA(ruta, params) { router.navegar(ruta, params); },
@@ -119,7 +122,14 @@ async function entrar(nombre, params) {
   const cambio = actual !== nombre;
   actual = nombre;
   if (cambio) window.scrollTo(0, 0);
-  await paginas[nombre].mostrar(params);
+  const seccion = document.querySelector('[data-pagina="' + nombre + '"]');
+  quitarErrorPagina(seccion);
+  try {
+    await conCarga(paginas[nombre].mostrar(params));
+  } catch (e) {
+    // Sin conexión o error del servidor: la página muestra el problema y permite reintentar
+    mostrarErrorPagina(seccion, e.message || 'Intenta de nuevo.', () => entrar(nombre, params));
+  }
   // Lleva el foco al título para lectores de pantalla y teclado
   if (cambio) {
     const titulo = document.querySelector('[data-pagina="' + nombre + '"] h1');
@@ -141,6 +151,14 @@ const router = crearRouter({
   puedeEntrar,
   alEntrar: entrar
 });
+
+// Errores que no atrapó ninguna página: aviso en lugar de un fallo silencioso
+window.addEventListener('unhandledrejection', (e) => {
+  console.error(e.reason);
+  avisoError('Algo salió mal: ' + ((e.reason && e.reason.message) || 'intenta de nuevo.'));
+});
+window.addEventListener('offline', () => avisoError('Perdiste la conexión a internet.'));
+window.addEventListener('online', () => aviso('Conexión restablecida.'));
 
 iniciarMenu();
 iniciarDetalle();
