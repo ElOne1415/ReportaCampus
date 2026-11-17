@@ -37,8 +37,9 @@ def inicio():
     return send_from_directory(current_app.config['CARPETA_FRONTEND'], 'index.html')
 
 
-@bp.get('/<path:ruta>')
-def archivos(ruta):
-    if not (ruta.startswith('src/') or ruta.startswith('public/')):
+@bp.get('/<carpeta>/<path:ruta>')
+def archivos(carpeta, ruta):
+    # Cada carpeta se sirve por separado: "src/../backend" no puede salir de src/
+    if carpeta not in ('src', 'public'):
         abort(404)
-    return send_from_directory(current_app.config['CARPETA_FRONTEND'], ruta)
+    return send_from_directory(current_app.config['CARPETA_FRONTEND'] / carpeta, ruta)
