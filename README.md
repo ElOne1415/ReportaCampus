@@ -6,7 +6,7 @@
 
 ReportaCampus es una aplicación web para reportar las incidencias del campus (daños, fallas, problemas de aseo o de seguridad) y consultar en qué estado se encuentra cada una. Esta versión es el **prototipo web inicial (v0.2)**: una interfaz funcional construida con HTML5, CSS3 y JavaScript que trabaja con datos simulados.
 
-![Panel de incidencias](documentacion/pruebas/evidencias/01-escritorio-panel.png)
+![Panel de incidencias](documentacion/pruebas/evidencias/fase-1/01-escritorio-panel.png)
 
 ## Equipo
 
@@ -164,17 +164,17 @@ Se probó en Google Chrome en tres tamaños de pantalla: 1366 px (computador), 8
 
 | Computador | Celular |
 |---|---|
-| ![Panel en computador](documentacion/pruebas/evidencias/01-escritorio-panel.png) | ![Panel en celular](documentacion/pruebas/evidencias/09-movil-panel.png) |
+| ![Panel en computador](documentacion/pruebas/evidencias/fase-1/01-escritorio-panel.png) | ![Panel en celular](documentacion/pruebas/evidencias/fase-1/09-movil-panel.png) |
 
 Gráfica con el periodo *Semestre* y detalle al pasar el cursor:
 
-![Gráfica interactiva](documentacion/pruebas/evidencias/03-grafica-semestre.png)
+![Gráfica interactiva](documentacion/pruebas/evidencias/fase-1/03-grafica-semestre.png)
 
 Nuevo reporte con foto, guardado en el navegador:
 
-![Detalle con foto](documentacion/pruebas/evidencias/15-detalle-foto.png)
+![Detalle con foto](documentacion/pruebas/evidencias/fase-1/15-detalle-foto.png)
 
-Todas las capturas están en [`documentacion/pruebas/evidencias/`](documentacion/pruebas/evidencias/):
+Todas las capturas están en [`documentacion/pruebas/evidencias/fase-1/`](documentacion/pruebas/evidencias/fase-1/):
 
 | Archivo | Qué muestra |
 |---|---|

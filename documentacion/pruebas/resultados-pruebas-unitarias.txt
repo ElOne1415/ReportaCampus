@@ -1,0 +1,56 @@
+Resultado de npm test — ReportaCampus v0.3.0
+Node v22.23.4 · 2026-11-17
+
+ok 1 - inicia sesión con la contraseña de demostración (correo sin importar mayúsculas)
+ok 2 - rechaza datos vacíos, contraseña incorrecta y cuentas inactivas
+ok 3 - si la cuenta se desactiva, la sesión se cierra
+ok 4 - cerrarSesion borra la sesión
+ok 5 - validarReporte acepta datos completos
+ok 6 - validarReporte marca cada campo obligatorio
+ok 7 - validarReporte ignora los espacios al medir el texto
+ok 8 - validarReporte limita el largo del título y la descripción
+ok 9 - siguienteCodigo continúa el consecutivo
+ok 10 - crearReporte deja el reporte en Nuevo con autor e historial
+ok 11 - filtrarReportes combina texto, estado, zona, autor y responsable
+ok 12 - validarCambioEstado solo permite las transiciones definidas
+ok 13 - validarCambioEstado pide nota al resolver y al reabrir
+ok 14 - los datos simulados se generan una vez y se guardan
+ok 15 - un estudiante crea un reporte y queda guardado al recargar
+ok 16 - crear devuelve los errores de validación sin guardar nada
+ok 17 - el autor edita y elimina su reporte solo mientras está en Nuevo
+ok 18 - asignar pone el reporte en proceso y solo acepta responsables activos
+ok 19 - el responsable asignado resuelve con nota; otro responsable no puede
+ok 20 - cambiarPrioridad es solo del administrador y queda en el historial
+ok 21 - los reportes de la versión 0.2 se migran a la estudiante de demostración
+ok 22 - cada permiso usa solo roles conocidos
+ok 23 - puede revisa el rol y que la cuenta esté activa
+ok 24 - solo el autor edita su reporte y solo mientras está en Nuevo
+ok 25 - el autor elimina en Nuevo; el administrador, siempre
+ok 26 - el responsable cambia el estado solo de sus reportes
+ok 27 - validarUsuario acepta un estudiante sin área
+ok 28 - validarUsuario exige correo válido y único (sin importar mayúsculas)
+ok 29 - validarUsuario pide área y categorías al responsable
+ok 30 - validarUsuario rechaza roles desconocidos y nombres cortos
+ok 31 - construirUsuario normaliza el correo y limpia campos que no aplican
+ok 32 - siguienteIdUsuario y nombreConArea
+ok 33 - solo el administrador crea usuarios
+ok 34 - no se elimina ni desactiva a un responsable con reportes abiertos
+ok 35 - el administrador no se elimina ni se quita el rol si es el último
+ok 36 - desactivar y eliminar un estudiante
+ok 37 - responsables() pone primero a quien atiende la categoría
+ok 38 - restablecer vuelve a los usuarios iniciales
+ok 39 - leerHash y crearHash son inversos
+ok 40 - aCSV usa punto y coma, BOM y escapa comillas
+ok 41 - esc evita insertar HTML
+ok 42 - intervalos: 7 días, 4 semanas y 6 meses
+ok 43 - serieTendencia cuenta recibidos y resueltos por intervalo
+ok 44 - los datos simulados son deterministas
+ok 45 - ordenarPorUrgencia: abiertos, prioridad alta y más antiguos primero
+
+# tests 45
+# suites 0
+# pass 45
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
