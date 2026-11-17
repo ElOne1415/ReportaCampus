@@ -7,12 +7,19 @@
    ========================================================== */
 
 export const CONFIG = Object.freeze({
-  VERSION: '0.3.0',
+  VERSION: '1.0.0',
 
-  // Origen de los datos: 'local' guarda todo en el navegador.
-  // 'api' queda reservado para el backend en Flask (entrega final).
-  FUENTE_DATOS: 'local',
-  API_URL: 'http://localhost:5000/api',
+  // Origen de los datos:
+  //   'auto'  usa la API si la página la entrega el backend (python run.py),
+  //           que agrega <meta name="reportacampus-api">; si no (GitHub Pages),
+  //           los datos de demostración guardados en el navegador.
+  //   'api'   siempre la API en API_URL (frontend y backend en dominios distintos).
+  //   'local' siempre los datos del navegador.
+  FUENTE_DATOS: 'auto',
+  // Dirección de la API. null = el mismo servidor que entrega la página (/api).
+  API_URL: null,
+  API_TIEMPO_MS: 15000,   // tiempo máximo de espera de una petición
+  API_CACHE_MS: 20000,    // cuánto se reutiliza la lista de reportes antes de pedirla de nuevo
 
   // Claves de almacenamiento en el navegador
   CLAVES: Object.freeze({
@@ -23,8 +30,8 @@ export const CONFIG = Object.freeze({
     reportesV2: 'reportacampus.reportes'
   }),
 
-  // Inicio de sesión simulado: todas las cuentas de demostración usan
-  // esta contraseña. En la entrega final la valida el backend.
+  // Contraseña de las cuentas de demostración. En modo local la usa el
+  // inicio de sesión simulado; con el servidor, la valida el backend.
   CONTRASENA_DEMO: 'campus2026',
 
   // Semilla de los datos simulados (mismos datos en cada carga)

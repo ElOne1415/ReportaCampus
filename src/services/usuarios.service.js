@@ -10,6 +10,7 @@ import { validarUsuario, construirUsuario, siguienteIdUsuario } from '../models/
 import { puede, ROLES } from '../models/roles.js';
 
 const SIN_PERMISO = { ok: false, error: 'No tienes permiso para gestionar usuarios.' };
+const CUENTAS_DEMO = ['valentina.martinez@campus.edu.co', 'diana.rojas@campus.edu.co', 'admin@campus.edu.co'];
 const NO_EXISTE = { ok: false, error: 'El usuario no existe.' };
 
 export function crearServicioUsuarios({ almacen, ahora = new Date() }) {
@@ -34,6 +35,11 @@ export function crearServicioUsuarios({ almacen, ahora = new Date() }) {
 
     obtenerSync(id) { return buscar(id) || null; },
     async obtener(id) { return buscar(id) || null; },
+    /** Una cuenta activa de cada rol para entrar con un clic. */
+    async cuentasDemo() {
+      return CUENTAS_DEMO.map((c) => usuarios.find((u) => u.correo === c)).filter((u) => u && u.activo);
+    },
+
     async porCorreo(correo) { return usuarios.find((u) => u.correo === (correo || '').trim().toLowerCase()) || null; },
 
     async listar(f = {}) {

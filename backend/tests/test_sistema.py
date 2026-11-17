@@ -13,6 +13,7 @@ def test_catalogos(cliente):
 
 def test_sirve_el_frontend_pero_no_otros_archivos(cliente):
     assert b'ReportaCampus' in cliente.get('/').data
+    assert b'name="reportacampus-api"' in cliente.get('/index.html').data, 'marca para que el frontend use la API'
     assert cliente.get('/src/main.js').status_code == 200
     assert cliente.get('/public/img/logo.svg').status_code == 200
     for ruta in ('/backend/.env.example', '/backend/run.py', '/README.md', '/.git/config', '/src/../backend/run.py', '/src/%2e%2e/backend/run.py', '/public/../README.md'):

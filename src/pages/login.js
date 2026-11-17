@@ -6,9 +6,6 @@ import { INFO_ROLES } from '../models/roles.js';
 import { $ } from '../utils/dom.js';
 import { esc } from '../utils/formato.js';
 
-// Una cuenta de cada rol para entrar con un clic
-const CUENTAS_RAPIDAS = ['valentina.martinez@campus.edu.co', 'diana.rojas@campus.edu.co', 'admin@campus.edu.co'];
-
 export function crearPaginaLogin(app) {
   function marcar(id, mensaje) {
     $('#' + id).classList.toggle('invalid', !!mensaje);
@@ -58,7 +55,9 @@ export function crearPaginaLogin(app) {
       });
     },
     async mostrar() {
-      const cuentas = (await Promise.all(CUENTAS_RAPIDAS.map((c) => app.usuarios.porCorreo(c)))).filter((u) => u && u.activo);
+      // Una cuenta de cada rol para entrar con un clic
+      const cuentas = await app.usuarios.cuentasDemo();
+      $('#login .auth__demo').hidden = !cuentas.length;
       $('#cuentasDemo').innerHTML = cuentas.map((u) =>
         '<button type="button" class="account" data-correo="' + esc(u.correo) + '">' +
         '<span class="account__name">' + esc(u.nombre) + (u.area ? ' · ' + esc(u.area) : '') + '</span>' +

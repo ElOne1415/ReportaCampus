@@ -1,5 +1,5 @@
 """Estado del servidor, catálogos, fotos y archivos del frontend."""
-from flask import Blueprint, abort, current_app, send_from_directory
+from flask import Blueprint, abort, current_app, make_response, send_from_directory
 from sqlalchemy import select
 
 from ..extensiones import db
@@ -32,9 +32,18 @@ def foto(nombre):
 # ---------- Frontend ----------
 # Solo se publican index.html, src/ y public/; nunca backend/, .env ni otros archivos.
 
+MARCA_API = '<meta name="reportacampus-api" content="api">'
+
+
 @bp.get('/')
+@bp.get('/index.html')
 def inicio():
-    return send_from_directory(current_app.config['CARPETA_FRONTEND'], 'index.html')
+    """index.html con una marca que le indica al frontend que use esta API."""
+    html = (current_app.config['CARPETA_FRONTEND'] / 'index.html').read_text(encoding='utf-8')
+    respuesta = make_response(html.replace('</head>', '  ' + MARCA_API + '\n</head>', 1))
+    respuesta.headers['Content-Type'] = 'text/html; charset=utf-8'
+    respuesta.headers['Cache-Control'] = 'no-cache'
+    return respuesta
 
 
 @bp.get('/<carpeta>/<path:ruta>')

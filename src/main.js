@@ -1,9 +1,9 @@
 /* ==========================================================
    ReportaCampus · Punto de entrada
-   Crea los servicios, monta las páginas y conecta el router
-   con la sesión y los permisos del usuario.
+   Elige la fuente de datos (servidor o navegador), monta las
+   páginas y conecta el router con la sesión y los permisos.
    ========================================================== */
-import { crearServicios } from './services/index.js';
+import { iniciarServicios } from './services/index.js';
 import { RUTAS, INICIO_POR_ROL } from './config/rutas.js';
 import { puede } from './models/roles.js';
 import { crearRouter } from './router.js';
@@ -20,12 +20,13 @@ import { crearPaginaNuevo } from './pages/nuevo.js';
 import { crearPaginaUsuarios } from './pages/usuarios.js';
 import { crearPaginaRecomendaciones } from './pages/recomendaciones.js';
 
-const servicios = crearServicios();
+// Si el servidor responde 401 (token vencido o cuenta desactivada) se vuelve al inicio de sesión
+const servicios = await iniciarServicios({ alVencerSesion: (mensaje) => { if (app.usuario) app.cerrarSesion(mensaje); } });
 let destino = null; // ruta pedida antes de iniciar sesión
 
 const app = {
   ...servicios,
-  usuario: servicios.auth.usuarioActual(),
+  usuario: await servicios.auth.refrescar(),
   estado: { filtros: { ...FILTROS_VACIOS } },
   aviso,
   puede: (permiso) => puede(app.usuario, permiso),
@@ -52,18 +53,21 @@ const app = {
     router.navegar(ir.nombre, ir.params);
   },
   /** Vuelve a leer el usuario de la sesión (si cambió su nombre o sus datos). */
-  alCambiarSesion() {
-    app.usuario = app.auth.usuarioActual();
+  async alCambiarSesion() {
+    app.usuario = await app.auth.refrescar();
     if (!app.usuario) { app.cerrarSesion(); return; }
     aplicarSesion();
     marcarActivo(actual);
   },
-  cerrarSesion() {
+  /** @param {string} [mensaje] motivo para mostrar (por ejemplo, sesión vencida) */
+  cerrarSesion(mensaje) {
     app.auth.cerrarSesion();
+    if (app.reportes.olvidar) app.reportes.olvidar();
     app.usuario = null;
     cerrarDetalle();
     aplicarSesion();
     router.navegar('login');
+    if (typeof mensaje === 'string') aviso(mensaje);
   }
 };
 
@@ -123,6 +127,14 @@ async function entrar(nombre, params) {
   }
 }
 
+/** Pie de página: de dónde vienen los datos. */
+function pintarFuente(f) {
+  const nombres = { sqlite: 'SQLite', mssql: 'SQL Server' };
+  document.getElementById('fuenteDatos').textContent = f.modo === 'api'
+    ? (f.sinConexion ? 'Sin conexión con el servidor' : 'Datos del servidor' + (f.baseDatos ? ' (' + (nombres[f.baseDatos] || f.baseDatos) + ')' : ''))
+    : 'Demostración: los datos se guardan en este navegador';
+}
+
 const router = crearRouter({
   rutas: RUTAS,
   inicio: () => (app.usuario ? INICIO_POR_ROL[app.usuario.rol] : 'login'),
@@ -132,7 +144,8 @@ const router = crearRouter({
 
 iniciarMenu();
 iniciarDetalle();
-document.getElementById('cerrarSesion').addEventListener('click', app.cerrarSesion);
+document.getElementById('cerrarSesion').addEventListener('click', () => app.cerrarSesion());
+pintarFuente(servicios.fuente);
 Object.values(paginas).forEach((p) => p.montar());
 aplicarSesion();
 router.iniciar();

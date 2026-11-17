@@ -37,6 +37,9 @@ export function crearServicioAuth({ almacenSesion, usuarios }) {
       return u;
     },
 
+    /** Igual que usuarioActual(); existe para tener la misma interfaz que la API. */
+    async refrescar() { return this.usuarioActual(); },
+
     cerrarSesion() { almacenSesion.borrar(CONFIG.CLAVES.sesion); }
   };
 }

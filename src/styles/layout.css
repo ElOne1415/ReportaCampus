@@ -54,4 +54,4 @@
 .block__title:focus, .page-head h1:focus { outline: none; }
 .block__sub { color: var(--gris); margin-bottom: 16px; max-width: 70ch; }
 
-.footer { border-top: 1px solid var(--linea); padding: 18px 0 28px; font-size: 13px; color: var(--gris); }
+.footer { border-top: 1px solid var(--linea); padding: 18px 0 28px; font-size: 13px; color: var(--gris); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; }
