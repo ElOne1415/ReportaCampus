@@ -8,9 +8,10 @@ import { RUTAS, INICIO_POR_ROL } from './config/rutas.js';
 import { puede } from './models/roles.js';
 import { crearRouter } from './router.js';
 import { iniciarMenu, marcarActivo, pintarMenu, pintarUsuario } from './components/navegacion.js';
-import { iniciarDetalle, abrirDetalle } from './components/detalle.js';
+import { iniciarDetalle, abrirDetalle, cerrarDetalle } from './components/detalle.js';
 import { aviso } from './components/toast.js';
 import { crearPaginaLogin } from './pages/login.js';
+import { crearPaginaMisReportes } from './pages/mis-reportes.js';
 import { crearPaginaPanel } from './pages/panel.js';
 import { crearPaginaReportes, FILTROS_VACIOS } from './pages/reportes.js';
 import { crearPaginaZonas } from './pages/zonas.js';
@@ -30,7 +31,10 @@ const app = {
     const r = await app.reportes.obtener(id);
     if (r) abrirDetalle(r, app);
   },
+  cerrarDetalle,
   irA(ruta, params) { router.navegar(ruta, params); },
+  /** Vuelve a dibujar la página actual (después de un cambio en los datos). */
+  recargarPagina() { if (actual) paginas[actual].mostrar({ conservar: true }); },
   alIniciarSesion(usuario) {
     app.usuario = usuario;
     app.estado.filtros = { ...FILTROS_VACIOS };
@@ -43,8 +47,7 @@ const app = {
   cerrarSesion() {
     app.auth.cerrarSesion();
     app.usuario = null;
-    const d = document.getElementById('detalle');
-    if (d.open) d.close();
+    cerrarDetalle();
     aplicarSesion();
     router.navegar('login');
   }
@@ -52,6 +55,7 @@ const app = {
 
 const paginas = Object.fromEntries([
   crearPaginaLogin(app),
+  crearPaginaMisReportes(app),
   crearPaginaPanel(app),
   crearPaginaReportes(app),
   crearPaginaZonas(app),

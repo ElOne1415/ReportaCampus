@@ -118,8 +118,42 @@ export function generarReportes(ahora, semilla, dias) {
       });
     }
   }
+  lista.push(...reportesAbiertosDemo(ahora));
+
   // Códigos consecutivos en orden cronológico; más recientes primero
   lista.sort((a, b) => a.creado - b.creado);
   lista.forEach((x, i) => { x.id = 'RC-' + String(i + 1).padStart(4, '0'); });
   return lista.reverse();
+}
+
+/**
+ * Reportes abiertos fijos para que cada cuenta de demostración tenga
+ * algo que hacer: la estudiante ve reportes suyos sin resolver, la
+ * responsable de Planta física tiene trabajo asignado y el
+ * administrador tiene reportes nuevos por asignar.
+ */
+function reportesAbiertosDemo(ahora) {
+  const hace = (h) => new Date(ahora.getTime() - h * HORA);
+  const admin = usuarioPorId['u-001'];
+  const casos = [
+    { autor: 'u-007', h: 3,  categoria: 'infraestructura', ubicacion: 'bloque-a',    prioridad: 'Media', titulo: 'Puerta del salón 204 no cierra',        descripcion: 'La chapa está suelta y la puerta se abre sola con el viento.' },
+    { autor: 'u-007', h: 30, categoria: 'tecnologia',      ubicacion: 'biblioteca',  prioridad: 'Media', titulo: 'Sin conexión Wi-Fi en la sala 2',        descripcion: 'La red del campus no aparece en la sala 2 del segundo piso.', responsable: 'u-004', asignadoH: 26 },
+    { autor: 'u-009', h: 5,  categoria: 'aseo',            ubicacion: 'cafeteria',   prioridad: 'Baja',  titulo: 'Canecas llenas junto a las mesas',       descripcion: 'Las canecas de reciclaje están llenas desde el almuerzo.' },
+    { autor: 'u-008', h: 8,  categoria: 'seguridad',       ubicacion: 'parqueadero', prioridad: 'Alta',  titulo: 'Zona oscura en el sótano 2',             descripcion: 'Tres lámparas apagadas cerca de la salida peatonal; de noche no se ve nada.' },
+    { autor: 'u-010', h: 20, categoria: 'infraestructura', ubicacion: 'bloque-b',    prioridad: 'Alta',  titulo: 'Gotera sobre una toma eléctrica',        descripcion: 'Cae agua del techo justo encima de la toma del aula 305.', responsable: 'u-002', asignadoH: 18 },
+    { autor: 'u-011', h: 44, categoria: 'infraestructura', ubicacion: 'laboratorios', prioridad: 'Media', titulo: 'Baldosa suelta en la entrada del laboratorio', descripcion: 'Una baldosa se mueve al pisarla y ya hubo un tropezón.', responsable: 'u-002', asignadoH: 40 }
+  ];
+  return casos.map((c) => {
+    const autor = usuarioPorId[c.autor];
+    const creado = hace(c.h);
+    const historial = [{ estado: ESTADOS.NUEVO, fecha: creado, nota: 'Reporte registrado por la comunidad.', por: autor.nombre }];
+    if (c.responsable) {
+      historial.push({ estado: ESTADOS.EN_PROCESO, fecha: hace(c.asignadoH), nota: 'Asignado a ' + conArea(usuarioPorId[c.responsable]) + '.', por: admin.nombre });
+    }
+    return {
+      id: '', titulo: c.titulo, descripcion: c.descripcion, categoria: c.categoria, ubicacion: c.ubicacion, prioridad: c.prioridad,
+      estado: c.responsable ? ESTADOS.EN_PROCESO : ESTADOS.NUEVO, creado, resuelto: null,
+      responsableId: c.responsable || null, autorId: autor.id, autor: autor.nombre, foto: false, historial
+    };
+  });
 }

@@ -5,6 +5,7 @@ import { categoriaPorId, zonaPorId, CLASE_ESTADO } from '../models/catalogos.js'
 import { esc, fFechaHora, fNum } from '../utils/formato.js';
 import { horasEntre } from '../utils/tiempo.js';
 import { estadoHTML } from './estado.js';
+import { pintarAcciones } from './acciones-reporte.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -24,7 +25,7 @@ export function abrirDetalle(x, app) {
     ['Zona', z.nombre + ', ' + z.detalle.toLowerCase()],
     ['Prioridad', x.prioridad],
     ['Responsable', app.reportes.nombreResponsable(x)],
-    ['Reportado por', x.autor],
+    ['Reportado por', x.autor + (app.usuario && x.autorId === app.usuario.id ? ' (tú)' : '')],
     ['Foto', x.fotoUrl ? 'Adjunta' : (x.foto ? 'Adjunta (dato simulado)' : 'Sin foto')],
     ['Reportado', fFechaHora.format(x.creado)],
     [x.resuelto ? 'Resuelto en' : 'Abierto hace', fNum.format(horasEntre(x.creado, x.resuelto || new Date())) + ' horas']
@@ -36,7 +37,13 @@ export function abrirDetalle(x, app) {
   $('dHistorial').innerHTML = x.historial.map((h) =>
     '<li class="history--' + CLASE_ESTADO[h.estado] + '"><strong>' + h.estado + '</strong> <time>' + fFechaHora.format(h.fecha) + '</time><p>' + esc(h.nota) + '</p></li>'
   ).join('');
+  pintarAcciones($('dAcciones'), x, app);
   const d = $('detalle');
   if (d.open) return;
   if (d.showModal) d.showModal(); else d.setAttribute('open', '');
+}
+
+export function cerrarDetalle() {
+  const d = $('detalle');
+  if (d.open) d.close();
 }

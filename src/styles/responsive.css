@@ -36,7 +36,11 @@
   .stat__value { font-size: 30px; }
   .chart { height: 230px; }
   .chart--cat { height: 260px; }
-  .zones, .tips, .form__grid, .facts { grid-template-columns: 1fr; }
+  .zones, .tips, .form__grid { grid-template-columns: 1fr; }
+  .facts { gap: 8px 14px; }
+  .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .summary__item:nth-child(3) { border-left: 0; }
+  .summary__item:nth-child(n+3) { border-top: 1px solid var(--linea); }
   .toolbar select { flex: 1 1 45%; }
 
   /* La tabla pasa a filas apiladas */

@@ -138,6 +138,24 @@
         </div>
       </section>
 
+      <!-- MIS REPORTES (estudiante) -->
+      <section id="mis-reportes" class="block page" data-pagina="mis-reportes" hidden aria-labelledby="t-mis">
+        <div class="page-head">
+          <div>
+            <h1 id="t-mis" class="block__title" tabindex="-1">Mis reportes</h1>
+            <p class="block__sub">Sigue el estado de lo que has reportado. Puedes editar o eliminar un reporte mientras está en estado Nuevo.</p>
+          </div>
+          <a class="btn btn--primary" href="#/nuevo">Nuevo reporte</a>
+        </div>
+        <div class="summary" id="misResumen"></div>
+        <div class="toolbar">
+          <select id="misEstado" aria-label="Filtrar mis reportes por estado">
+            <option value="">Todos los estados</option>
+          </select>
+        </div>
+        <div id="tablaMis"></div>
+      </section>
+
       <!-- REPORTES -->
       <section id="reportes" class="block page" data-pagina="reportes" hidden aria-labelledby="t-rep">
         <h1 id="t-rep" class="block__title" tabindex="-1">Reportes</h1>
@@ -172,7 +190,7 @@
       <!-- NUEVO REPORTE -->
       <section id="nuevo" class="block page" data-pagina="nuevo" hidden aria-labelledby="t-nuevo">
         <h1 id="t-nuevo" class="block__title" tabindex="-1">Nuevo reporte</h1>
-        <p class="block__sub">Cuéntanos qué pasa y dónde. Al enviarlo recibes un código para consultar su estado.</p>
+        <p class="block__sub" id="nuevoSub">Cuéntanos qué pasa y dónde. Al enviarlo recibes un código para consultar su estado.</p>
 
         <form class="panel form" id="form" novalidate>
           <div class="form__grid">
@@ -217,8 +235,9 @@
             </div>
           </div>
           <div class="form__actions">
-            <button type="reset" class="btn btn--secondary">Borrar</button>
-            <button type="submit" class="btn btn--primary">Enviar reporte</button>
+            <a class="btn btn--secondary" id="rCancelar" href="#/mis-reportes" hidden>Cancelar</a>
+            <button type="reset" class="btn btn--secondary" id="rBorrar">Borrar</button>
+            <button type="submit" class="btn btn--primary" id="rEnviar">Enviar reporte</button>
           </div>
         </form>
       </section>
@@ -250,8 +269,19 @@
     <figure class="dialog__photo" id="dFoto" hidden>
       <img id="dFotoImg" alt="Foto adjunta al reporte">
     </figure>
+    <div class="actions" id="dAcciones" hidden></div>
     <h4>Historial</h4>
     <ol class="history" id="dHistorial"></ol>
+  </dialog>
+
+  <!-- Confirmación -->
+  <dialog class="dialog dialog--small" id="confirmar" aria-labelledby="cTitulo">
+    <h3 id="cTitulo"></h3>
+    <p class="dialog__desc" id="cMensaje"></p>
+    <div class="form__actions">
+      <button type="button" class="btn btn--secondary" id="cNo">Cancelar</button>
+      <button type="button" class="btn btn--danger" id="cSi">Confirmar</button>
+    </div>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>

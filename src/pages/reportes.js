@@ -65,17 +65,17 @@ export function crearPaginaReportes(app) {
       });
       $('#exportar').addEventListener('click', exportar);
     },
-    /** params: filtros a aplicar (opcional) y reporte a resaltar */
+    /** params: filtros a aplicar, reporte a resaltar o conservar (redibujar sin cambiar nada) */
     async mostrar(params = {}) {
       $('#exportar').hidden = !app.puede('reportes.exportar');
       // Si la ruta trae parámetros (#/reportes?zona=x) se aplican desde cero;
       // si no, se conservan los filtros que el usuario ya tenía.
-      const { resaltar, ...filtros } = params;
-      if (Object.keys(params).length) {
+      const { resaltar, conservar, ...filtros } = params;
+      if (resaltar || Object.keys(filtros).length) {
         app.estado.filtros = { ...FILTROS_VACIOS, ...pick(filtros) };
         sincronizarCampos();
       }
-      await pintar({ resaltar });
+      await pintar({ resaltar, conservarPagina: !!conservar });
     }
   };
 }
