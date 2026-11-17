@@ -50,9 +50,8 @@ export function crearPaginaPanel(app) {
     $('#trendTable').innerHTML = '<table class="table table--small"><thead><tr><th scope="col">Intervalo</th><th scope="col">Recibidos</th><th scope="col">Resueltos</th></tr></thead><tbody>' +
       serie.intervalos.map((it, i) => '<tr><td>' + esc(it.etiquetaLarga) + '</td><td>' + serie.creados[i] + '</td><td>' + serie.resueltos[i] + '</td></tr>').join('') +
       '</tbody></table>';
-    const sel = app.estado.filtros.categoria;
-    dibujarCategorias($('#catChart'), reportes.filter((x) => x.creado >= r.desde), sel, (id) => {
-      app.irA('reportes', { categoria: sel === id ? '' : id });
+    dibujarCategorias($('#catChart'), reportes.filter((x) => x.creado >= r.desde), null, (id) => {
+      app.irA('reportes', { categoria: id });
     });
   }
 

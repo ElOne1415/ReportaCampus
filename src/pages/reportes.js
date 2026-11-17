@@ -12,6 +12,7 @@ import { montarTablaReportes } from '../components/tabla-reportes.js';
 
 const CAMPOS = { texto: '#fTexto', estado: '#fEstado', categoria: '#fCategoria', zona: '#fZona' };
 export const FILTROS_VACIOS = Object.freeze({ texto: '', estado: '', categoria: '', zona: '' });
+const pick = (o) => Object.fromEntries(Object.entries(o).filter(([k]) => k in FILTROS_VACIOS));
 
 export function crearPaginaReportes(app) {
   let tabla;
@@ -55,22 +56,22 @@ export function crearPaginaReportes(app) {
         $(CAMPOS[k]).addEventListener('change', (e) => {
           app.estado.filtros[k] = e.target.value;
           pintar();
-          if (k === 'categoria') app.alCambiarFiltros();
         });
       });
       $('#fLimpiar').addEventListener('click', () => {
         app.estado.filtros = { ...FILTROS_VACIOS };
         sincronizarCampos();
         pintar();
-        app.alCambiarFiltros();
       });
       $('#exportar').addEventListener('click', exportar);
     },
     /** params: filtros a aplicar (opcional) y reporte a resaltar */
     async mostrar(params = {}) {
+      // Si la ruta trae parámetros (#/reportes?zona=x) se aplican desde cero;
+      // si no, se conservan los filtros que el usuario ya tenía.
       const { resaltar, ...filtros } = params;
-      if (Object.keys(filtros).length) {
-        app.estado.filtros = { ...FILTROS_VACIOS, ...filtros };
+      if (Object.keys(params).length) {
+        app.estado.filtros = { ...FILTROS_VACIOS, ...pick(filtros) };
         sincronizarCampos();
       }
       await pintar({ resaltar });

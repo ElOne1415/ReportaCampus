@@ -75,10 +75,8 @@ export function crearPaginaNuevo(app) {
     }
     e.target.reset();
     quitarFoto();
-    await app.refrescar();
-    pintarGuardados();
     app.aviso('Reporte enviado. Tu código es ' + res.reporte.id + '.' + (res.guardado ? '' : ' No se pudo guardar en este navegador.'));
-    app.irA('reportes', { ...app.FILTROS_VACIOS, resaltar: res.reporte.id });
+    app.irA('reportes', { resaltar: res.reporte.id });
   }
 
   return {
@@ -95,7 +93,6 @@ export function crearPaginaNuevo(app) {
       });
       $('#borrarGuardados').addEventListener('click', async () => {
         await app.reportes.borrarPropios();
-        await app.refrescar();
         pintarGuardados();
         app.aviso('Se borraron tus reportes guardados.');
       });

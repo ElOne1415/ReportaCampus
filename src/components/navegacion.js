@@ -19,15 +19,11 @@ export function iniciarMenu() {
   return { cerrar };
 }
 
-/** Marca como activo el enlace de la sección visible al desplazarse. */
-export function seguirSeccionVisible() {
-  if (!('IntersectionObserver' in window)) return;
-  const enlaces = Object.fromEntries($$('.nav-link').map((a) => [a.hash.slice(1), a]));
-  const io = new IntersectionObserver((ents) => ents.forEach((en) => {
-    if (en.isIntersecting && enlaces[en.target.id]) {
-      $$('.nav-link').forEach((a) => a.classList.remove('is-active'));
-      enlaces[en.target.id].classList.add('is-active');
-    }
-  }), { rootMargin: '-40% 0px -55% 0px' });
-  $$('.block').forEach((s) => io.observe(s));
+/** Marca como activo el enlace de la página actual. */
+export function marcarActivo(nombre) {
+  $$('.nav-link').forEach((a) => {
+    const activo = a.dataset.ruta === nombre;
+    a.classList.toggle('is-active', activo);
+    if (activo) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
 }
