@@ -1,0 +1,43 @@
+/* ==========================================================
+   ReportaCampus · Estructura
+   Barra superior, menú lateral y contenedor principal.
+   ========================================================== */
+
+/* ---------- Barra superior ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 40;
+  height: var(--topbar);
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 20px;
+  background: var(--rojo-oscuro);
+  color: #fff;
+}
+.wordmark { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-weight: 900; font-size: 19px; letter-spacing: -0.01em; }
+.wordmark__badge { display: grid; place-items: center; width: 34px; height: 34px; background: var(--blanco); border-radius: 6px; }
+.wordmark__badge img { display: block; }
+.menu-btn { display: none; width: 40px; height: 40px; margin-left: -8px; border: 0; background: transparent; cursor: pointer; position: relative; }
+.menu-btn__bars, .menu-btn__bars::before, .menu-btn__bars::after { position: absolute; left: 10px; width: 20px; height: 2px; background: #fff; content: ""; }
+.menu-btn__bars { top: 19px; }
+.menu-btn__bars::before { left: 0; top: -6px; }
+.menu-btn__bars::after { left: 0; top: 6px; }
+
+/* ---------- Estructura ---------- */
+.shell { display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr); min-height: calc(100vh - var(--topbar)); }
+.sidebar {
+  position: sticky; top: var(--topbar); align-self: start;
+  height: calc(100vh - var(--topbar));
+  background: var(--blanco); border-right: 1px solid var(--linea);
+  padding: 20px 0; display: flex; flex-direction: column; justify-content: space-between;
+}
+.sidebar ul { list-style: none; padding: 0; }
+.nav-link { display: block; padding: 10px 20px; color: var(--pizarra); text-decoration: none; font-weight: 700; font-size: 15px; border-left: 3px solid transparent; }
+.nav-link:hover { background: var(--fondo); }
+.nav-link.is-active { border-left-color: var(--rojo); color: var(--rojo-oscuro); background: #faf4f3; }
+.scrim { display: none; }
+
+.main { padding: 28px 32px 0; max-width: 1180px; width: 100%; }
+.block { padding-bottom: 48px; }
+.block__title { font-size: 24px; font-weight: 900; margin-bottom: 4px; }
+.block__sub { color: var(--gris); margin-bottom: 16px; max-width: 70ch; }
+
+.footer { border-top: 1px solid var(--linea); padding: 18px 0 28px; font-size: 13px; color: var(--gris); }

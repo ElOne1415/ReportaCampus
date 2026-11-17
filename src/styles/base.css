@@ -1,0 +1,48 @@
+/* ==========================================================
+   ReportaCampus · Base
+   Tipografía, variables de color, reinicio y utilidades.
+   ========================================================== */
+
+@font-face { font-family: "Lato"; font-weight: 400; font-display: swap; src: url("../../public/fonts/lato-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Lato"; font-weight: 700; font-display: swap; src: url("../../public/fonts/lato-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Lato"; font-weight: 900; font-display: swap; src: url("../../public/fonts/lato-latin-900-normal.woff2") format("woff2"); }
+
+:root {
+  color-scheme: light;
+  /* Paleta */
+  --rojo-oscuro: #a60311;
+  --rojo: #c1272d;
+  --pizarra: #333c4e;
+  --azul: #3b64a0;
+  --tinta: #2b2b2b;
+  --gris: #6f777f;
+  --linea: #e1ddd9;
+  --fondo: #f2f1f0;
+  --blanco: #ffffff;
+  /* Estados */
+  --nuevo: #c1272d;
+  --proceso: #b0700f;
+  --resuelto: #2f7d4f;
+
+  --topbar: 56px;
+  --sidebar: 220px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--topbar) + 16px); }
+body {
+  margin: 0;
+  font-family: "Lato", "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--tinta);
+  background: var(--fondo);
+}
+h1, h2, h3, h4, p, dl, dd, ol, ul { margin: 0; }
+h1, h2, h3, h4 { color: var(--pizarra); line-height: 1.2; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--azul); outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip-link { position: absolute; left: 8px; top: -40px; background: var(--pizarra); color: #fff; padding: 8px 12px; z-index: 100; }
+.skip-link:focus { top: 8px; }
+[hidden] { display: none !important; }

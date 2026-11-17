@@ -1,0 +1,41 @@
+/* ==========================================================
+   ReportaCampus · Páginas
+   Estilos propios de cada sección.
+   ========================================================== */
+
+/* ---------- Panel ---------- */
+.page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+.page-head h1 { font-size: 32px; font-weight: 900; letter-spacing: -0.01em; }
+.lead { color: var(--gris); margin-top: 4px; }
+.period { text-align: right; }
+.period__range { font-size: 13px; color: var(--gris); margin-top: 6px; }
+.charts { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; margin-bottom: 16px; }
+.chart { position: relative; height: 270px; }
+.chart--cat { height: 296px; }
+.legend { display: flex; gap: 18px; font-size: 13px; color: var(--tinta); margin-bottom: 6px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.key { display: inline-block; }
+.key--bar { width: 10px; height: 10px; background: var(--rojo); }
+.key--line { width: 16px; height: 2px; background: var(--azul); position: relative; }
+.key--line::after { content: ""; position: absolute; left: 4px; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--azul); }
+.goals__list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-top: 12px; }
+.goal__row { display: flex; justify-content: space-between; gap: 10px; font-size: 15px; }
+.goal__row strong { font-variant-numeric: tabular-nums; }
+.goal__note { font-size: 13px; color: var(--gris); margin-top: 8px; }
+
+/* ---------- Nuevo reporte ---------- */
+.form { max-width: 760px; }
+.form__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+.saved { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; max-width: 760px; margin-bottom: 12px; padding: 10px 14px; background: var(--blanco); border: 1px solid var(--linea); border-left: 4px solid var(--azul); border-radius: 3px; font-size: 14px; }
+.saved[hidden] { display: none; }
+.photo { display: flex; gap: 14px; align-items: center; padding: 10px; border: 1px dashed #c9c4bf; border-radius: 3px; }
+.photo[hidden] { display: none; }
+.photo img { width: 120px; height: 90px; object-fit: cover; border-radius: 3px; background: var(--fondo); }
+.photo__name { font-size: 14px; color: var(--gris); word-break: break-all; }
+.form__actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--linea); }
+
+/* ---------- Recomendaciones ---------- */
+.tips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 40px; max-width: 920px; }
+.tips > div { padding: 14px 0; border-top: 1px solid var(--linea); }
+.tips dt { font-weight: 900; color: var(--pizarra); }
+.tips dd { color: var(--tinta); font-size: 15px; margin-top: 2px; }

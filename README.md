@@ -1,4 +1,4 @@
-<p align="center"><img src="assets/img/logo.svg" alt="Logo de ReportaCampus" width="96"></p>
+<p align="center"><img src="public/img/logo.svg" alt="Logo de ReportaCampus" width="96"></p>
 
 # ReportaCampus
 
@@ -6,7 +6,7 @@
 
 ReportaCampus es una aplicación web para reportar las incidencias del campus (daños, fallas, problemas de aseo o de seguridad) y consultar en qué estado se encuentra cada una. Esta versión es el **prototipo web inicial (v0.2)**: una interfaz funcional construida con HTML5, CSS3 y JavaScript que trabaja con datos simulados.
 
-![Panel de incidencias](docs/evidencias/01-escritorio-panel.png)
+![Panel de incidencias](documentacion/pruebas/evidencias/01-escritorio-panel.png)
 
 ## Equipo
 
@@ -54,43 +54,43 @@ El archivo `js/data.js` genera un año de incidencias de prueba con un generador
 | HTML5 | Estructura semántica de la página (`header`, `nav`, `main`, `section`, `dialog`) y formulario. |
 | CSS3 | Estilos con variables de color, Grid, Flexbox y *media queries* para el diseño adaptable. |
 | JavaScript | Lógica de la interfaz sin frameworks: indicadores, filtros, formulario, detalle y navegación. |
-| [Chart.js 4.6](https://www.chartjs.org/) | Biblioteca para las gráficas interactivas. Se eligió porque es liviana, no necesita compilación y trae tooltips y adaptación de tamaño. Está incluida en `js/vendor/` para que el prototipo funcione sin internet. |
-| Lato | Tipografía de la interfaz (licencia OFL), incluida en `assets/fonts/`. |
+| [Chart.js 4.6](https://www.chartjs.org/) | Biblioteca para las gráficas interactivas. Se eligió porque es liviana, no necesita compilación y trae tooltips y adaptación de tamaño. Está incluida en `public/vendor/` para que el prototipo funcione sin internet. |
+| Lato | Tipografía de la interfaz (licencia OFL), incluida en `public/fonts/`. |
 | Visual Studio Code | Editor de código. |
 | Git y GitHub | Control de versiones y publicación del repositorio. |
 
 ## Colorimetría
 
-La paleta combina un rojo como color principal de la marca con un gris pizarra para textos y navegación, sobre fondos neutros. Los colores están definidos como variables al inicio de `css/styles.css`.
+La paleta combina un rojo como color principal de la marca con un gris pizarra para textos y navegación, sobre fondos neutros. Los colores están definidos como variables al inicio de `src/styles/base.css`.
 
-El logo (`assets/img/logo.svg`) es un marcador de ubicación con una marca de verificación: une la idea de reportar un lugar con la de un caso resuelto. Usa el rojo (mitad izquierda), el rojo oscuro (mitad derecha), el gris pizarra (marca de verificación) y el blanco. En la barra superior va sobre un recuadro blanco para que no se pierda contra el fondo rojo.
+El logo (`public/img/logo.svg`) es un marcador de ubicación con una marca de verificación: une la idea de reportar un lugar con la de un caso resuelto. Usa el rojo (mitad izquierda), el rojo oscuro (mitad derecha), el gris pizarra (marca de verificación) y el blanco. En la barra superior va sobre un recuadro blanco para que no se pierda contra el fondo rojo.
 
 ### Colores principales
 
 | Muestra | Nombre | Hex | Uso |
 |---|---|---|---|
-| ![Rojo oscuro](docs/colores/rojo-oscuro.svg) | Rojo oscuro | `#A60311` | Barra superior, enlace activo del menú, mensajes de error. |
-| ![Rojo](docs/colores/rojo.svg) | Rojo | `#C1272D` | Botón principal, barras de reportes recibidos en la gráfica, borde del enlace activo. |
-| ![Gris pizarra](docs/colores/pizarra.svg) | Gris pizarra | `#333C4E` | Títulos, menú lateral, periodo seleccionado, barras de la gráfica por categoría. |
-| ![Azul](docs/colores/azul.svg) | Azul | `#3B64A0` | Línea de reportes resueltos, enlaces y foco del teclado. |
+| ![Rojo oscuro](documentacion/diseno/colores/rojo-oscuro.svg) | Rojo oscuro | `#A60311` | Barra superior, enlace activo del menú, mensajes de error. |
+| ![Rojo](documentacion/diseno/colores/rojo.svg) | Rojo | `#C1272D` | Botón principal, barras de reportes recibidos en la gráfica, borde del enlace activo. |
+| ![Gris pizarra](documentacion/diseno/colores/pizarra.svg) | Gris pizarra | `#333C4E` | Títulos, menú lateral, periodo seleccionado, barras de la gráfica por categoría. |
+| ![Azul](documentacion/diseno/colores/azul.svg) | Azul | `#3B64A0` | Línea de reportes resueltos, enlaces y foco del teclado. |
 
 ### Neutros
 
 | Muestra | Nombre | Hex | Uso |
 |---|---|---|---|
-| ![Tinta](docs/colores/tinta.svg) | Tinta | `#2B2B2B` | Texto principal y cifras de los indicadores. |
-| ![Gris](docs/colores/gris.svg) | Gris | `#6F777F` | Textos secundarios, etiquetas y ejes de las gráficas. |
-| ![Línea](docs/colores/linea.svg) | Línea | `#E1DDD9` | Bordes de paneles, tablas y separadores. |
-| ![Fondo](docs/colores/fondo.svg) | Fondo | `#F2F1F0` | Fondo general de la página. |
-| ![Blanco](docs/colores/blanco.svg) | Blanco | `#FFFFFF` | Fondo de paneles, tablas y formulario. |
+| ![Tinta](documentacion/diseno/colores/tinta.svg) | Tinta | `#2B2B2B` | Texto principal y cifras de los indicadores. |
+| ![Gris](documentacion/diseno/colores/gris.svg) | Gris | `#6F777F` | Textos secundarios, etiquetas y ejes de las gráficas. |
+| ![Línea](documentacion/diseno/colores/linea.svg) | Línea | `#E1DDD9` | Bordes de paneles, tablas y separadores. |
+| ![Fondo](documentacion/diseno/colores/fondo.svg) | Fondo | `#F2F1F0` | Fondo general de la página. |
+| ![Blanco](documentacion/diseno/colores/blanco.svg) | Blanco | `#FFFFFF` | Fondo de paneles, tablas y formulario. |
 
 ### Estados de un reporte
 
 | Muestra | Estado | Hex | Uso |
 |---|---|---|---|
-| ![Nuevo](docs/colores/rojo.svg) | Nuevo | `#C1272D` | Reporte recibido que aún no tiene responsable. |
-| ![En proceso](docs/colores/proceso.svg) | En proceso | `#B0700F` | Reporte asignado y en atención; también metas aún no cumplidas. |
-| ![Resuelto](docs/colores/resuelto.svg) | Resuelto | `#2F7D4F` | Reporte cerrado; también metas cumplidas. |
+| ![Nuevo](documentacion/diseno/colores/rojo.svg) | Nuevo | `#C1272D` | Reporte recibido que aún no tiene responsable. |
+| ![En proceso](documentacion/diseno/colores/proceso.svg) | En proceso | `#B0700F` | Reporte asignado y en atención; también metas aún no cumplidas. |
+| ![Resuelto](documentacion/diseno/colores/resuelto.svg) | Resuelto | `#2F7D4F` | Reporte cerrado; también metas cumplidas. |
 
 Los estados siempre se muestran con su nombre junto al color, para que no dependan solo de él. Los dos colores de la gráfica principal (rojo y azul) se verificaron para que se distingan también con daltonismo.
 
@@ -124,19 +124,18 @@ Para revisar la vista de celular o tableta, abre las herramientas de desarrollo 
 ```
 ReportaCampus/
 ├── index.html            Página principal
-├── css/
-│   └── styles.css        Estilos, paleta y diseño adaptable
+├── src/styles/           Estilos divididos en base, estructura, componentes, páginas y diseño adaptable
 ├── js/
 │   ├── data.js           Datos simulados
 │   ├── charts.js         Gráficas
-│   ├── app.js            Lógica de la interfaz
-│   └── vendor/           Chart.js
-├── assets/
+│   └── app.js            Lógica de la interfaz
+├── public/
 │   ├── img/              Logo
-│   └── fonts/            Tipografía Lato
-└── docs/
-    ├── colores/          Muestras de la paleta
-    └── evidencias/       Capturas del prototipo
+│   ├── fonts/            Tipografía Lato
+│   └── vendor/           Chart.js
+└── documentacion/
+    ├── diseno/colores/   Muestras de la paleta
+    └── pruebas/evidencias/  Capturas del prototipo
 ```
 
 ## Verificación del funcionamiento
@@ -165,17 +164,17 @@ Se probó en Google Chrome en tres tamaños de pantalla: 1366 px (computador), 8
 
 | Computador | Celular |
 |---|---|
-| ![Panel en computador](docs/evidencias/01-escritorio-panel.png) | ![Panel en celular](docs/evidencias/09-movil-panel.png) |
+| ![Panel en computador](documentacion/pruebas/evidencias/01-escritorio-panel.png) | ![Panel en celular](documentacion/pruebas/evidencias/09-movil-panel.png) |
 
 Gráfica con el periodo *Semestre* y detalle al pasar el cursor:
 
-![Gráfica interactiva](docs/evidencias/03-grafica-semestre.png)
+![Gráfica interactiva](documentacion/pruebas/evidencias/03-grafica-semestre.png)
 
 Nuevo reporte con foto, guardado en el navegador:
 
-![Detalle con foto](docs/evidencias/15-detalle-foto.png)
+![Detalle con foto](documentacion/pruebas/evidencias/15-detalle-foto.png)
 
-Todas las capturas están en [`docs/evidencias/`](docs/evidencias/):
+Todas las capturas están en [`documentacion/pruebas/evidencias/`](documentacion/pruebas/evidencias/):
 
 | Archivo | Qué muestra |
 |---|---|
