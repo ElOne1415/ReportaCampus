@@ -7,9 +7,28 @@ Thumbs.db
 !.vscode/extensions.json
 .idea/
 
-# Dependencias y entornos (próximas fases)
+# Node
 node_modules/
+npm-debug.log*
+
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
 .venv/
+venv/
+.pytest_cache/
+
+# Configuración local y secretos (usar .env.example como plantilla)
 .env
+.env.*
+!.env.example
+
+# Datos generados por el backend
+backend/instancia/
+*.sqlite
+*.sqlite3
+*.db
+
+# Resultados de las pruebas de extremo a extremo
+test-results/
+playwright-report/
