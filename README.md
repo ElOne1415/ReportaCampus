@@ -4,9 +4,262 @@
 
 **EJECUCION:** https://elone1415.github.io/ReportaCampus/
 
-ReportaCampus es una aplicación web para reportar las incidencias del campus (daños, fallas, problemas de aseo o de seguridad) y consultar en qué estado se encuentra cada una. Esta versión es el **prototipo web inicial (v0.2)**: una interfaz funcional construida con HTML5, CSS3 y JavaScript que trabaja con datos simulados.
+ReportaCampus es una aplicación web para reportar las incidencias del campus (daños, fallas, problemas de aseo o de seguridad) y hacer seguimiento a su atención. La comunidad reporta, los responsables de cada dependencia atienden lo que tienen asignado y el administrador reparte el trabajo y gestiona las cuentas.
 
-![Panel de incidencias](documentacion/pruebas/evidencias/fase-1/01-escritorio-panel.png)
+Esta es la **versión 0.3 (Fase II)**: producto web con inicio de sesión, tres roles con permisos, gestión de reportes y de usuarios, arquitectura por capas y pruebas automáticas. Los datos se guardan en el navegador; el backend llega en la entrega final.
+
+![Panel del administrador](documentacion/pruebas/evidencias/fase-2/25-administrador-panel.png)
+
+## Cuentas de demostración
+
+Todas usan la contraseña **`campus2026`**. En la página de inicio de sesión hay un botón para entrar con cada una.
+
+| Rol | Nombre | Correo | Llega a |
+|---|---|---|---|
+| Estudiante | Valentina Martínez | `valentina.martinez@campus.edu.co` | Mis reportes |
+| Responsable | Diana Rojas (Planta física) | `diana.rojas@campus.edu.co` | Mis asignaciones |
+| Administrador | Paola Méndez | `admin@campus.edu.co` | Panel |
+
+Hay 16 cuentas en total (10 estudiantes, 5 responsables y 1 administrador); se ven en *Usuarios* con la cuenta de administrador. `mateo.sanchez@campus.edu.co` está desactivada a propósito para probar el rechazo del inicio de sesión.
+
+## Información general
+
+### Problemática
+
+En el campus los daños y problemas se reportan de palabra, por correo o en grupos de chat. Los reportes se pierden o se repiten, nadie sabe quién los atiende y quien reporta no se entera de si se resolvió. Tampoco hay datos para saber cuánto tarda la atención ni qué zonas concentran más problemas.
+
+### Objetivo general
+
+Desarrollar una aplicación web que permita a la comunidad universitaria reportar incidencias del campus y consultar su estado, mientras los responsables las gestionan desde un panel, con el fin de reducir el tiempo de respuesta, evitar reportes perdidos o repetidos y dar trazabilidad a cada caso.
+
+### Alcance
+
+**Incluido en el proyecto:** registro y seguimiento de reportes con foto, roles de estudiante, responsable y administrador, asignación de responsables, cambios de estado con historial, panel de indicadores, gestión de usuarios, backend en Python con Flask y base de datos en SQL Server (entrega final).
+
+**Fuera del alcance:** aplicación móvil nativa, notificaciones por correo, SMS o WhatsApp, integración con otros sistemas, mapas o GPS y clasificación automática con inteligencia artificial.
+
+## Estado del proyecto
+
+### Funcionalidades implementadas
+
+| Módulo | Qué hace | Rol | Versión |
+|---|---|---|---|
+| Inicio de sesión | Validación de correo y contraseña, rechazo de cuentas desactivadas, cuentas de demostración, cierre de sesión. | Todos | v0.3 |
+| Menú y rutas por rol | Cada rol ve solo sus secciones; las rutas sin permiso redirigen al inicio del rol. | Todos | v0.3 |
+| Mis reportes | Resumen por estado que sirve de filtro y lista de los reportes propios. | Estudiante | v0.3 |
+| Editar y eliminar reporte propio | Disponible mientras el reporte está en estado Nuevo; eliminar pide confirmación. | Estudiante | v0.3 |
+| Mis asignaciones | Reportes a cargo del responsable, ordenados por prioridad y antigüedad. | Responsable | v0.3 |
+| Atención del reporte | Agregar notas y marcar como resuelto con nota obligatoria. | Responsable, administrador | v0.3 |
+| Gestión del reporte | Asignar o reasignar responsable (sugiere a quien atiende la categoría), cambiar prioridad, reabrir con nota y eliminar. | Administrador | v0.3 |
+| Usuarios | Crear, editar, activar, desactivar y eliminar cuentas con validación; búsqueda y filtros por rol y estado; restablecer datos de demostración. | Administrador | v0.3 |
+| Panel de incidencias | Indicadores, gráficas por semana, mes o semestre (Chart.js), metas de atención y enlace a los reportes sin asignar. | Todos | v0.1, v0.3 |
+| Lista de reportes | Búsqueda, filtros por estado, categoría, zona y responsable, paginación, detalle con historial. | Todos | v0.1, v0.3 |
+| Exportar CSV | Descarga los reportes filtrados para Excel. | Responsable, administrador | v0.2 |
+| Nuevo reporte | Formulario con validación y foto con vista previa. | Todos | v0.1, v0.2 |
+| Zonas del campus | Tarjetas con los reportes abiertos de cada espacio; abren la lista filtrada. | Todos | v0.1 |
+| Recomendaciones | Buenas prácticas para reportar. | Todos | v0.1 |
+
+### Avances de la Fase II
+
+- **Roles y permisos:** estudiante, responsable y administrador, con una matriz de permisos única (`src/models/roles.js`) que revisan tanto la interfaz como los servicios.
+- **Gestión de información (CRUD):** reportes (crear, consultar, editar, eliminar, asignar, cambiar estado y prioridad) y usuarios (crear, consultar, editar, activar o desactivar, eliminar).
+- **Arquitectura por capas:** el archivo único `js/app.js` de la Fase I se dividió en configuración, modelos, datos, servicios, componentes, páginas y utilidades con módulos ES.
+- **Navegación por rutas** entre páginas, con los botones Atrás y Adelante del navegador y enlaces a listas filtradas.
+- **Componentes reutilizables:** tabla de reportes, resumen por estado, detalle con acciones según el rol, ventana de confirmación, gráficas, aviso y menú.
+- **Persistencia completa en el navegador** de reportes y usuarios, con migración de los reportes creados en la v0.2.
+- **45 pruebas unitarias** (`npm test`) y 40 casos de prueba funcionales documentados con 20 capturas nuevas.
+- **Documentación técnica** en `documentacion/` y estrategia de backend definida (endpoints, tablas y autenticación).
+
+### Funcionalidades pendientes (entrega final)
+
+| Pendiente | Detalle |
+|---|---|
+| Backend | API REST en Python con Flask, siguiendo el contrato de [ADR-005](documentacion/decisiones_tecnicas/ADR-005-estrategia-backend.md). |
+| Base de datos | SQL Server con las tablas usuarios, reportes, historial, categorías y zonas. |
+| Autenticación real | Contraseña propia de cada usuario cifrada en el servidor, token de sesión y cambio de contraseña. |
+| Fotos en el servidor | Subir la imagen a la API en lugar de guardarla en el navegador. |
+| Calificar la solución | El estudiante califica la atención cuando su reporte queda resuelto. |
+| Alertas de 48 horas | Aviso de reportes que superan la meta de atención. |
+| Responsable toma reportes | Tomar un reporte nuevo de su categoría sin esperar la asignación. |
+| Auditoría | Registro de las acciones del administrador. |
+| Pruebas de extremo a extremo | Automatizar en el navegador los casos funcionales con Playwright y probar la API con pytest. |
+
+### Próximos pasos
+
+1. Crear la carpeta `backend/` con Flask y conectar SQL Server.
+2. Implementar los endpoints de autenticación y reportes, y luego los de usuarios.
+3. Escribir los servicios del frontend que usan la API (`src/services/api/`) y cambiar `FUENTE_DATOS` a `'api'`.
+4. Cargar los datos iniciales con un script de semilla.
+5. Agregar las funcionalidades pendientes y automatizar las pruebas de extremo a extremo.
+6. Publicar el backend y configurar CORS para GitHub Pages.
+
+## Información técnica
+
+### Tecnologías utilizadas
+
+| Tecnología | Uso en el proyecto |
+|---|---|
+| HTML5 | Estructura semántica de las páginas (`header`, `nav`, `main`, `section`, `dialog`) y formularios. |
+| CSS3 | Variables de color, Grid, Flexbox y *media queries*, divididos en cinco hojas por responsabilidad. |
+| JavaScript (módulos ES) | Toda la lógica, sin frameworks ni compilación. Ver [ADR-001](documentacion/decisiones_tecnicas/ADR-001-javascript-sin-framework.md). |
+| [Chart.js 4.6](https://www.chartjs.org/) | Gráficas interactivas del panel. Incluida en `public/vendor/` para funcionar sin internet. |
+| Lato | Tipografía de la interfaz (licencia OFL), incluida en `public/fonts/`. |
+| localStorage y sessionStorage | Persistencia de datos y de la sesión en esta fase. |
+| Node.js (`node:test`) | Pruebas unitarias, sin dependencias externas. |
+| Visual Studio Code, Git y GitHub | Editor, control de versiones y publicación (GitHub Pages). |
+| Python con Flask y SQL Server | Backend y base de datos de la entrega final. |
+
+### Arquitectura
+
+Aplicación de una sola página organizada en capas. Las páginas usan componentes y servicios; los servicios aplican los permisos y las reglas de los modelos y guardan los datos. Ninguna página lee el almacenamiento directamente, así que en la entrega final se cambia la fuente de datos por la API sin tocar la interfaz.
+
+```mermaid
+flowchart LR
+    P["pages/"] --> C["components/"]
+    P --> S["services/"]
+    C --> S
+    S --> M["models/<br/>reglas y permisos"]
+    S --> D["data/<br/>datos simulados"]
+    S --> L[("localStorage")]
+    S -. "entrega final" .-> API["API Flask + SQL Server"]
+```
+
+Detalle de cada capa, flujo de una acción y rutas: [documentacion/arquitectura/arquitectura.md](documentacion/arquitectura/arquitectura.md).
+
+### Estructura de carpetas
+
+```
+ReportaCampus/
+├── index.html                Estructura de todas las páginas
+├── package.json              Scripts start y test
+├── public/                   Recursos estáticos: logo, tipografía y Chart.js
+├── src/
+│   ├── main.js               Punto de entrada: servicios, sesión y router
+│   ├── router.js             Rutas por hash con control de permisos
+│   ├── config/               Configuración general y tabla de rutas por rol
+│   ├── models/               Catálogos, reporte, usuario, roles y permisos
+│   ├── data/                 Datos simulados y usuarios de demostración
+│   ├── services/             Almacenamiento y servicios de reportes, usuarios y autenticación
+│   ├── components/           Tabla, resumen, detalle, acciones, confirmación, gráficas, menú y aviso
+│   ├── pages/                Una por sección (login, mis-reportes, asignados, panel, reportes,
+│   │                         zonas, nuevo, usuarios, recomendaciones)
+│   ├── utils/                Formatos, fechas, periodos, CSV, imágenes y DOM
+│   └── styles/               base, layout, components, pages y responsive
+├── tests/                    Pruebas unitarias
+└── documentacion/
+    ├── arquitectura/
+    ├── diagramas/
+    ├── requerimientos/
+    ├── pruebas/              Plan, resultados y evidencias (fase-1, fase-2)
+    ├── decisiones_tecnicas/
+    └── diseno/colores/
+```
+
+### Dependencias
+
+El proyecto **no tiene dependencias que instalar**: `package.json` no declara ninguna.
+
+| Recurso | Versión | Dónde está | Licencia |
+|---|---|---|---|
+| Chart.js | 4.6 | `public/vendor/chart.umd.min.js` | MIT (`public/vendor/CHARTJS-LICENSE.md`) |
+| Lato | 400, 700, 900 | `public/fonts/` | OFL (`public/fonts/OFL-LICENSE.txt`) |
+
+### Requisitos de ejecución
+
+- Un navegador actualizado (Chrome, Edge, Firefox o Safari).
+- Un servidor local, porque los navegadores no cargan módulos ES abiertos con doble clic (`file://`). Sirve cualquiera de estos: la extensión Live Server de Visual Studio Code, Python 3 o Node.js.
+- Node.js 20 o superior solo para correr las pruebas.
+
+### Instalación y ejecución
+
+1. Clona el repositorio y entra a la carpeta:
+   ```bash
+   git clone https://github.com/ElOne1415/ReportaCampus.git
+   cd ReportaCampus
+   ```
+2. Inicia un servidor local con una de estas opciones:
+   - **Visual Studio Code:** clic derecho sobre `index.html` → *Open with Live Server*.
+   - **Python:**
+     ```bash
+     python3 -m http.server 8000
+     ```
+     y abre <http://localhost:8000>.
+   - **Node.js:**
+     ```bash
+     npm start
+     ```
+     y abre <http://localhost:8080>.
+3. Entra con una de las [cuentas de demostración](#cuentas-de-demostración).
+
+Para correr las pruebas:
+
+```bash
+npm test
+```
+
+Para revisar la vista de celular o tableta, abre las herramientas de desarrollo del navegador (`F12` en Windows, `Cmd + Option + I` en Mac) y activa el modo de dispositivo.
+
+### Configuración
+
+Los valores ajustables están en [`src/config/config.js`](src/config/config.js):
+
+| Valor | Para qué | Valor actual |
+|---|---|---|
+| `FUENTE_DATOS` | Origen de los datos: `'local'` (navegador) o `'api'` (entrega final). | `'local'` |
+| `API_URL` | Dirección de la API de Flask. | `http://localhost:5000/api` |
+| `CONTRASENA_DEMO` | Contraseña de las cuentas de demostración. | `campus2026` |
+| `CLAVES` | Nombres de las claves en localStorage y sessionStorage. | `reportacampus.v3.*` |
+| `META_HORAS`, `META_CUMPLIMIENTO` | Meta de atención del panel. | 48 horas, 85 % |
+| `TAMANO_PAGINA`, `FOTO_MAX_PX` | Filas por página y tamaño máximo de las fotos. | 10, 640 px |
+
+Las rutas, su permiso y la página de inicio de cada rol están en [`src/config/rutas.js`](src/config/rutas.js).
+
+Para volver a los datos iniciales: entra como administrador → *Usuarios* → *Restablecer datos*. También se puede borrar el almacenamiento del sitio desde las herramientas del navegador.
+
+## Pruebas
+
+- **Unitarias:** 45 pruebas de modelos, permisos y servicios, todas correctas ([resultado](documentacion/pruebas/resultados-pruebas-unitarias.txt)).
+- **Funcionales:** 40 casos probados en Chrome a 1366, 820, 390 y 360 px, sin errores en la consola ([plan y resultados](documentacion/pruebas/plan-de-pruebas.md)).
+
+| Estudiante | Responsable |
+|---|---|
+| ![Mis reportes](documentacion/pruebas/evidencias/fase-2/19-estudiante-mis-reportes.png) | ![Mis asignaciones](documentacion/pruebas/evidencias/fase-2/22-responsable-asignaciones.png) |
+
+| Administrador: asignar responsable | Administrador: usuarios |
+|---|---|
+| ![Asignar](documentacion/pruebas/evidencias/fase-2/27-administrador-asignar.png) | ![Usuarios](documentacion/pruebas/evidencias/fase-2/28-administrador-usuarios.png) |
+
+| Inicio de sesión en celular | Mis asignaciones en celular |
+|---|---|
+| ![Inicio de sesión en celular](documentacion/pruebas/evidencias/fase-2/31-movil-inicio-sesion.png) | ![Asignaciones en celular](documentacion/pruebas/evidencias/fase-2/34-movil-asignaciones.png) |
+
+Todas las capturas: [Fase II](documentacion/pruebas/evidencias/fase-2/) · [Fase I](documentacion/pruebas/evidencias/fase-1/).
+
+## Documentación
+
+La documentación técnica está en [`documentacion/`](documentacion/README.md): arquitectura, diagramas (casos de uso, estados, modelo de datos y navegación), requerimientos con la matriz de permisos, plan de pruebas y decisiones técnicas.
+
+## Colorimetría
+
+La paleta combina un rojo como color principal de la marca con un gris pizarra para textos y navegación, sobre fondos neutros. Los colores están definidos como variables al inicio de `src/styles/base.css`.
+
+El logo (`public/img/logo.svg`) es un marcador de ubicación con una marca de verificación: une la idea de reportar un lugar con la de un caso resuelto.
+
+| Muestra | Nombre | Hex | Uso |
+|---|---|---|---|
+| ![Rojo oscuro](documentacion/diseno/colores/rojo-oscuro.svg) | Rojo oscuro | `#A60311` | Barra superior, enlace activo del menú, mensajes de error. |
+| ![Rojo](documentacion/diseno/colores/rojo.svg) | Rojo | `#C1272D` | Botón principal, reportes recibidos en la gráfica, estado Nuevo. |
+| ![Gris pizarra](documentacion/diseno/colores/pizarra.svg) | Gris pizarra | `#333C4E` | Títulos, menú, periodo seleccionado. |
+| ![Azul](documentacion/diseno/colores/azul.svg) | Azul | `#3B64A0` | Reportes resueltos en la gráfica, enlaces y foco del teclado. |
+| ![En proceso](documentacion/diseno/colores/proceso.svg) | Ámbar | `#B0700F` | Estado En proceso y metas no cumplidas. |
+| ![Resuelto](documentacion/diseno/colores/resuelto.svg) | Verde | `#2F7D4F` | Estado Resuelto y metas cumplidas. |
+| ![Tinta](documentacion/diseno/colores/tinta.svg) | Tinta | `#2B2B2B` | Texto principal. |
+| ![Gris](documentacion/diseno/colores/gris.svg) | Gris | `#6F777F` | Textos secundarios y etiquetas. |
+| ![Línea](documentacion/diseno/colores/linea.svg) | Línea | `#E1DDD9` | Bordes y separadores. |
+| ![Fondo](documentacion/diseno/colores/fondo.svg) | Fondo | `#F2F1F0` | Fondo general. |
+| ![Blanco](documentacion/diseno/colores/blanco.svg) | Blanco | `#FFFFFF` | Paneles, tablas y formularios. |
+
+Los estados siempre se muestran con su nombre junto al color, para que no dependan solo de él. Cada rol tiene además una etiqueta de color en la barra superior: azul para estudiante, ámbar para responsable y rojo para administrador.
 
 ## Equipo
 
@@ -14,190 +267,10 @@ ReportaCampus es una aplicación web para reportar las incidencias del campus (d
 - Juan Camilo Céspedes
 - Sebastián Pérez
 
-## Objetivo general
-
-Desarrollar una aplicación web que permita a la comunidad universitaria reportar incidencias del campus y consultar su estado, mientras los responsables las gestionan desde un panel, con el fin de reducir el tiempo de respuesta, evitar reportes perdidos o repetidos y dar trazabilidad a cada caso.
-
-## Alcance inicial
-
-Esta primera entrega cubre la interfaz de la página principal con datos simulados.
-
-| Módulo | Qué hace |
-|---|---|
-| Panel de incidencias | Muestra cuatro indicadores: reportes recibidos, reportes sin resolver, tiempo promedio de solución y porcentaje resuelto en menos de 48 horas. |
-| Selector de periodo | Botones *Semana / Mes / Semestre* que recalculan los indicadores y las gráficas. |
-| Gráfica de reportes | Barras de reportes recibidos y línea de resueltos (Chart.js), con detalle al pasar el cursor y opción *Ver como tabla*. |
-| Gráfica por categoría | Al hacer clic en una barra se filtra la lista de reportes por esa categoría. |
-| Metas de atención | Avance del semestre frente a tres metas, con barra de progreso. |
-| Lista de reportes | Búsqueda por texto y filtros por estado, categoría y zona. Cada fila abre el detalle del reporte con su historial de estados. El botón *Exportar CSV* descarga los reportes filtrados para abrirlos en Excel. |
-| Zonas del campus | Tarjetas por espacio (bloques, biblioteca, laboratorios, etc.) con el número de reportes abiertos; al elegir una se filtra la lista. |
-| Nuevo reporte | Formulario con categoría, zona, título, descripción, prioridad y foto opcional con vista previa. Valida los campos obligatorios, agrega el reporte a la lista y lo guarda en el navegador. La foto se ve también en el detalle del reporte. |
-| Recomendaciones | Buenas prácticas para reportar y para cuidar los espacios. |
-| Navegación | Menú lateral con enlaces a cada sección; en celular se abre con el botón de menú. |
-
-La interfaz se adapta a computador, tableta y celular.
-
-**Elementos interactivos de esta entrega:** selector de periodo, gráficas con detalle y filtro por clic, búsqueda y filtros de la lista, exportación a CSV, detalle de reportes, tarjetas de zonas, formulario con validación y vista previa de foto, reportes guardados en el navegador y menú de navegación.
-
-**Siguientes entregas:** backend en Python con Flask, base de datos en SQL Server, inicio de sesión con roles (estudiante, responsable y administrador), asignación de responsables, cambio de estado desde el panel administrativo y carga real de fotos.
-
-**Fuera del alcance del proyecto:** aplicación móvil nativa, notificaciones por correo, SMS o WhatsApp, integración con otros sistemas, mapas o GPS y clasificación automática con inteligencia artificial.
-
-### Datos simulados
-
-El archivo `js/data.js` genera un año de incidencias de prueba con un generador pseudoaleatorio con semilla, por lo que los datos son los mismos en cada carga. Los reportes creados desde el formulario se guardan en el navegador (`localStorage`), así que siguen en la lista al recargar la página. Se pueden borrar con el enlace *Borrar mis reportes* que aparece sobre el formulario.
-
-## Tecnologías utilizadas
-
-| Tecnología | Uso en el proyecto |
-|---|---|
-| HTML5 | Estructura semántica de la página (`header`, `nav`, `main`, `section`, `dialog`) y formulario. |
-| CSS3 | Estilos con variables de color, Grid, Flexbox y *media queries* para el diseño adaptable. |
-| JavaScript | Lógica de la interfaz sin frameworks: indicadores, filtros, formulario, detalle y navegación. |
-| [Chart.js 4.6](https://www.chartjs.org/) | Biblioteca para las gráficas interactivas. Se eligió porque es liviana, no necesita compilación y trae tooltips y adaptación de tamaño. Está incluida en `public/vendor/` para que el prototipo funcione sin internet. |
-| Lato | Tipografía de la interfaz (licencia OFL), incluida en `public/fonts/`. |
-| Visual Studio Code | Editor de código. |
-| Git y GitHub | Control de versiones y publicación del repositorio. |
-
-## Colorimetría
-
-La paleta combina un rojo como color principal de la marca con un gris pizarra para textos y navegación, sobre fondos neutros. Los colores están definidos como variables al inicio de `src/styles/base.css`.
-
-El logo (`public/img/logo.svg`) es un marcador de ubicación con una marca de verificación: une la idea de reportar un lugar con la de un caso resuelto. Usa el rojo (mitad izquierda), el rojo oscuro (mitad derecha), el gris pizarra (marca de verificación) y el blanco. En la barra superior va sobre un recuadro blanco para que no se pierda contra el fondo rojo.
-
-### Colores principales
-
-| Muestra | Nombre | Hex | Uso |
-|---|---|---|---|
-| ![Rojo oscuro](documentacion/diseno/colores/rojo-oscuro.svg) | Rojo oscuro | `#A60311` | Barra superior, enlace activo del menú, mensajes de error. |
-| ![Rojo](documentacion/diseno/colores/rojo.svg) | Rojo | `#C1272D` | Botón principal, barras de reportes recibidos en la gráfica, borde del enlace activo. |
-| ![Gris pizarra](documentacion/diseno/colores/pizarra.svg) | Gris pizarra | `#333C4E` | Títulos, menú lateral, periodo seleccionado, barras de la gráfica por categoría. |
-| ![Azul](documentacion/diseno/colores/azul.svg) | Azul | `#3B64A0` | Línea de reportes resueltos, enlaces y foco del teclado. |
-
-### Neutros
-
-| Muestra | Nombre | Hex | Uso |
-|---|---|---|---|
-| ![Tinta](documentacion/diseno/colores/tinta.svg) | Tinta | `#2B2B2B` | Texto principal y cifras de los indicadores. |
-| ![Gris](documentacion/diseno/colores/gris.svg) | Gris | `#6F777F` | Textos secundarios, etiquetas y ejes de las gráficas. |
-| ![Línea](documentacion/diseno/colores/linea.svg) | Línea | `#E1DDD9` | Bordes de paneles, tablas y separadores. |
-| ![Fondo](documentacion/diseno/colores/fondo.svg) | Fondo | `#F2F1F0` | Fondo general de la página. |
-| ![Blanco](documentacion/diseno/colores/blanco.svg) | Blanco | `#FFFFFF` | Fondo de paneles, tablas y formulario. |
-
-### Estados de un reporte
-
-| Muestra | Estado | Hex | Uso |
-|---|---|---|---|
-| ![Nuevo](documentacion/diseno/colores/rojo.svg) | Nuevo | `#C1272D` | Reporte recibido que aún no tiene responsable. |
-| ![En proceso](documentacion/diseno/colores/proceso.svg) | En proceso | `#B0700F` | Reporte asignado y en atención; también metas aún no cumplidas. |
-| ![Resuelto](documentacion/diseno/colores/resuelto.svg) | Resuelto | `#2F7D4F` | Reporte cerrado; también metas cumplidas. |
-
-Los estados siempre se muestran con su nombre junto al color, para que no dependan solo de él. Los dos colores de la gráfica principal (rojo y azul) se verificaron para que se distingan también con daltonismo.
-
-## Instrucciones para ejecutar el prototipo
-
-No requiere instalar dependencias ni conexión a internet.
-
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/ElOne1415/ReportaCampus.git
-   ```
-2. Entra a la carpeta del proyecto:
-   ```bash
-   cd ReportaCampus
-   ```
-3. Abre el archivo `index.html` en un navegador actualizado (Chrome, Edge, Firefox o Safari).
-
-También se puede servir en local:
-
-- Con la extensión **Live Server** de Visual Studio Code: clic derecho sobre `index.html` y *Open with Live Server*.
-- Desde la terminal, dentro de la carpeta del proyecto:
-  ```bash
-  python3 -m http.server 8000
-  ```
-  y abrir <http://localhost:8000> en el navegador.
-
-Para revisar la vista de celular o tableta, abre las herramientas de desarrollo del navegador (`F12` en Windows, `Cmd + Option + I` en Mac) y activa el modo de dispositivo.
-
-## Estructura del repositorio
-
-```
-ReportaCampus/
-├── index.html            Página principal
-├── src/styles/           Estilos divididos en base, estructura, componentes, páginas y diseño adaptable
-├── js/
-│   ├── data.js           Datos simulados
-│   ├── charts.js         Gráficas
-│   └── app.js            Lógica de la interfaz
-├── public/
-│   ├── img/              Logo
-│   ├── fonts/            Tipografía Lato
-│   └── vendor/           Chart.js
-└── documentacion/
-    ├── diseno/colores/   Muestras de la paleta
-    └── pruebas/evidencias/  Capturas del prototipo
-```
-
-## Verificación del funcionamiento
-
-Se probó en Google Chrome en tres tamaños de pantalla: 1366 px (computador), 820 px (tableta) y 390 px (celular).
-
-| Prueba | Resultado |
-|---|---|
-| La página carga sin errores en la consola | Correcto |
-| Cambiar el periodo actualiza indicadores y gráficas | Correcto |
-| Detalle al pasar el cursor y vista en tabla de la gráfica | Correcto |
-| Clic en una categoría filtra la lista de reportes | Correcto |
-| Búsqueda y filtros de la lista | Correcto |
-| El formulario marca los campos obligatorios vacíos | Correcto |
-| Un reporte nuevo aparece primero en la lista y suma en los indicadores | Correcto |
-| El detalle muestra el historial de estados | Correcto |
-| Menú lateral en computador y menú desplegable en celular | Correcto |
-| Sin desplazamiento horizontal en los tres tamaños | Correcto |
-| Un reporte nuevo sigue en la lista después de recargar la página | Correcto |
-| *Borrar mis reportes* quita los reportes guardados | Correcto |
-| Al elegir una foto aparece la vista previa y se puede quitar | Correcto |
-| El detalle de un reporte con foto la muestra | Correcto |
-| *Exportar CSV* descarga solo los reportes filtrados y abre bien en Excel | Correcto |
-
-## Evidencias
-
-| Computador | Celular |
-|---|---|
-| ![Panel en computador](documentacion/pruebas/evidencias/fase-1/01-escritorio-panel.png) | ![Panel en celular](documentacion/pruebas/evidencias/fase-1/09-movil-panel.png) |
-
-Gráfica con el periodo *Semestre* y detalle al pasar el cursor:
-
-![Gráfica interactiva](documentacion/pruebas/evidencias/fase-1/03-grafica-semestre.png)
-
-Nuevo reporte con foto, guardado en el navegador:
-
-![Detalle con foto](documentacion/pruebas/evidencias/fase-1/15-detalle-foto.png)
-
-Todas las capturas están en [`documentacion/pruebas/evidencias/fase-1/`](documentacion/pruebas/evidencias/fase-1/):
-
-| Archivo | Qué muestra |
-|---|---|
-| `01-escritorio-panel.png` | Panel en computador |
-| `02-escritorio-pagina-completa.png` | Página completa |
-| `03-grafica-semestre.png` | Gráfica por semestre con detalle |
-| `04-grafica-semana-tabla.png` | Gráfica por semana con vista en tabla |
-| `05-filtro-categoria.png` | Lista filtrada desde la gráfica de categorías |
-| `06-formulario-validacion.png` | Validación del formulario |
-| `07-reporte-enviado.png` | Reporte nuevo en la lista |
-| `08-detalle-historial.png` | Detalle e historial de un reporte |
-| `09-movil-panel.png` | Panel en celular |
-| `10-movil-menu.png` | Menú en celular |
-| `11-movil-reportes.png` | Lista de reportes en celular |
-| `12-tableta-panel.png` | Panel en tableta |
-| `13-formulario-foto.png` | Formulario con vista previa de la foto |
-| `14-reporte-guardado.png` | Reporte nuevo que sigue en la lista después de recargar |
-| `15-detalle-foto.png` | Detalle de un reporte con su foto |
-| `16-exportar-csv.png` | Lista filtrada por categoría y exportada a CSV |
-
 ## Historial de versiones
 
 | Versión | Fecha | Cambios |
 |---|---|---|
 | v0.1 | 3 de noviembre de 2026 | Estructura del repositorio, página principal, diseño adaptable, datos simulados, gráficas, filtros, formulario, detalle y navegación. |
-| v0.2 | 10 de noviembre de 2026 | Reportes nuevos guardados en el navegador, vista previa de la foto en el formulario y en el detalle, exportación a CSV y nuevas evidencias. |
+| v0.2 | 10 de noviembre de 2026 | Reportes nuevos guardados en el navegador, vista previa de la foto, exportación a CSV y nuevas evidencias. |
+| v0.3 | 17 de noviembre de 2026 | Fase II: inicio de sesión con roles, mis reportes, mis asignaciones, gestión de reportes y usuarios, arquitectura por capas con módulos ES, navegación por rutas, pruebas unitarias y documentación técnica. |
