@@ -252,11 +252,11 @@ La versión completa, con la API y la base de datos, se ejecuta en local con `py
 
 ## Equipo
 
-| Integrante | Roles y responsabilidades |
+| Integrantes | 
 |---|---|
-| Juan Diego Fajardo Suárez | *(por completar)* |
-| Juan Camilo Céspedes | *(por completar)* |
-| Sebastián Pérez | *(por completar)* |
+| Juan Diego Fajardo Suárez | 
+| Juan Camilo Céspedes | 
+| Sebastián Pérez | 
 
 ## Estado final
 
