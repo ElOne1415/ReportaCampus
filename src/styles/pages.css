@@ -59,3 +59,20 @@
 .account__name { font-weight: 700; }
 .account__mail { grid-column: 1; font-size: 13px; color: var(--gris); overflow-wrap: anywhere; }
 .account .role-badge { grid-column: 2; grid-row: 1 / span 2; }
+
+/* ---------- Usuarios ---------- */
+.table--usuarios td { vertical-align: middle; }
+.u-name { font-weight: 700; }
+.u-mail { display: block; font-size: 13px; color: var(--gris); }
+.u-area { font-size: 14px; }
+.u-cats { display: block; font-size: 13px; color: var(--gris); }
+.u-state { font-size: 14px; font-weight: 700; }
+.u-state--off { color: var(--gris); }
+.u-actions { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
+.table--usuarios tr.is-off .u-name { color: var(--gris); }
+.checks { display: flex; flex-wrap: wrap; gap: 8px 18px; padding-top: 4px; }
+.checks label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; font-size: 15px; }
+.checks input { accent-color: var(--rojo); width: 16px; height: 16px; }
+.demo-data { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 24px; }
+.demo-data h2 { font-size: 17px; font-weight: 900; }
+.demo-data p { font-size: 14px; color: var(--gris); }

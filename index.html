@@ -254,6 +254,50 @@
         </form>
       </section>
 
+      <!-- USUARIOS (administrador) -->
+      <section id="usuarios" class="block page" data-pagina="usuarios" hidden aria-labelledby="t-usu">
+        <div class="page-head">
+          <div>
+            <h1 id="t-usu" class="block__title" tabindex="-1">Usuarios</h1>
+            <p class="block__sub">Cuentas de la plataforma y su rol. Un usuario desactivado no puede iniciar sesión.</p>
+          </div>
+          <button type="button" class="btn btn--primary" id="uNuevo">Nuevo usuario</button>
+        </div>
+        <div class="summary" id="uResumen"></div>
+        <div class="toolbar">
+          <input type="search" id="uTexto" placeholder="Buscar por nombre, correo o área" aria-label="Buscar usuarios">
+          <select id="uRol" aria-label="Filtrar por rol"><option value="">Todos los roles</option></select>
+          <select id="uActivo" aria-label="Filtrar por estado">
+            <option value="">Activos e inactivos</option>
+            <option value="si">Solo activos</option>
+            <option value="no">Solo inactivos</option>
+          </select>
+        </div>
+        <div class="panel panel--flush">
+          <table class="table table--usuarios" aria-label="Usuarios">
+            <thead>
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Rol</th>
+                <th scope="col">Área</th>
+                <th scope="col">Estado</th>
+                <th scope="col"><span class="sr-only">Acciones</span></th>
+              </tr>
+            </thead>
+            <tbody id="uTabla"></tbody>
+          </table>
+          <div class="table__foot"><span id="uConteo"></span></div>
+        </div>
+
+        <div class="panel demo-data">
+          <div>
+            <h2>Datos de demostración</h2>
+            <p>Vuelve a los reportes y usuarios iniciales. Se borran los cambios hechos en este navegador.</p>
+          </div>
+          <button type="button" class="btn btn--danger" id="restablecer">Restablecer datos</button>
+        </div>
+      </section>
+
       <!-- RECOMENDACIONES -->
       <section id="recomendaciones" class="block page" data-pagina="recomendaciones" hidden aria-labelledby="t-reco">
         <h1 id="t-reco" class="block__title" tabindex="-1">Recomendaciones</h1>
@@ -284,6 +328,48 @@
     <div class="actions" id="dAcciones" hidden></div>
     <h4>Historial</h4>
     <ol class="history" id="dHistorial"></ol>
+  </dialog>
+
+  <!-- Formulario de usuario -->
+  <dialog class="dialog" id="usuarioDialog" aria-labelledby="uFormTitulo">
+    <div class="dialog__head">
+      <h3 id="uFormTitulo">Nuevo usuario</h3>
+      <button type="button" class="close" id="uCerrar" aria-label="Cerrar">&times;</button>
+    </div>
+    <form id="usuarioForm" novalidate>
+      <div class="form__grid">
+        <label class="field field--wide">
+          <span>Nombre completo</span>
+          <input type="text" id="uNombre" maxlength="60" autocomplete="off" required>
+          <small class="error" data-for="uNombre"></small>
+        </label>
+        <label class="field field--wide">
+          <span>Correo</span>
+          <input type="email" id="uCorreo" maxlength="80" autocomplete="off" placeholder="nombre@campus.edu.co" required>
+          <small class="error" data-for="uCorreo"></small>
+        </label>
+        <label class="field">
+          <span>Rol</span>
+          <select id="uRolForm" required><option value="">Elige un rol</option></select>
+          <small class="error" data-for="uRolForm"></small>
+        </label>
+        <label class="field" data-solo-responsable>
+          <span>Área o dependencia</span>
+          <input type="text" id="uArea" maxlength="40" placeholder="Ej. Planta física">
+          <small class="error" data-for="uArea"></small>
+        </label>
+        <fieldset class="field field--wide" data-solo-responsable>
+          <legend>Categorías que atiende</legend>
+          <div class="checks" id="uCategorias"></div>
+          <small class="error" data-for="uCategorias"></small>
+        </fieldset>
+      </div>
+      <p class="auth__error" id="uFormError" role="alert" hidden></p>
+      <div class="form__actions">
+        <button type="button" class="btn btn--secondary" id="uCancelar">Cancelar</button>
+        <button type="submit" class="btn btn--primary" id="uGuardar">Guardar</button>
+      </div>
+    </form>
   </dialog>
 
   <!-- Confirmación -->

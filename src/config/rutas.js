@@ -15,6 +15,7 @@ export const RUTAS = Object.freeze({
   reportes:        { titulo: 'Reportes',              permiso: 'reportes.ver',    menu: 'Reportes' },
   zonas:           { titulo: 'Zonas del campus',      permiso: 'reportes.ver',    menu: 'Zonas del campus' },
   nuevo:           { titulo: 'Nuevo reporte',         permiso: 'reportes.crear',  menu: 'Nuevo reporte' },
+  usuarios:        { titulo: 'Usuarios',              permiso: 'usuarios.gestionar', menu: 'Usuarios' },
   recomendaciones: { titulo: 'Recomendaciones',       permiso: 'reportes.ver',    menu: 'Recomendaciones' }
 });
 

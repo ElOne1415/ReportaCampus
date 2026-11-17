@@ -17,6 +17,7 @@ import { crearPaginaPanel } from './pages/panel.js';
 import { crearPaginaReportes, FILTROS_VACIOS } from './pages/reportes.js';
 import { crearPaginaZonas } from './pages/zonas.js';
 import { crearPaginaNuevo } from './pages/nuevo.js';
+import { crearPaginaUsuarios } from './pages/usuarios.js';
 import { crearPaginaRecomendaciones } from './pages/recomendaciones.js';
 
 const servicios = crearServicios();
@@ -50,6 +51,13 @@ const app = {
     destino = null;
     router.navegar(ir.nombre, ir.params);
   },
+  /** Vuelve a leer el usuario de la sesión (si cambió su nombre o sus datos). */
+  alCambiarSesion() {
+    app.usuario = app.auth.usuarioActual();
+    if (!app.usuario) { app.cerrarSesion(); return; }
+    aplicarSesion();
+    marcarActivo(actual);
+  },
   cerrarSesion() {
     app.auth.cerrarSesion();
     app.usuario = null;
@@ -67,6 +75,7 @@ const paginas = Object.fromEntries([
   crearPaginaReportes(app),
   crearPaginaZonas(app),
   crearPaginaNuevo(app),
+  crearPaginaUsuarios(app),
   crearPaginaRecomendaciones(app)
 ].map((p) => [p.id, p]));
 

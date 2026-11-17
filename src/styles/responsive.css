@@ -61,6 +61,19 @@
   .table--reportes td[data-label="Tiempo"] { grid-column: 2; text-align: right; }
 }
 
+@media (max-width: 760px) {
+  /* La tabla de usuarios pasa a tarjetas */
+  .table--usuarios thead { display: none; }
+  .table--usuarios, .table--usuarios tbody, .table--usuarios tr, .table--usuarios td { display: block; }
+  .table--usuarios tr { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 12px 14px; border-bottom: 1px solid var(--linea); }
+  .table--usuarios td { padding: 0; border: 0; }
+  .table--usuarios td[data-label="Nombre"] { grid-column: 1; }
+  .table--usuarios td[data-label="Rol"] { grid-column: 2; grid-row: 1; }
+  .table--usuarios td[data-label="Área"], .table--usuarios td[data-label="Estado"] { grid-column: 1 / -1; }
+  .table--usuarios td.u-actions-cell { grid-column: 1 / -1; padding-top: 6px; }
+  .u-actions { justify-content: flex-start; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   * { transition: none !important; }
