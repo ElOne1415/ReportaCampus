@@ -50,6 +50,7 @@
 .main { padding: 28px 32px 0; max-width: 1180px; width: 100%; display: flex; flex-direction: column; }
 .main > .footer { margin-top: auto; }
 .block { padding-bottom: 48px; }
+.block__subtitle { font-size: 20px; font-weight: 900; margin: 32px 0 4px; }
 .block__title { font-size: 28px; font-weight: 900; letter-spacing: -0.01em; margin-bottom: 4px; }
 .block__title:focus, .page-head h1:focus { outline: none; }
 .block__sub { color: var(--gris); margin-bottom: 16px; max-width: 70ch; }

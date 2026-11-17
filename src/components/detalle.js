@@ -4,7 +4,7 @@
 import { categoriaPorId, zonaPorId, CLASE_ESTADO } from '../models/catalogos.js';
 import { esc, fFechaHora, fNum } from '../utils/formato.js';
 import { horasEntre } from '../utils/tiempo.js';
-import { estadoHTML } from './estado.js';
+import { estadoHTML, estrellasHTML } from './estado.js';
 import { pintarAcciones } from './acciones-reporte.js';
 
 const $ = (id) => document.getElementById(id);
@@ -30,7 +30,9 @@ export function abrirDetalle(x, app) {
     ['Reportado', fFechaHora.format(x.creado)],
     [x.resuelto ? 'Resuelto en' : 'Abierto hace', fNum.format(horasEntre(x.creado, x.resuelto || new Date())) + ' horas']
   ];
-  $('dDatos').innerHTML = datos.map((f) => '<div><dt>' + f[0] + '</dt><dd>' + esc(f[1]) + '</dd></div>').join('');
+  $('dDatos').innerHTML = datos.map((f) => '<div><dt>' + f[0] + '</dt><dd>' + esc(f[1]) + '</dd></div>').join('') +
+    (x.calificacion ? '<div class="facts__wide"><dt>Calificación del autor</dt><dd>' + estrellasHTML(x.calificacion.puntaje) + ' ' + x.calificacion.puntaje + ' de 5' +
+      (x.calificacion.comentario ? ' · «' + esc(x.calificacion.comentario) + '»' : '') + '</dd></div>' : '');
   $('dDesc').textContent = x.descripcion;
   $('dFoto').hidden = !x.fotoUrl;
   if (x.fotoUrl) $('dFotoImg').src = x.fotoUrl; else $('dFotoImg').removeAttribute('src');

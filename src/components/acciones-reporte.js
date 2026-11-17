@@ -4,7 +4,7 @@
    Muestra solo las acciones que el usuario puede hacer sobre
    ese reporte según su rol (ver src/models/roles.js).
    ========================================================== */
-import { puedeEditarReporte, puedeEliminarReporte, puedeCambiarEstado, puedeComentar, ROLES } from '../models/roles.js';
+import { puedeEditarReporte, puedeEliminarReporte, puedeCambiarEstado, puedeComentar, puedeTomar, puedeCalificar, ROLES } from '../models/roles.js';
 import { ESTADOS, PRIORIDADES, categoriaPorId } from '../models/catalogos.js';
 import { puede } from '../models/roles.js';
 import { esc } from '../utils/formato.js';
@@ -13,7 +13,7 @@ import { NOTA_MIN } from '../models/reporte.js';
 import { confirmar } from './confirmar.js';
 
 /** Bloques de acciones: cada uno devuelve { html, conectar(contenedor) } o null. */
-const BLOQUES = [bloqueAutor, bloqueAdministrador, bloqueAtencion];
+const BLOQUES = [bloqueAutor, bloqueCalificar, bloqueTomar, bloqueAdministrador, bloqueAtencion];
 
 function bloqueAutor(x, app) {
   const editar = puedeEditarReporte(app.usuario, x);
@@ -30,6 +30,50 @@ function bloqueAutor(x, app) {
       if (bEditar) bEditar.addEventListener('click', () => { app.cerrarDetalle(); app.irA('nuevo', { editar: x.id }); });
       const bEliminar = c.querySelector('[data-accion="eliminar-propio"]');
       if (bEliminar) bEliminar.addEventListener('click', () => eliminarReporte(x, app));
+    }
+  };
+}
+
+/** Autor de un reporte resuelto: calificar la solución de 1 a 5. */
+function bloqueCalificar(x, app) {
+  if (!puedeCalificar(app.usuario, x)) return null;
+  return {
+    html: '<div class="actions__group"><h4>¿Cómo quedó la solución?</h4>' +
+      '<fieldset class="rating" data-campo="puntaje"><legend class="sr-only">Calificación de 1 a 5 estrellas</legend>' +
+      [1, 2, 3, 4, 5].map((n) => '<input type="radio" name="puntaje" id="estrella' + n + '" value="' + n + '"><label for="estrella' + n + '" title="' + n + ' de 5">★<span class="sr-only"> ' + n + ' de 5</span></label>').join('') +
+      '</fieldset>' +
+      '<label class="field"><span>Comentario (opcional)</span><textarea rows="2" maxlength="300" data-campo="comentario" placeholder="Ej. Lo arreglaron el mismo día"></textarea></label>' +
+      '<p class="actions__error" data-error-cal hidden></p>' +
+      '<div class="actions__row"><button type="button" class="btn btn--primary btn--small" data-accion="calificar">Enviar calificación</button></div></div>',
+    conectar(c) {
+      const estrellas = Array.from(c.querySelectorAll('.rating label'));
+      const pintar = (n) => estrellas.forEach((l, i) => l.classList.toggle('on', i < n));
+      c.querySelectorAll('.rating input').forEach((r) => r.addEventListener('change', () => { pintar(+r.value); c.querySelector('[data-error-cal]').hidden = true; }));
+      c.querySelector('[data-accion="calificar"]').addEventListener('click', async (e) => {
+        const elegido = c.querySelector('.rating input:checked');
+        const error = c.querySelector('[data-error-cal]');
+        const res = await conBoton(e.currentTarget, 'Enviando…', () => app.reportes.calificar(x.id, elegido ? +elegido.value : 0, c.querySelector('[data-campo="comentario"]').value, app.usuario));
+        if (!res.ok) { error.textContent = res.error || Object.values(res.errores || {})[0]; error.hidden = false; return; }
+        app.aviso('Gracias por calificar la solución de ' + x.id + '.');
+        app.alCambiarReporte(x.id);
+      });
+    }
+  };
+}
+
+/** Responsable: tomar un reporte nuevo de su categoría. */
+function bloqueTomar(x, app) {
+  if (!puedeTomar(app.usuario, x)) return null;
+  return {
+    html: '<div class="actions__row"><button type="button" class="btn btn--primary btn--small" data-accion="tomar">Tomar reporte</button>' +
+      '<span class="actions__note">Es de tu categoría y nadie lo ha tomado. Quedará a tu cargo, en proceso.</span></div>',
+    conectar(c) {
+      c.querySelector('[data-accion="tomar"]').addEventListener('click', async (e) => {
+        const res = await conBoton(e.currentTarget, 'Tomando…', () => app.reportes.tomar(x.id, app.usuario));
+        if (!res.ok) { app.avisoError(res.error); return; }
+        app.aviso(x.id + ' quedó a tu cargo.');
+        app.alCambiarReporte(x.id);
+      });
     }
   };
 }

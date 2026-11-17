@@ -2,7 +2,10 @@
    Página: Mis asignaciones (responsable)
    Reportes a cargo del responsable, ordenados por urgencia.
    ========================================================== */
+import { CONFIG } from '../config/config.js';
 import { ESTADOS, categoriaPorId } from '../models/catalogos.js';
+import { superaMeta } from '../models/reporte.js';
+import { plural } from '../utils/formato.js';
 import { $ } from '../utils/dom.js';
 import { montarTablaReportes } from '../components/tabla-reportes.js';
 import { pintarResumenEstados } from '../components/resumen-estados.js';
@@ -17,7 +20,7 @@ export function ordenarPorUrgencia(lista) {
 }
 
 export function crearPaginaAsignados(app) {
-  let tabla;
+  let tabla, disponibles;
   let estado = ESTADOS.EN_PROCESO;
 
   async function pintar(opciones) {
@@ -28,6 +31,16 @@ export function crearPaginaAsignados(app) {
       alElegir: (e) => { estado = e; pintar(); }
     });
     tabla.mostrar(ordenarPorUrgencia(estado ? mios.filter((x) => x.estado === estado) : mios), opciones);
+
+    // Alerta de los que llevan más de 48 horas abiertos
+    const vencidos = mios.filter((x) => superaMeta(x, CONFIG.META_HORAS)).length;
+    $('#asigVencidos').hidden = !vencidos;
+    $('#asigVencidos').textContent = plural(vencidos, 'reporte a tu cargo lleva', 'reportes a tu cargo llevan') + ' más de ' + CONFIG.META_HORAS + ' horas abierto' + (vencidos === 1 ? '. Atiéndelo' : 's. Atiéndelos') + ' primero o agrega una nota con el motivo de la demora.';
+
+    // Reportes nuevos sin responsable de sus categorías
+    const libres = (await app.reportes.listar({ estado: ESTADOS.NUEVO, responsableId: 'ninguno' }))
+      .filter((x) => app.usuario.categorias.includes(x.categoria));
+    disponibles.mostrar(ordenarPorUrgencia(libres));
   }
 
   return {
@@ -37,6 +50,12 @@ export function crearPaginaAsignados(app) {
         etiqueta: 'Mis asignaciones',
         columnas: ['codigo', 'incidencia', 'zona', 'prioridad', 'abierto', 'estado'],
         vacio: 'No tienes reportes en este estado.',
+        alAbrir: app.abrirReporte
+      });
+      disponibles = montarTablaReportes($('#tablaDisponibles'), {
+        etiqueta: 'Disponibles para tomar',
+        columnas: ['codigo', 'incidencia', 'categoria', 'zona', 'abierto'],
+        vacio: 'No hay reportes nuevos sin asignar en tus categorías.',
         alAbrir: app.abrirReporte
       });
     },

@@ -30,7 +30,9 @@ export const PERMISOS = Object.freeze({
   'reportes.ver':              [E, R, A],
   'reportes.crear':            [E, R, A],
   'reportes.propios':          [E],
+  'reportes.calificar':        [E],
   'reportes.asignados':        [R],
+  'reportes.tomar':            [R],
   'reportes.exportar':         [R, A],
   'reportes.cambiarEstado':    [R, A],
   'reportes.comentar':         [R, A],
@@ -38,6 +40,7 @@ export const PERMISOS = Object.freeze({
   'reportes.cambiarPrioridad': [A],
   'reportes.eliminar':         [A],
   'usuarios.gestionar':        [A],
+  'auditoria.ver':             [A],
   'datos.restablecer':         [A]
 });
 
@@ -68,4 +71,14 @@ export function puedeCambiarEstado(u, r) {
 export function puedeComentar(u, r) {
   if (!puede(u, 'reportes.comentar')) return false;
   return u.rol === A || esResponsableDe(u, r);
+}
+
+/** El responsable toma un reporte nuevo y sin asignar de una de sus categorías. */
+export function puedeTomar(u, r) {
+  return puede(u, 'reportes.tomar') && r.estado === ESTADOS.NUEVO && !r.responsableId && (u.categorias || []).includes(r.categoria);
+}
+
+/** El autor califica la solución una vez, cuando el reporte está resuelto. */
+export function puedeCalificar(u, r) {
+  return puede(u, 'reportes.calificar') && esAutor(u, r) && r.estado === ESTADOS.RESUELTO && !r.calificacion;
 }

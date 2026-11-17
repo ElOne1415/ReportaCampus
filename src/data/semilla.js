@@ -119,6 +119,7 @@ export function generarReportes(ahora, semilla, dias) {
     }
   }
   lista.push(...reportesAbiertosDemo(ahora));
+  agregarCalificaciones(lista, ahora, semilla);
 
   // Códigos consecutivos en orden cronológico; más recientes primero
   lista.sort((a, b) => a.creado - b.creado);
@@ -141,7 +142,7 @@ function reportesAbiertosDemo(ahora) {
     { autor: 'u-009', h: 5,  categoria: 'aseo',            ubicacion: 'cafeteria',   prioridad: 'Baja',  titulo: 'Canecas llenas junto a las mesas',       descripcion: 'Las canecas de reciclaje están llenas desde el almuerzo.' },
     { autor: 'u-008', h: 8,  categoria: 'seguridad',       ubicacion: 'parqueadero', prioridad: 'Alta',  titulo: 'Zona oscura en el sótano 2',             descripcion: 'Tres lámparas apagadas cerca de la salida peatonal; de noche no se ve nada.' },
     { autor: 'u-010', h: 20, categoria: 'infraestructura', ubicacion: 'bloque-b',    prioridad: 'Alta',  titulo: 'Gotera sobre una toma eléctrica',        descripcion: 'Cae agua del techo justo encima de la toma del aula 305.', responsable: 'u-002', asignadoH: 18 },
-    { autor: 'u-011', h: 44, categoria: 'infraestructura', ubicacion: 'laboratorios', prioridad: 'Media', titulo: 'Baldosa suelta en la entrada del laboratorio', descripcion: 'Una baldosa se mueve al pisarla y ya hubo un tropezón.', responsable: 'u-002', asignadoH: 40 }
+    { autor: 'u-011', h: 60, categoria: 'infraestructura', ubicacion: 'laboratorios', prioridad: 'Media', titulo: 'Baldosa suelta en la entrada del laboratorio', descripcion: 'Una baldosa se mueve al pisarla y ya hubo un tropezón.', responsable: 'u-002', asignadoH: 55 }
   ];
   return casos.map((c) => {
     const autor = usuarioPorId[c.autor];
@@ -155,5 +156,35 @@ function reportesAbiertosDemo(ahora) {
       estado: c.responsable ? ESTADOS.EN_PROCESO : ESTADOS.NUEVO, creado, resuelto: null,
       responsableId: c.responsable || null, autorId: autor.id, autor: autor.nombre, foto: false, historial
     };
+  });
+}
+
+const COMENTARIOS = {
+  5: ['Muy rápido, gracias.', 'Quedó perfecto.', 'Excelente atención.'],
+  4: ['Bien, aunque tardó un poco.', 'Solucionado.'],
+  3: ['Se demoró más de lo esperado.', 'Quedó a medias al principio.'],
+  2: ['Tardaron varios días.', 'Tuve que reportarlo dos veces.'],
+  1: ['Sigue igual que antes.']
+};
+
+/**
+ * Calificaciones simuladas de los reportes resueltos (más estrellas si se
+ * resolvió rápido). Usa su propio generador para no cambiar el resto de
+ * los datos.
+ */
+function agregarCalificaciones(lista, ahora, semilla) {
+  const rnd = crearAleatorio(semilla + 7);
+  lista.slice().sort((a, b) => a.creado - b.creado).forEach((r) => {
+    if (r.estado !== ESTADOS.RESUELTO) return;
+    const sorteo = rnd(), extra = rnd(), conComentario = rnd(), cual = rnd(), demora = rnd();
+    if (sorteo > 0.55) return;
+    const horasSolucion = (r.resuelto - r.creado) / HORA;
+    const base = horasSolucion <= 24 ? 5 : horasSolucion <= 48 ? 4 : horasSolucion <= 96 ? 3 : 2;
+    const puntaje = Math.max(1, Math.min(5, base - (extra < 0.2 ? 1 : 0)));
+    const fecha = new Date(r.resuelto.getTime() + (2 + demora * 28) * HORA);
+    if (fecha > ahora) return;
+    const comentario = conComentario < 0.4 ? COMENTARIOS[puntaje][Math.floor(cual * COMENTARIOS[puntaje].length)] : '';
+    r.calificacion = { puntaje, comentario };
+    r.historial.push({ estado: r.estado, fecha, nota: 'Calificó la solución con ' + puntaje + ' de 5.' + (comentario ? ' «' + comentario + '»' : ''), por: r.autor });
   });
 }

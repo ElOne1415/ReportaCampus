@@ -8,11 +8,11 @@ import { CONFIG } from '../config/config.js';
 import { categoriaPorId, zonaPorId } from '../models/catalogos.js';
 import { esc, fFecha, fNum } from '../utils/formato.js';
 import { horasEntre } from '../utils/tiempo.js';
-import { estadoHTML, urgenteHTML } from './estado.js';
+import { estadoHTML, urgenteHTML, vencidoHTML } from './estado.js';
 
 const COLUMNAS = {
   codigo:      { titulo: 'Código',      celda: (x) => '<td class="t-code" data-label="Código">' + x.id + '</td>' },
-  incidencia:  { titulo: 'Incidencia',  celda: (x) => '<td class="t-title" data-label="Incidencia">' + esc(x.titulo) + urgenteHTML(x.prioridad) + '</td>' },
+  incidencia:  { titulo: 'Incidencia',  celda: (x) => '<td class="t-title" data-label="Incidencia">' + esc(x.titulo) + urgenteHTML(x.prioridad) + vencidoHTML(x) + '</td>' },
   categoria:   { titulo: 'Categoría',   celda: (x) => '<td data-label="Categoría">' + categoriaPorId[x.categoria].nombre + '</td>' },
   zona:        { titulo: 'Zona',        celda: (x) => '<td data-label="Zona">' + zonaPorId[x.ubicacion].nombre + '</td>' },
   fecha:       { titulo: 'Fecha',       celda: (x) => '<td data-label="Fecha">' + fFecha.format(x.creado) + '</td>' },

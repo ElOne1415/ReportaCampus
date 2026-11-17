@@ -86,6 +86,8 @@ export function validarCambioEstado(r, nuevo, nota) {
 export function aplicarCambioEstado(r, nuevo, nota, actor, ahora = new Date()) {
   r.estado = nuevo;
   r.resuelto = nuevo === ESTADOS.RESUELTO ? ahora : null;
+  // Al reabrir, la calificación anterior deja de valer
+  if (nuevo !== ESTADOS.RESUELTO) r.calificacion = null;
   const porDefecto = nuevo === ESTADOS.RESUELTO ? 'Reporte resuelto.' : (nuevo === ESTADOS.EN_PROCESO ? 'Reporte en atención.' : '');
   r.historial.push({ estado: nuevo, fecha: ahora, nota: (nota || '').trim() || porDefecto, por: actor.nombre });
   return r;
@@ -110,4 +112,19 @@ export function filtrarReportes(lista, f = {}) {
     (f.responsableId === undefined || f.responsableId === '' || x.responsableId === (f.responsableId === 'ninguno' ? null : f.responsableId)) &&
     (!t || (x.id + ' ' + x.titulo + ' ' + (zonaPorId[x.ubicacion] ? zonaPorId[x.ubicacion].nombre : '')).toLowerCase().includes(t))
   );
+}
+
+// ---------- Calificación y alertas ----------
+
+/** Valida la calificación de la solución: puntaje entero de 1 a 5 y comentario opcional. */
+export function validarCalificacion(puntaje, comentario) {
+  const errores = {};
+  if (!Number.isInteger(puntaje) || puntaje < 1 || puntaje > 5) errores.puntaje = 'Elige de 1 a 5 estrellas.';
+  if ((comentario || '').trim().length > 300) errores.comentario = 'Máximo 300 caracteres.';
+  return { ok: Object.keys(errores).length === 0, errores };
+}
+
+/** ¿Lleva abierto más horas que la meta de atención? */
+export function superaMeta(r, metaHoras, ahora = new Date()) {
+  return r.estado !== ESTADOS.RESUELTO && (ahora - r.creado) / 36e5 > metaHoras;
 }

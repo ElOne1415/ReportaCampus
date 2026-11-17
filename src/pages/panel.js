@@ -8,6 +8,7 @@ import { esc, fFecha, fNum } from '../utils/formato.js';
 import { horasEntre } from '../utils/tiempo.js';
 import { rango, PERIODOS } from '../utils/periodos.js';
 import { ESTADOS } from '../models/catalogos.js';
+import { superaMeta } from '../models/reporte.js';
 import { dibujarTendencia, dibujarCategorias } from '../components/graficas.js';
 
 const SUBTITULOS = { semana: 'Por día, últimos 7 días', mes: 'Por semana, últimas 4 semanas', semestre: 'Por mes, últimos 6 meses (el último mes va en curso)' };
@@ -29,7 +30,8 @@ export function crearPaginaPanel(app) {
     const dif = actuales.length - anteriores.length;
     $('#sTotalNote').textContent = anteriores.length ? (dif === 0 ? 'Igual que' : Math.abs(dif) + (dif > 0 ? ' más que' : ' menos que')) + ' el periodo anterior' : '';
     $('#sAbiertos').textContent = abiertos.length;
-    $('#sAbiertosNote').textContent = nuevos + ' sin asignar, ' + (abiertos.length - nuevos) + ' en proceso';
+    const vencidos = abiertos.filter((x) => superaMeta(x, CONFIG.META_HORAS, ahora)).length;
+    $('#sAbiertosNote').textContent = nuevos + ' sin asignar, ' + (abiertos.length - nuevos) + ' en proceso' + (vencidos ? '; ' + vencidos + ' con más de ' + CONFIG.META_HORAS + ' h' : '');
     // El administrador va directo a los que falta asignar
     if (nuevos && app.puede('reportes.asignar')) {
       $('#sAbiertosNote').insertAdjacentHTML('beforeend', ' · <a href="#/reportes?estado=Nuevo&responsableId=ninguno">Asignar</a>');
@@ -68,7 +70,8 @@ export function crearPaginaPanel(app) {
     const metas = [
       { nombre: 'Resolver en menos de 48 horas', valor: pct(resueltos.filter((x) => horasEntre(x.creado, x.resuelto) <= CONFIG.META_HORAS).length, resueltos.length), meta: CONFIG.META_CUMPLIMIENTO },
       { nombre: 'Asignar responsable en menos de 8 horas', valor: pct(asignados.filter((x) => horasEntre(x.historial[0].fecha, x.historial[1].fecha) <= 8).length, asignados.length), meta: 90 },
-      { nombre: 'Reportes con foto', valor: pct(lista.filter((x) => x.foto).length, lista.length), meta: 60 }
+      { nombre: 'Reportes con foto', valor: pct(lista.filter((x) => x.foto).length, lista.length), meta: 60 },
+      { nombre: 'Soluciones calificadas con 4 o 5 estrellas', valor: pct(resueltos.filter((x) => x.calificacion && x.calificacion.puntaje >= 4).length, resueltos.filter((x) => x.calificacion).length), meta: 80 }
     ];
     $('#goals').innerHTML = metas.map((m) => {
       const ok = m.valor >= m.meta;

@@ -15,9 +15,9 @@ import { generarReportes } from '../data/semilla.js';
 import { ESTADOS, PRIORIDADES } from '../models/catalogos.js';
 import {
   crearReporte, validarReporte, aplicarEdicion, siguienteCodigo, filtrarReportes,
-  validarCambioEstado, aplicarCambioEstado, NOTA_MIN
+  validarCambioEstado, aplicarCambioEstado, NOTA_MIN, validarCalificacion
 } from '../models/reporte.js';
-import { puede, puedeEditarReporte, puedeEliminarReporte, puedeCambiarEstado, puedeComentar, ROLES } from '../models/roles.js';
+import { puede, puedeEditarReporte, puedeEliminarReporte, puedeCambiarEstado, puedeComentar, puedeTomar, puedeCalificar, ROLES } from '../models/roles.js';
 import { nombreConArea } from '../models/usuario.js';
 import { revivirFechas } from './almacenamiento.js';
 
@@ -106,6 +106,30 @@ export function crearServicioReportes({ almacen, usuarios, ahora = new Date() })
       r.responsableId = responsableId;
       if (r.estado === ESTADOS.NUEVO) r.estado = ESTADOS.EN_PROCESO;
       r.historial.push({ estado: r.estado, fecha: ahora2, nota, por: usuario.nombre });
+      return { ok: true, reporte: r, guardado: guardar() };
+    },
+
+    /** El responsable toma un reporte nuevo de su categoría; pasa a En proceso a su cargo. */
+    async tomar(id, usuario) {
+      const r = buscar(id);
+      if (!r) return NO_EXISTE;
+      if (!puedeTomar(usuario, r)) return { ok: false, error: 'Solo puedes tomar reportes nuevos sin asignar de tus categorías.' };
+      r.responsableId = usuario.id;
+      r.estado = ESTADOS.EN_PROCESO;
+      r.historial.push({ estado: r.estado, fecha: new Date(), nota: 'Tomado por ' + nombreConArea(usuario) + '.', por: usuario.nombre });
+      return { ok: true, reporte: r, guardado: guardar() };
+    },
+
+    /** El autor califica la solución de 1 a 5, una sola vez. */
+    async calificar(id, puntaje, comentario, usuario) {
+      const r = buscar(id);
+      if (!r) return NO_EXISTE;
+      if (!puedeCalificar(usuario, r)) return { ok: false, error: 'Solo el autor puede calificar su reporte resuelto, una vez.' };
+      const v = validarCalificacion(puntaje, comentario);
+      if (!v.ok) return v;
+      const texto = (comentario || '').trim();
+      r.calificacion = { puntaje, comentario: texto };
+      r.historial.push({ estado: r.estado, fecha: new Date(), nota: 'Calificó la solución con ' + puntaje + ' de 5.' + (texto ? ' «' + texto + '»' : ''), por: usuario.nombre });
       return { ok: true, reporte: r, guardado: guardar() };
     },
 
