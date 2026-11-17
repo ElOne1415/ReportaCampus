@@ -31,11 +31,15 @@ test('califica la solución de un reporte resuelto', async ({ page }) => {
   await entrarComo(page, 'estudiante');
   await expect(page.locator('#misPorCalificar')).toContainText('sin calificar');
   await page.locator('#misResumen [data-estado="Resuelto"]').click();
-  const filas = page.locator('#tablaMis tbody tr');
+  // Abre los resueltos en orden hasta encontrar uno sin calificar
+  const filas = page.locator('#tablaMis tbody tr[data-id]');
   for (let i = 0; i < await filas.count(); i++) {
+    const id = await filas.nth(i).getAttribute('data-id');
     await filas.nth(i).click();
+    await expect(page.locator('#dCodigo')).toContainText(id);
     if (await page.locator('[data-accion="calificar"]').count()) break;
     await page.locator('#dCerrar').click();
+    await expect(page.locator('#detalle')).not.toHaveAttribute('open', '');
   }
   await page.locator('[data-accion="calificar"]').click();
   await expect(page.locator('[data-error-cal]')).toHaveText('Elige de 1 a 5 estrellas.');

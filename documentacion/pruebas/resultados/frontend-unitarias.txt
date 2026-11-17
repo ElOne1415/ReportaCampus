@@ -1,0 +1,65 @@
+Resultado de npm test — ReportaCampus v1.0.0
+Node v22.23.4 · 2026-11-17
+
+ok 1 - el cliente envía el token y el cuerpo en JSON
+ok 2 - el cliente traduce los fallos de red y las respuestas sin JSON
+ok 3 - un 401 con sesión avisa que la sesión venció
+ok 4 - consulta omite los valores vacíos
+ok 5 - los servicios de la API convierten las fechas y guardan el token
+ok 6 - inicia sesión con la contraseña de demostración (correo sin importar mayúsculas)
+ok 7 - rechaza datos vacíos, contraseña incorrecta y cuentas inactivas
+ok 8 - si la cuenta se desactiva, la sesión se cierra
+ok 9 - cerrarSesion borra la sesión
+ok 10 - la matriz de permisos es la misma en el frontend y en el backend
+ok 11 - validarCalificacion y superaMeta
+ok 12 - validarContrasenaNueva usa las mismas reglas del backend
+ok 13 - el responsable toma reportes nuevos solo de sus categorías
+ok 14 - el autor califica una vez y la calificación se borra al reabrir
+ok 15 - cambio de contraseña en modo local
+ok 16 - la auditoría local registra solo los cambios exitosos
+ok 17 - validarReporte acepta datos completos
+ok 18 - validarReporte marca cada campo obligatorio
+ok 19 - validarReporte ignora los espacios al medir el texto
+ok 20 - validarReporte limita el largo del título y la descripción
+ok 21 - siguienteCodigo continúa el consecutivo
+ok 22 - crearReporte deja el reporte en Nuevo con autor e historial
+ok 23 - filtrarReportes combina texto, estado, zona, autor y responsable
+ok 24 - validarCambioEstado solo permite las transiciones definidas
+ok 25 - validarCambioEstado pide nota al resolver y al reabrir
+ok 26 - los datos simulados se generan una vez y se guardan
+ok 27 - un estudiante crea un reporte y queda guardado al recargar
+ok 28 - crear devuelve los errores de validación sin guardar nada
+ok 29 - el autor edita y elimina su reporte solo mientras está en Nuevo
+ok 30 - asignar pone el reporte en proceso y solo acepta responsables activos
+ok 31 - el responsable asignado resuelve con nota; otro responsable no puede
+ok 32 - cambiarPrioridad es solo del administrador y queda en el historial
+ok 33 - los reportes de la versión 0.2 se migran a la estudiante de demostración
+ok 34 - cada permiso usa solo roles conocidos
+ok 35 - puede revisa el rol y que la cuenta esté activa
+ok 36 - solo el autor edita su reporte y solo mientras está en Nuevo
+ok 37 - el autor elimina en Nuevo; el administrador, siempre
+ok 38 - el responsable cambia el estado solo de sus reportes
+ok 39 - validarUsuario acepta un estudiante sin área
+ok 40 - validarUsuario exige correo válido y único (sin importar mayúsculas)
+ok 41 - validarUsuario pide área y categorías al responsable
+ok 42 - validarUsuario rechaza roles desconocidos y nombres cortos
+ok 43 - construirUsuario normaliza el correo y limpia campos que no aplican
+ok 44 - siguienteIdUsuario y nombreConArea
+ok 45 - solo el administrador crea usuarios
+ok 46 - no se elimina ni desactiva a un responsable con reportes abiertos
+ok 47 - el administrador no se elimina ni se quita el rol si es el último
+ok 48 - desactivar y eliminar un estudiante
+ok 49 - responsables() pone primero a quien atiende la categoría
+ok 50 - restablecer vuelve a los usuarios iniciales
+ok 51 - leerHash y crearHash son inversos
+ok 52 - aCSV usa punto y coma, BOM y escapa comillas
+ok 53 - esc evita insertar HTML
+ok 54 - intervalos: 7 días, 4 semanas y 6 meses
+ok 55 - serieTendencia cuenta recibidos y resueltos por intervalo
+ok 56 - los datos simulados son deterministas
+ok 57 - ordenarPorUrgencia: abiertos, prioridad alta y más antiguos primero
+
+# tests 57
+# pass 57
+# fail 0
+# skipped 0

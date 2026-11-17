@@ -1,0 +1,37 @@
+Resultado de pytest — backend de ReportaCampus v1.0.0
+Python 3.13.18 · Flask 3.1.3 · SQLAlchemy 2.0.44 · SQLite · 2026-11-17
+
+tests/test_auth.py::test_login_correcto_y_usuario_actual PASSED
+tests/test_auth.py::test_login_valida_campos PASSED
+tests/test_auth.py::test_login_no_revela_si_el_correo_existe PASSED
+tests/test_auth.py::test_cuenta_desactivada PASSED
+tests/test_auth.py::test_token_invalido_o_ausente PASSED
+tests/test_auth.py::test_token_vencido PASSED
+tests/test_auth.py::test_contrasenas_se_guardan_cifradas PASSED
+tests/test_auth.py::test_cambiar_contrasena PASSED
+tests/test_auth.py::test_cuentas_demo PASSED
+tests/test_reportes.py::test_listar_requiere_sesion PASSED
+tests/test_reportes.py::test_listar_y_filtrar PASSED
+tests/test_reportes.py::test_crear_valida_y_guarda PASSED
+tests/test_reportes.py::test_foto_se_guarda_y_se_valida PASSED
+tests/test_reportes.py::test_editar_solo_autor_y_en_nuevo PASSED
+tests/test_reportes.py::test_asignar_tomar_resolver_calificar PASSED
+tests/test_reportes.py::test_transiciones_invalidas PASSED
+tests/test_reportes.py::test_asignar_y_prioridad_solo_admin PASSED
+tests/test_reportes.py::test_notas PASSED
+tests/test_reportes.py::test_codigo_invalido PASSED
+tests/test_sistema.py::test_salud PASSED
+tests/test_sistema.py::test_catalogos PASSED
+tests/test_sistema.py::test_sirve_el_frontend_pero_no_otros_archivos PASSED
+tests/test_sistema.py::test_errores_en_json PASSED
+tests/test_sistema.py::test_peticion_muy_grande PASSED
+tests/test_sistema.py::test_esquema_sql_server PASSED
+tests/test_usuarios.py::test_solo_admin_gestiona PASSED
+tests/test_usuarios.py::test_crear_editar_desactivar_eliminar PASSED
+tests/test_usuarios.py::test_validaciones PASSED
+tests/test_usuarios.py::test_reglas_de_cuentas_criticas PASSED
+tests/test_usuarios.py::test_eliminar_autor_conserva_sus_reportes PASSED
+tests/test_usuarios.py::test_token_de_cuenta_desactivada_deja_de_servir PASSED
+tests/test_usuarios.py::test_responsables_por_categoria PASSED
+tests/test_usuarios.py::test_auditoria_y_restablecer PASSED
+============================= 33 passed in 21.93s ==============================

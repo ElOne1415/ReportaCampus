@@ -1,0 +1,41 @@
+Resultado de npm run test:e2e — Playwright 1.65.1 · Chrome · 2026-11-17
+Proyectos: local (datos en el navegador) y servidor (backend Flask + SQLite)
+
+✓   1 [local] › tests/e2e/adaptable.spec.js:7:3 › sin desplazamiento horizontal a 1366 px
+✓   2 [local] › tests/e2e/adaptable.spec.js:7:3 › sin desplazamiento horizontal a 820 px
+✓   3 [local] › tests/e2e/adaptable.spec.js:7:3 › sin desplazamiento horizontal a 390 px
+✓   4 [local] › tests/e2e/adaptable.spec.js:7:3 › sin desplazamiento horizontal a 360 px
+✓   5 [local] › tests/e2e/adaptable.spec.js:23:1 › el menú se abre y se cierra en celular
+✓   6 [local] › tests/e2e/administrador.spec.js:3:1 › asigna un reporte nuevo y cambia su prioridad
+✓   7 [local] › tests/e2e/administrador.spec.js:22:1 › gestiona usuarios con validación y reglas de cuentas
+-   8 [local] › tests/e2e/errores.spec.js:6:1 › sin conexión con la API la página lo explica y permite reintentar
+-   9 [local] › tests/e2e/errores.spec.js:17:1 › un error del servidor al enviar se muestra sin perder el formulario
+-  10 [local] › tests/e2e/errores.spec.js:33:1 › si el token deja de valer vuelve al inicio de sesión
+✓  11 [local] › tests/e2e/estudiante.spec.js:3:1 › crea, edita y elimina un reporte propio
+✓  12 [local] › tests/e2e/estudiante.spec.js:30:1 › califica la solución de un reporte resuelto
+✓  13 [local] › tests/e2e/responsable.spec.js:3:1 › toma un reporte de su categoría y lo resuelve con nota
+✓  14 [local] › tests/e2e/responsable.spec.js:21:1 › no ve acciones en reportes de otros responsables
+✓  15 [local] › tests/e2e/sesion.spec.js:3:1 › valida el formulario y rechaza credenciales incorrectas
+✓  16 [local] › tests/e2e/sesion.spec.js:17:1 › cada rol llega a su página y ve su menú
+✓  17 [local] › tests/e2e/sesion.spec.js:31:1 › protege las rutas según la sesión y el rol
+✓  18 [local] › tests/e2e/sesion.spec.js:43:1 › cambia la contraseña desde Mi cuenta
+✓  19 [servidor] › tests/e2e/adaptable.spec.js:7:3 › sin desplazamiento horizontal a 1366 px
+✓  20 [servidor] › tests/e2e/adaptable.spec.js:7:3 › sin desplazamiento horizontal a 820 px
+✓  21 [servidor] › tests/e2e/adaptable.spec.js:7:3 › sin desplazamiento horizontal a 390 px
+✓  22 [servidor] › tests/e2e/adaptable.spec.js:7:3 › sin desplazamiento horizontal a 360 px
+✓  23 [servidor] › tests/e2e/adaptable.spec.js:23:1 › el menú se abre y se cierra en celular
+✓  24 [servidor] › tests/e2e/administrador.spec.js:3:1 › asigna un reporte nuevo y cambia su prioridad
+✓  25 [servidor] › tests/e2e/administrador.spec.js:22:1 › gestiona usuarios con validación y reglas de cuentas
+✓  26 [servidor] › tests/e2e/errores.spec.js:6:1 › sin conexión con la API la página lo explica y permite reintentar
+✓  27 [servidor] › tests/e2e/errores.spec.js:17:1 › un error del servidor al enviar se muestra sin perder el formulario
+✓  28 [servidor] › tests/e2e/errores.spec.js:33:1 › si el token deja de valer vuelve al inicio de sesión
+✓  29 [servidor] › tests/e2e/estudiante.spec.js:3:1 › crea, edita y elimina un reporte propio
+✓  30 [servidor] › tests/e2e/estudiante.spec.js:30:1 › califica la solución de un reporte resuelto
+✓  31 [servidor] › tests/e2e/responsable.spec.js:3:1 › toma un reporte de su categoría y lo resuelve con nota
+✓  32 [servidor] › tests/e2e/responsable.spec.js:21:1 › no ve acciones en reportes de otros responsables
+✓  33 [servidor] › tests/e2e/sesion.spec.js:3:1 › valida el formulario y rechaza credenciales incorrectas
+✓  34 [servidor] › tests/e2e/sesion.spec.js:17:1 › cada rol llega a su página y ve su menú
+✓  35 [servidor] › tests/e2e/sesion.spec.js:31:1 › protege las rutas según la sesión y el rol
+✓  36 [servidor] › tests/e2e/sesion.spec.js:43:1 › cambia la contraseña desde Mi cuenta
+3 skipped
+33 passed (1.2m)
