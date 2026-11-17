@@ -26,7 +26,7 @@
       <span class="wordmark__text">ReportaCampus</span>
     </a>
     <div class="user" id="usuarioActual" hidden>
-      <span class="user__name" id="usuarioNombre"></span>
+      <a class="user__name" id="usuarioNombre" href="#/cuenta" title="Mi cuenta"></a>
       <span class="role-badge" id="usuarioRol"></span>
       <button type="button" class="user__logout" id="cerrarSesion"><span class="user__logout-long">Cerrar sesión</span><span class="user__logout-short" aria-hidden="true">Salir</span></button>
     </div>
@@ -304,6 +304,40 @@
         </div>
       </section>
 
+      <!-- MI CUENTA (todos los roles) -->
+      <section id="cuenta" class="block page" data-pagina="cuenta" hidden aria-labelledby="t-cuenta">
+        <h1 id="t-cuenta" class="block__title" tabindex="-1">Mi cuenta</h1>
+        <p class="block__sub">Tus datos en la plataforma. Para cambiar el nombre, el correo o el rol, habla con el administrador.</p>
+        <div class="account-grid">
+          <div class="panel">
+            <h2 class="panel__title">Datos</h2>
+            <dl class="facts" id="cuentaDatos"></dl>
+          </div>
+          <form class="panel form" id="claveForm" novalidate>
+            <h2 class="panel__title">Cambiar contraseña</h2>
+            <label class="field">
+              <span>Contraseña actual</span>
+              <input type="password" id="cActual" autocomplete="current-password" required>
+              <small class="error" data-for="cActual"></small>
+            </label>
+            <label class="field">
+              <span>Nueva contraseña</span>
+              <input type="password" id="cNueva" autocomplete="new-password" aria-describedby="cNuevaAyuda" required>
+              <small class="hint" id="cNuevaAyuda">Mínimo 8 caracteres, con letras y números.</small>
+              <small class="error" data-for="cNueva"></small>
+            </label>
+            <label class="field">
+              <span>Repite la nueva contraseña</span>
+              <input type="password" id="cConfirmar" autocomplete="new-password" required>
+              <small class="error" data-for="cConfirmar"></small>
+            </label>
+            <div class="form__actions">
+              <button type="submit" class="btn btn--primary" id="cGuardar">Cambiar contraseña</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
       <!-- RECOMENDACIONES -->
       <section id="recomendaciones" class="block page" data-pagina="recomendaciones" hidden aria-labelledby="t-reco">
         <h1 id="t-reco" class="block__title" tabindex="-1">Recomendaciones</h1>
@@ -371,6 +405,7 @@
           <small class="error" data-for="uCategorias"></small>
         </fieldset>
       </div>
+      <p class="hint" id="uClaveInicial">Las cuentas nuevas entran con la contraseña inicial <code>campus2026</code> y la cambian en <em>Mi cuenta</em>.</p>
       <p class="auth__error" id="uFormError" role="alert" hidden></p>
       <div class="form__actions">
         <button type="button" class="btn btn--secondary" id="uCancelar">Cancelar</button>

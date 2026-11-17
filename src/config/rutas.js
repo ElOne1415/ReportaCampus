@@ -16,7 +16,8 @@ export const RUTAS = Object.freeze({
   zonas:           { titulo: 'Zonas del campus',      permiso: 'reportes.ver',    menu: 'Zonas del campus' },
   nuevo:           { titulo: 'Nuevo reporte',         permiso: 'reportes.crear',  menu: 'Nuevo reporte' },
   usuarios:        { titulo: 'Usuarios',              permiso: 'usuarios.gestionar', menu: 'Usuarios' },
-  recomendaciones: { titulo: 'Recomendaciones',       permiso: 'reportes.ver',    menu: 'Recomendaciones' }
+  recomendaciones: { titulo: 'Recomendaciones',       permiso: 'reportes.ver',    menu: 'Recomendaciones' },
+  cuenta:          { titulo: 'Mi cuenta',             permiso: 'panel.ver',       menu: 'Mi cuenta' }
 });
 
 /** Página a la que llega cada rol al iniciar sesión. */

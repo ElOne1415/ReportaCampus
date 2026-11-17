@@ -70,6 +70,7 @@ export function crearPaginaUsuarios(app) {
     limpiar();
     $('#uFormTitulo').textContent = u ? 'Editar usuario' : 'Nuevo usuario';
     $('#uGuardar').textContent = u ? 'Guardar cambios' : 'Crear usuario';
+    $('#uClaveInicial').hidden = !!u;
     if (u) {
       $('#uNombre').value = u.nombre;
       $('#uCorreo').value = u.correo;

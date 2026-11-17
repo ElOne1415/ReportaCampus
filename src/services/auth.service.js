@@ -11,9 +11,14 @@
    devuelva; las páginas no cambian.
    ========================================================== */
 import { CONFIG } from '../config/config.js';
-import { CORREO_VALIDO } from '../models/usuario.js';
+import { CORREO_VALIDO, validarContrasenaNueva, huellaContrasena } from '../models/usuario.js';
 
 export function crearServicioAuth({ almacenSesion, usuarios }) {
+  // Las cuentas que no han cambiado su contraseña usan la de demostración
+  const correcta = async (u, contrasena) => (u.claveHash
+    ? u.claveHash === await huellaContrasena(u.correo, contrasena)
+    : contrasena === CONFIG.CONTRASENA_DEMO);
+
   return {
     /** @returns {{ ok: true, usuario } | { ok: false, errores } | { ok: false, error }} */
     async iniciarSesion(correo, contrasena) {
@@ -23,7 +28,7 @@ export function crearServicioAuth({ almacenSesion, usuarios }) {
       if (Object.keys(errores).length) return { ok: false, errores };
 
       const u = await usuarios.porCorreo(correo);
-      if (!u || contrasena !== CONFIG.CONTRASENA_DEMO) return { ok: false, error: 'El correo o la contraseña no son correctos.' };
+      if (!u || !(await correcta(u, contrasena))) return { ok: false, error: 'El correo o la contraseña no son correctos.' };
       if (!u.activo) return { ok: false, error: 'Esta cuenta está desactivada. Habla con el administrador.' };
       almacenSesion.escribir(CONFIG.CLAVES.sesion, { usuarioId: u.id, inicio: new Date() });
       return { ok: true, usuario: u };
@@ -39,6 +44,15 @@ export function crearServicioAuth({ almacenSesion, usuarios }) {
 
     /** Igual que usuarioActual(); existe para tener la misma interfaz que la API. */
     async refrescar() { return this.usuarioActual(); },
+
+    async cambiarContrasena(actual, nueva) {
+      const u = this.usuarioActual();
+      if (!u) return { ok: false, error: 'Tu sesión terminó. Inicia sesión de nuevo.' };
+      if (!(await correcta(u, actual || ''))) return { ok: false, errores: { actual: 'La contraseña actual no es correcta.' } };
+      const v = validarContrasenaNueva(nueva, undefined, actual);
+      if (!v.ok) return v;
+      return usuarios.establecerClave(u.id, await huellaContrasena(u.correo, nueva));
+    },
 
     cerrarSesion() { almacenSesion.borrar(CONFIG.CLAVES.sesion); }
   };

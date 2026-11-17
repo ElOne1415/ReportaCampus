@@ -53,3 +53,25 @@ export function siguienteIdUsuario(usuarios) {
   const max = usuarios.reduce((m, u) => Math.max(m, parseInt(u.id.slice(2), 10) || 0), 0);
   return 'u-' + String(max + 1).padStart(3, '0');
 }
+
+/** Contraseña nueva: mínimo 8 caracteres con letras y números (igual que el backend). */
+export function validarContrasenaNueva(nueva, confirmacion, actual) {
+  const errores = {};
+  if (typeof nueva !== 'string' || nueva.length < 8) errores.nueva = 'Usa al menos 8 caracteres.';
+  else if (nueva.length > 72) errores.nueva = 'Máximo 72 caracteres.';
+  else if (!/[A-Za-zÁÉÍÓÚáéíóúÑñ]/.test(nueva) || !/\d/.test(nueva)) errores.nueva = 'Combina letras y números.';
+  else if (actual !== undefined && nueva === actual) errores.nueva = 'La nueva contraseña debe ser distinta de la actual.';
+  if (confirmacion !== undefined && !errores.nueva && confirmacion !== nueva) errores.confirmacion = 'Las contraseñas no coinciden.';
+  return { ok: Object.keys(errores).length === 0, errores };
+}
+
+/**
+ * Huella SHA-256 de la contraseña (modo local). En el navegador no hay
+ * forma de guardar una contraseña de verdad segura; con el servidor se
+ * usa PBKDF2 con sal en el backend.
+ */
+export async function huellaContrasena(correo, contrasena) {
+  const datos = new TextEncoder().encode('reportacampus:' + correo + ':' + contrasena);
+  const hash = await globalThis.crypto.subtle.digest('SHA-256', datos);
+  return Array.from(new Uint8Array(hash)).map((b) => b.toString(16).padStart(2, '0')).join('');
+}

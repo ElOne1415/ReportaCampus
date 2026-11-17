@@ -76,3 +76,9 @@
 .demo-data { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 24px; }
 .demo-data h2 { font-size: 17px; font-weight: 900; }
 .demo-data p { font-size: 14px; color: var(--gris); }
+
+/* ---------- Mi cuenta ---------- */
+.account-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; max-width: 960px; }
+.account-grid .form { display: grid; gap: 14px; }
+.account-grid input[type="password"] { width: 100%; padding: 9px 10px; font-size: 15px; border: 1px solid #c9c4bf; border-radius: 3px; }
+.hint { font-size: 13px; color: var(--gris); }

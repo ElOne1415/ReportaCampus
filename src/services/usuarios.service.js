@@ -79,8 +79,18 @@ export function crearServicioUsuarios({ almacen, ahora = new Date() }) {
         return { ok: false, error: 'Debe quedar al menos un administrador activo.' };
       }
       const nuevo = construirUsuario({ ...datos, activo: u.activo }, id, u.creado);
+      // La huella de la contraseña depende del correo: si cambia, vuelve la contraseña inicial
+      if (nuevo.correo !== u.correo) delete u.claveHash;
       Object.assign(u, nuevo);
       return { ok: true, usuario: u, guardado: guardar() };
+    },
+
+    /** Guarda la huella de la nueva contraseña (la llama el servicio de autenticación). */
+    async establecerClave(id, claveHash) {
+      const u = buscar(id);
+      if (!u) return NO_EXISTE;
+      u.claveHash = claveHash;
+      return { ok: true, guardado: guardar() };
     },
 
     async cambiarActivo(id, activo, actor) {

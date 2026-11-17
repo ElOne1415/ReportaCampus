@@ -37,7 +37,8 @@
 
 /* ---------- Usuario con sesión ---------- */
 .user { margin-left: auto; display: flex; align-items: center; gap: 12px; font-size: 14px; }
-.user__name { font-weight: 700; }
+.user__name { font-weight: 700; color: #fff; text-decoration: none; }
+.user__name:hover { text-decoration: underline; }
 .user__logout { border: 1px solid rgba(255, 255, 255, .6); background: transparent; color: #fff; border-radius: 3px; padding: 5px 10px; font-weight: 700; font-size: 13px; cursor: pointer; }
 .user__logout-short { display: none; }
 .user__logout:hover { background: rgba(255, 255, 255, .12); }
