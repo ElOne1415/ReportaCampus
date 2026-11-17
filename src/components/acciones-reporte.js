@@ -5,16 +5,19 @@
    ese reporte según su rol (ver src/models/roles.js).
    ========================================================== */
 import { puedeEditarReporte, puedeEliminarReporte, puedeCambiarEstado, puedeComentar, ROLES } from '../models/roles.js';
-import { ESTADOS } from '../models/catalogos.js';
+import { ESTADOS, PRIORIDADES, categoriaPorId } from '../models/catalogos.js';
+import { puede } from '../models/roles.js';
+import { esc } from '../utils/formato.js';
 import { NOTA_MIN } from '../models/reporte.js';
 import { confirmar } from './confirmar.js';
 
 /** Bloques de acciones: cada uno devuelve { html, conectar(contenedor) } o null. */
-const BLOQUES = [bloqueAutor, bloqueAtencion];
+const BLOQUES = [bloqueAutor, bloqueAdministrador, bloqueAtencion];
 
 function bloqueAutor(x, app) {
   const editar = puedeEditarReporte(app.usuario, x);
-  const eliminar = puedeEliminarReporte(app.usuario, x) && x.autorId === app.usuario.id;
+  // El administrador elimina desde su propio bloque
+  const eliminar = puedeEliminarReporte(app.usuario, x) && x.autorId === app.usuario.id && !puede(app.usuario, 'reportes.eliminar');
   if (!editar && !eliminar) return null;
   return {
     html: '<div class="actions__row">' +
@@ -26,6 +29,51 @@ function bloqueAutor(x, app) {
       if (bEditar) bEditar.addEventListener('click', () => { app.cerrarDetalle(); app.irA('nuevo', { editar: x.id }); });
       const bEliminar = c.querySelector('[data-accion="eliminar-propio"]');
       if (bEliminar) bEliminar.addEventListener('click', () => eliminarReporte(x, app));
+    }
+  };
+}
+
+/** Administrador: responsable, prioridad y eliminación. */
+function bloqueAdministrador(x, app) {
+  const u = app.usuario;
+  if (!puede(u, 'reportes.asignar')) return null;
+  const abierto = x.estado !== ESTADOS.RESUELTO;
+  return {
+    html: '<div class="actions__group"><h4>Gestión del reporte</h4>' +
+      (abierto
+        ? '<div class="actions__row actions__row--field"><label class="field"><span>Responsable</span><select data-campo="responsable"><option value="">Elige un responsable</option></select></label>' +
+          '<button type="button" class="btn btn--primary btn--small" data-accion="asignar">' + (x.responsableId ? 'Reasignar' : 'Asignar') + '</button></div>'
+        : '<p class="actions__note">El reporte está resuelto; para cambiar el responsable primero hay que reabrirlo.</p>') +
+      '<div class="actions__row actions__row--field"><label class="field"><span>Prioridad</span><select data-campo="prioridad">' +
+      PRIORIDADES.map((p) => '<option' + (p === x.prioridad ? ' selected' : '') + '>' + p + '</option>').join('') + '</select></label>' +
+      '<button type="button" class="btn btn--secondary btn--small" data-accion="prioridad">Cambiar prioridad</button>' +
+      '<button type="button" class="btn btn--danger btn--small actions__end" data-accion="eliminar">Eliminar reporte</button></div>' +
+      '<p class="actions__error" data-error-admin hidden></p></div>',
+    async conectar(c) {
+      const error = c.querySelector('[data-error-admin]');
+      const fallo = (m) => { error.textContent = m; error.hidden = false; };
+      const sel = c.querySelector('[data-campo="responsable"]');
+      if (sel) {
+        const lista = await app.usuarios.responsables(x.categoria);
+        sel.insertAdjacentHTML('beforeend', lista.map((r) =>
+          '<option value="' + r.id + '"' + (r.id === x.responsableId ? ' selected' : '') + '>' + esc(r.nombre + ' · ' + r.area) +
+          (r.categorias.includes(x.categoria) ? ' (atiende ' + categoriaPorId[x.categoria].nombre.toLowerCase() + ')' : '') + '</option>').join(''));
+        c.querySelector('[data-accion="asignar"]').addEventListener('click', async () => {
+          if (!sel.value) { fallo('Elige un responsable.'); sel.focus(); return; }
+          const res = await app.reportes.asignar(x.id, sel.value, u);
+          if (!res.ok) { fallo(res.error); return; }
+          app.aviso(res.sinCambios ? 'El reporte ya tenía ese responsable.' : x.id + ' quedó a cargo de ' + app.reportes.nombreResponsable(res.reporte) + '.');
+          app.alCambiarReporte(x.id);
+        });
+      }
+      c.querySelector('[data-accion="prioridad"]').addEventListener('click', async () => {
+        const res = await app.reportes.cambiarPrioridad(x.id, c.querySelector('[data-campo="prioridad"]').value, u);
+        if (!res.ok) { fallo(res.error); return; }
+        app.aviso(res.sinCambios ? 'La prioridad no cambió.' : 'Prioridad de ' + x.id + ': ' + res.reporte.prioridad + '.');
+        app.alCambiarReporte(x.id);
+      });
+      c.querySelector('[data-accion="eliminar"]').addEventListener('click', () => eliminarReporte(x, app));
+      c.querySelectorAll('select').forEach((s2) => s2.addEventListener('change', () => { error.hidden = true; }));
     }
   };
 }

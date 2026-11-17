@@ -10,8 +10,8 @@ import { horasEntre } from '../utils/tiempo.js';
 import { aCSV, descargar } from '../utils/csv.js';
 import { montarTablaReportes } from '../components/tabla-reportes.js';
 
-const CAMPOS = { texto: '#fTexto', estado: '#fEstado', categoria: '#fCategoria', zona: '#fZona' };
-export const FILTROS_VACIOS = Object.freeze({ texto: '', estado: '', categoria: '', zona: '' });
+const CAMPOS = { texto: '#fTexto', estado: '#fEstado', categoria: '#fCategoria', zona: '#fZona', responsableId: '#fResponsable' };
+export const FILTROS_VACIOS = Object.freeze({ texto: '', estado: '', categoria: '', zona: '', responsableId: '' });
 const pick = (o) => Object.fromEntries(Object.entries(o).filter(([k]) => k in FILTROS_VACIOS));
 
 export function crearPaginaReportes(app) {
@@ -36,6 +36,14 @@ export function crearPaginaReportes(app) {
     app.aviso('Se exportaron ' + plural(lista.length, 'reporte.', 'reportes.'));
   }
 
+  async function opcionesResponsables() {
+    const sel = $('#fResponsable');
+    const lista = await app.usuarios.responsables();
+    sel.querySelectorAll('option[data-dinamica]').forEach((o) => o.remove());
+    sel.insertAdjacentHTML('beforeend', lista.map((u) => '<option data-dinamica value="' + u.id + '">' + u.nombre + ' · ' + u.area + '</option>').join(''));
+    sel.value = app.estado.filtros.responsableId;
+  }
+
   return {
     id: 'reportes',
     montar() {
@@ -52,7 +60,7 @@ export function crearPaginaReportes(app) {
         clearTimeout(espera);
         espera = setTimeout(() => { app.estado.filtros.texto = e.target.value; pintar(); }, 150);
       });
-      ['estado', 'categoria', 'zona'].forEach((k) => {
+      ['estado', 'categoria', 'zona', 'responsableId'].forEach((k) => {
         $(CAMPOS[k]).addEventListener('change', (e) => {
           app.estado.filtros[k] = e.target.value;
           pintar();
@@ -68,13 +76,18 @@ export function crearPaginaReportes(app) {
     /** params: filtros a aplicar, reporte a resaltar o conservar (redibujar sin cambiar nada) */
     async mostrar(params = {}) {
       $('#exportar').hidden = !app.puede('reportes.exportar');
+      // El filtro por responsable es para el administrador
+      const conResponsable = app.puede('reportes.asignar');
+      $('#fResponsable').hidden = !conResponsable;
       // Si la ruta trae parámetros (#/reportes?zona=x) se aplican desde cero;
       // si no, se conservan los filtros que el usuario ya tenía.
       const { resaltar, conservar, ...filtros } = params;
       if (resaltar || Object.keys(filtros).length) {
         app.estado.filtros = { ...FILTROS_VACIOS, ...pick(filtros) };
-        sincronizarCampos();
       }
+      if (!conResponsable) app.estado.filtros.responsableId = '';
+      if (conResponsable) await opcionesResponsables();
+      sincronizarCampos();
       await pintar({ resaltar, conservarPagina: !!conservar });
     }
   };

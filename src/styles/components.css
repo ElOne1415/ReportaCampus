@@ -18,6 +18,7 @@
 .stat__label { font-size: 14px; font-weight: 700; color: var(--gris); }
 .stat__value { font-size: 40px; font-weight: 900; line-height: 1.1; margin-top: 4px; font-variant-numeric: tabular-nums; color: var(--tinta); }
 .unit { font-size: 16px; font-weight: 700; color: var(--gris); }
+.stat__note a { color: var(--azul); font-weight: 700; }
 .stat__note { font-size: 13px; color: var(--gris); margin-top: 4px; }
 
 .bar { position: relative; height: 6px; background: #e9e6e3; margin-top: 8px; }
@@ -157,5 +158,8 @@ input[type="file"] { font-size: 14px; }
 .actions__group + .actions__group, .actions__row + .actions__group { padding-top: 12px; border-top: 1px solid var(--linea); }
 .actions textarea, .actions select { width: 100%; padding: 8px 10px; font-size: 14px; border: 1px solid #c9c4bf; border-radius: 3px; background: var(--blanco); }
 .actions__row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.actions__row--field { align-items: flex-end; }
+.actions__row--field .field { flex: 1 1 220px; }
+.actions__end { margin-left: auto; }
 .actions__note { font-size: 13px; color: var(--gris); }
 .actions__error { font-size: 13px; font-weight: 700; color: var(--rojo-oscuro); }

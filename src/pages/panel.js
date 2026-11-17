@@ -30,6 +30,10 @@ export function crearPaginaPanel(app) {
     $('#sTotalNote').textContent = anteriores.length ? (dif === 0 ? 'Igual que' : Math.abs(dif) + (dif > 0 ? ' más que' : ' menos que')) + ' el periodo anterior' : '';
     $('#sAbiertos').textContent = abiertos.length;
     $('#sAbiertosNote').textContent = nuevos + ' sin asignar, ' + (abiertos.length - nuevos) + ' en proceso';
+    // El administrador va directo a los que falta asignar
+    if (nuevos && app.puede('reportes.asignar')) {
+      $('#sAbiertosNote').insertAdjacentHTML('beforeend', ' · <a href="#/reportes?estado=Nuevo&responsableId=ninguno">Asignar</a>');
+    }
 
     const prom = tiempos.length ? tiempos.reduce((a, b) => a + b, 0) / tiempos.length : 0;
     $('#sTiempo').textContent = tiempos.length ? fNum.format(prom) : '–';
