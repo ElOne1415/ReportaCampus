@@ -2,7 +2,7 @@
 
 # ReportaCampus
 
-**Producto publicado:** https://elone1415.github.io/ReportaCampus/ · **Versión:** 1.0.0 (entrega final) · **Licencia:** MIT
+**Producto publicado:** https://elone1415.github.io/ReportaCampus/ · **Versión:** 1.0.0 
 
 ReportaCampus es una aplicación web para reportar las incidencias del campus (daños, fallas, problemas de aseo o de seguridad) y hacer seguimiento a su atención hasta que se resuelven. La comunidad reporta y califica la solución; los responsables de cada dependencia toman y resuelven los reportes de su área; el administrador reparte el trabajo, gestiona las cuentas y revisa la actividad.
 
