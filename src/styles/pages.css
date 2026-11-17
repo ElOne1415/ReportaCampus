@@ -37,3 +37,25 @@
 .tips > div { padding: 14px 0; border-top: 1px solid var(--linea); }
 .tips dt { font-weight: 900; color: var(--pizarra); }
 .tips dd { color: var(--tinta); font-size: 15px; margin-top: 2px; }
+
+/* ---------- Inicio de sesión ---------- */
+.auth { min-height: calc(100vh - var(--topbar)); display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; padding: 32px 16px; }
+.auth__card { width: min(440px, 100%); background: var(--blanco); border: 1px solid var(--linea); border-radius: 4px; padding: 28px 28px 24px; }
+.auth__logo { display: block; margin-bottom: 12px; }
+.auth h1 { font-size: 28px; font-weight: 900; }
+.auth h1:focus { outline: none; }
+.auth__lead { color: var(--gris); margin: 4px 0 20px; }
+.auth__form { display: grid; gap: 14px; }
+.auth__form input[type="email"], .auth__form input[type="password"] { width: 100%; padding: 9px 10px; font-size: 15px; border: 1px solid #c9c4bf; border-radius: 3px; background: var(--blanco); }
+.auth__error { background: #fbeeed; border-left: 4px solid var(--rojo); padding: 8px 12px; font-size: 14px; font-weight: 700; color: var(--rojo-oscuro); }
+.auth__submit { width: 100%; padding: 11px 18px; }
+.auth__demo { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--linea); }
+.auth__demo h2 { font-size: 15px; font-weight: 900; }
+.auth__demo p { font-size: 14px; color: var(--gris); margin: 4px 0 12px; }
+.auth__demo code { font-family: ui-monospace, Menlo, Consolas, monospace; color: var(--tinta); background: var(--fondo); padding: 1px 5px; border-radius: 3px; }
+.auth__accounts { display: grid; gap: 8px; }
+.account { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 10px; text-align: left; padding: 10px 12px; background: var(--blanco); border: 1px solid var(--linea); border-radius: 3px; cursor: pointer; }
+.account:hover { border-color: var(--pizarra); background: #faf9f8; }
+.account__name { font-weight: 700; }
+.account__mail { grid-column: 1; font-size: 13px; color: var(--gris); overflow-wrap: anywhere; }
+.account .role-badge { grid-column: 2; grid-row: 1 / span 2; }

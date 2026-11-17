@@ -13,7 +13,7 @@
 
 @media (max-width: 860px) {
   .menu-btn { display: block; }
-  .shell { grid-template-columns: 1fr; }
+  .shell { grid-template-columns: minmax(0, 1fr); }
   .sidebar {
     position: fixed; top: var(--topbar); left: 0; z-index: 35; width: 260px;
     transform: translateX(-100%); transition: transform .2s ease;
@@ -26,6 +26,11 @@
 }
 
 @media (max-width: 600px) {
+  .user__name, .user__logout-long { display: none; }
+  .user__logout-short { display: inline; }
+  .topbar--sesion .wordmark__text { display: none; }
+  .user { gap: 8px; }
+  .auth__card { padding: 22px 18px 18px; }
   .page-head h1 { font-size: 26px; }
   .stat { padding: 14px; }
   .stat__value { font-size: 30px; }

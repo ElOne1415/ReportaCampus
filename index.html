@@ -23,20 +23,47 @@
     </button>
     <a class="wordmark" href="#/">
       <span class="wordmark__badge"><img src="public/img/logo.svg" alt="" width="22" height="26"></span>
-      ReportaCampus
+      <span class="wordmark__text">ReportaCampus</span>
     </a>
+    <div class="user" id="usuarioActual" hidden>
+      <span class="user__name" id="usuarioNombre"></span>
+      <span class="role-badge" id="usuarioRol"></span>
+      <button type="button" class="user__logout" id="cerrarSesion"><span class="user__logout-long">Cerrar sesión</span><span class="user__logout-short" aria-hidden="true">Salir</span></button>
+    </div>
   </header>
 
-  <div class="shell">
+  <!-- INICIO DE SESIÓN -->
+  <main class="auth" id="login" data-pagina="login" hidden aria-labelledby="t-login">
+    <div class="auth__card">
+      <img class="auth__logo" src="public/img/logo.svg" alt="" width="48" height="58">
+      <h1 id="t-login" tabindex="-1">Inicia sesión</h1>
+      <p class="auth__lead">Reporta incidencias del campus y sigue su estado.</p>
+      <form class="auth__form" id="loginForm" novalidate>
+        <label class="field">
+          <span>Correo institucional</span>
+          <input type="email" id="lCorreo" autocomplete="username" placeholder="nombre@campus.edu.co" required>
+          <small class="error" data-for="lCorreo"></small>
+        </label>
+        <label class="field">
+          <span>Contraseña</span>
+          <input type="password" id="lContrasena" autocomplete="current-password" required>
+          <small class="error" data-for="lContrasena"></small>
+        </label>
+        <p class="auth__error" id="loginError" role="alert" hidden></p>
+        <button type="submit" class="btn btn--primary auth__submit">Entrar</button>
+      </form>
+      <div class="auth__demo">
+        <h2>Cuentas de demostración</h2>
+        <p>Entra con un clic para probar cada rol. La contraseña de todas es <code id="contrasenaDemo"></code>.</p>
+        <div class="auth__accounts" id="cuentasDemo"></div>
+      </div>
+    </div>
+  </main>
+
+  <div class="shell" id="shell" hidden>
     <!-- Navegación lateral -->
     <nav class="sidebar" id="sidebar" aria-label="Navegación principal">
-      <ul>
-        <li><a href="#/panel" data-ruta="panel" class="nav-link">Panel</a></li>
-        <li><a href="#/reportes" data-ruta="reportes" class="nav-link">Reportes</a></li>
-        <li><a href="#/zonas" data-ruta="zonas" class="nav-link">Zonas del campus</a></li>
-        <li><a href="#/nuevo" data-ruta="nuevo" class="nav-link">Nuevo reporte</a></li>
-        <li><a href="#/recomendaciones" data-ruta="recomendaciones" class="nav-link">Recomendaciones</a></li>
-      </ul>
+      <ul id="menu"></ul>
     </nav>
     <div class="scrim" id="scrim" hidden></div>
 

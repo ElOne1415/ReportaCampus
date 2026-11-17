@@ -4,6 +4,8 @@
    fondo oscuro, la tecla Escape o al elegir una opción.
    ========================================================== */
 import { $, $$ } from '../utils/dom.js';
+import { esc } from '../utils/formato.js';
+import { INFO_ROLES } from '../models/roles.js';
 
 export function iniciarMenu() {
   const btn = $('#menuBtn'), side = $('#sidebar'), scrim = $('#scrim');
@@ -26,4 +28,21 @@ export function marcarActivo(nombre) {
     a.classList.toggle('is-active', activo);
     if (activo) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
+}
+
+/** Dibuja los enlaces del menú: [{ ruta, texto }] */
+export function pintarMenu(enlaces) {
+  $('#menu').innerHTML = enlaces.map((e) =>
+    '<li><a href="#/' + e.ruta + '" data-ruta="' + e.ruta + '" class="nav-link">' + esc(e.texto) + '</a></li>').join('');
+}
+
+/** Muestra el nombre y el rol del usuario en la barra superior (o lo oculta). */
+export function pintarUsuario(u) {
+  $('#usuarioActual').hidden = !u;
+  $('.topbar').classList.toggle('topbar--sesion', !!u);
+  if (!u) return;
+  $('#usuarioNombre').textContent = u.nombre;
+  const rol = $('#usuarioRol');
+  rol.textContent = INFO_ROLES[u.rol].nombre;
+  rol.className = 'role-badge role-badge--' + u.rol;
 }

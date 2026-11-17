@@ -67,6 +67,7 @@ export function crearPaginaReportes(app) {
     },
     /** params: filtros a aplicar (opcional) y reporte a resaltar */
     async mostrar(params = {}) {
+      $('#exportar').hidden = !app.puede('reportes.exportar');
       // Si la ruta trae parámetros (#/reportes?zona=x) se aplican desde cero;
       // si no, se conservan los filtros que el usuario ya tenía.
       const { resaltar, ...filtros } = params;

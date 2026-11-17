@@ -23,7 +23,7 @@ export function crearHash(nombre, params = {}) {
 
 /**
  * @param {{ rutas: Object<string, {titulo: string}>, inicio: () => string,
- *           puedeEntrar?: (nombre: string) => string|true,
+ *           puedeEntrar?: (nombre: string, params: object) => string|true,
  *           alEntrar: (nombre: string, params: object) => void }} op
  */
 export function crearRouter(op) {
@@ -35,7 +35,7 @@ export function crearRouter(op) {
       nombre = op.rutas[antiguo] ? antiguo : op.inicio();
       history.replaceState(null, '', crearHash(nombre, params));
     }
-    const permiso = op.puedeEntrar ? op.puedeEntrar(nombre) : true;
+    const permiso = op.puedeEntrar ? op.puedeEntrar(nombre, params) : true;
     if (permiso !== true) {
       history.replaceState(null, '', crearHash(permiso));
       nombre = permiso;
