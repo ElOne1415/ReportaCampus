@@ -10,6 +10,7 @@ import { ROLES } from '../models/roles.js';
 export const RUTAS = Object.freeze({
   login:           { titulo: 'Iniciar sesión',        publica: true },
   'mis-reportes':  { titulo: 'Mis reportes',          permiso: 'reportes.propios', menu: 'Mis reportes' },
+  asignados:       { titulo: 'Mis asignaciones',      permiso: 'reportes.asignados', menu: 'Mis asignaciones' },
   panel:           { titulo: 'Panel de incidencias',  permiso: 'panel.ver',       menu: 'Panel' },
   reportes:        { titulo: 'Reportes',              permiso: 'reportes.ver',    menu: 'Reportes' },
   zonas:           { titulo: 'Zonas del campus',      permiso: 'reportes.ver',    menu: 'Zonas del campus' },
@@ -20,6 +21,6 @@ export const RUTAS = Object.freeze({
 /** Página a la que llega cada rol al iniciar sesión. */
 export const INICIO_POR_ROL = Object.freeze({
   [ROLES.ESTUDIANTE]: 'mis-reportes',
-  [ROLES.RESPONSABLE]: 'reportes',
+  [ROLES.RESPONSABLE]: 'asignados',
   [ROLES.ADMIN]: 'panel'
 });

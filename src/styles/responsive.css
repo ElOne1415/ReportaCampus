@@ -55,6 +55,10 @@
   .table--reportes td[data-label="Categoría"] { grid-column: 1 / -1; }
   .table--reportes td[data-label="Zona"] { grid-column: 1; }
   .table--reportes td[data-label="Fecha"] { grid-column: 2; text-align: right; }
+  .table--reportes td[data-label="Prioridad"], .table--reportes td[data-label="Tiempo"] { color: var(--gris); }
+  .table--reportes td[data-label="Prioridad"] { grid-column: 1; }
+  .table--reportes td[data-label="Prioridad"]::before { content: "Prioridad "; }
+  .table--reportes td[data-label="Tiempo"] { grid-column: 2; text-align: right; }
 }
 
 @media (prefers-reduced-motion: reduce) {

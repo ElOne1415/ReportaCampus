@@ -6,7 +6,8 @@
    ========================================================== */
 import { CONFIG } from '../config/config.js';
 import { categoriaPorId, zonaPorId } from '../models/catalogos.js';
-import { esc, fFecha } from '../utils/formato.js';
+import { esc, fFecha, fNum } from '../utils/formato.js';
+import { horasEntre } from '../utils/tiempo.js';
 import { estadoHTML, urgenteHTML } from './estado.js';
 
 const COLUMNAS = {
@@ -15,8 +16,17 @@ const COLUMNAS = {
   categoria:   { titulo: 'Categoría',   celda: (x) => '<td data-label="Categoría">' + categoriaPorId[x.categoria].nombre + '</td>' },
   zona:        { titulo: 'Zona',        celda: (x) => '<td data-label="Zona">' + zonaPorId[x.ubicacion].nombre + '</td>' },
   fecha:       { titulo: 'Fecha',       celda: (x) => '<td data-label="Fecha">' + fFecha.format(x.creado) + '</td>' },
-  estado:      { titulo: 'Estado',      celda: (x) => '<td data-label="Estado">' + estadoHTML(x.estado) + '</td>' }
+  estado:      { titulo: 'Estado',      celda: (x) => '<td data-label="Estado">' + estadoHTML(x.estado) + '</td>' },
+  prioridad:   { titulo: 'Prioridad',   celda: (x) => '<td data-label="Prioridad">' + x.prioridad + '</td>' },
+  abierto:     { titulo: 'Tiempo',      celda: (x) => '<td data-label="Tiempo">' + tiempo(x) + '</td>' }
 };
+
+/** "Hace 5 h", "Hace 2 días" o "Resuelto en 30 h" */
+function tiempo(x) {
+  if (x.resuelto) return 'Resuelto en ' + fNum.format(Math.round(horasEntre(x.creado, x.resuelto))) + ' h';
+  const h = horasEntre(x.creado, new Date());
+  return h < 48 ? 'Hace ' + Math.max(1, Math.round(h)) + ' h' : 'Hace ' + Math.round(h / 24) + ' días';
+}
 
 export const COLUMNAS_BASE = ['codigo', 'incidencia', 'categoria', 'zona', 'fecha', 'estado'];
 

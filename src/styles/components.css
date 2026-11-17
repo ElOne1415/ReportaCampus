@@ -153,6 +153,9 @@ input[type="file"] { font-size: 14px; }
 /* ---------- Acciones del detalle ---------- */
 .actions { margin-top: 16px; padding: 14px 16px; background: #faf9f8; border: 1px solid var(--linea); border-radius: 4px; display: grid; gap: 12px; }
 .actions h4 { margin: 0 !important; }
+.actions__group { display: grid; gap: 10px; }
+.actions__group + .actions__group, .actions__row + .actions__group { padding-top: 12px; border-top: 1px solid var(--linea); }
+.actions textarea, .actions select { width: 100%; padding: 8px 10px; font-size: 14px; border: 1px solid #c9c4bf; border-radius: 3px; background: var(--blanco); }
 .actions__row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .actions__note { font-size: 13px; color: var(--gris); }
 .actions__error { font-size: 13px; font-weight: 700; color: var(--rojo-oscuro); }
